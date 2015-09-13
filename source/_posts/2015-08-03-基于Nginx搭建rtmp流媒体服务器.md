@@ -45,3 +45,5 @@ COPY nginx.conf /etc/nginx/nginx.conf
 VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/conf.d", "/var/cache/nginx"]
 CMD ["nginx", "-g", "daemon off;"]
 ```
+
+## 配置文件

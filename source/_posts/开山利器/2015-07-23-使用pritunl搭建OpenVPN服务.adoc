@@ -1,5 +1,6 @@
 title: 使用pritunl搭建OpenVPN服务
 date: 2015-07-23 01:34:39
+id: pritunl-openvpn
 tags:
 - OpenVPN
 ---
@@ -88,27 +89,27 @@ sudo service pritunl start
 . 在浏览器中输入：https://<Server_Address>:9700/，注意用自己 VPS 的IP地址进行替换，
 正常情况就应该出现 Pritunl 的登陆界面，默认的用户名和密码都是“Admin”（或者pritunl）；
 +
-image::/images/openvpn-images/1.png[]
+image::/images/pritunl-openvpn/1.png[]
 
 . 进入“Users”选项卡，点击“Add Organization”输入名称后添加组；
 +
-image::/images/openvpn-images/2.png[]
+image::/images/pritunl-openvpn/2.png[]
 
 . 点击“Add User”命令输入名称后在组下添加用户；
 +
-image::/images/openvpn-images/3.png[]
+image::/images/pritunl-openvpn/3.png[]
 
 . 继续点击“Servers”选项卡，点击“Add Server”输入名称后添加服务器；
 +
-image::/images/openvpn-images/4.png[]
+image::/images/pritunl-openvpn/4.png[]
 
 . 然后点击“Attach Oranization”，将刚新建的组添加到服务器中；
 +
-image::/images/openvpn-images/5.png[]
+image::/images/pritunl-openvpn/5.png[]
 
 . 最后点击“Start Server”运行服务，结束设置环节。
 +
-image::/images/openvpn-images/6.png[]
+image::/images/pritunl-openvpn/6.png[]
 
 == 客户端
 

@@ -1,0 +1,105 @@
+title: Gerrit权限设置
+date: 2015-07-23 01:46:55
+tags:
+---
+= Gerrit权限设置
+
+== 主要权限说明
+
+=== `refs/*`下常用的权限
+
+read::
+获取整个仓库数据
+owner::
+有这个权限的用户相当于该项目的创建者
+
+=== `refs/heads/`下常用的权限
+
+refs/heads/*::
+对所有分支有效
+refs/heads/branch_name::
+对指定分支有效
+
+Push::
+直接提交到某个分支
+Create Reference::
+创建分支，或轻量级的tag
+Label Code-Review::
+审核提交（不能再refs/for/*分指上）
+Label Code-Review(+2) + Submit::
+提交审核通过的代码（不能再refs/for/*分指上）
+Submit::
+提交（不能再refs/for/*分指上）
+Push Merge Commits::
+在master分支上做了merge操作，且要push master时需要的权限（一般用与refs/*搭配，且不包含push权限）
+Abandon::
+删除待审核的提交，提交者无须此权限也可操作（不能再refs/for/*分指上）
+Remove Reviewer::
+删除审核列表中的审核成员，提交者无须此权限也可操作
+Forge Author 和 Forge Committer::
+当提交的用户账号和邮箱与服务器不对时，用这2个权限跳过验证
+
+=== `refs/for/refs/heads/`下常用权限
+
+refs/for/refs/heads/*::
+对所有分支有效
+
+refs/for/refs/heads/branch_name::
+对指定分支有效
+
+Push::
+只能提交到review，不能直接提交
+
+=== `refs/tags/*`下常用的权限
+Create Reference::
+push轻量级标签
+Push Annotated Tag::
+push含附注的标签
+Push Signed Tag::
+push含附注的标签
+
+== 常用配置案例
+
+.master分支上的提交必须经过审核
+[source, ini, caption="案例一、"]
+----
+[access "refs/heads/master"]
+    push = block +force group Registered Users
+----
+
+.sandbox/${username}下可以覆盖push
+[source, ini, caption="案例二、"]
+----
+[access "refs/heads/sandbox/${username}/*"]
+    push = +force group Registered Users
+----
+
+.test分支上可以直接提交
+[source, ini, caption="案例三、"]
+----
+[access "refs/heads/test"]
+    push = +force group Registered Users
+----
+
+.整体配置分析
+[source, ini, caption="案例四、"]
+----
+[access "refs/heads/*"]
+    create = group Registered Users
+    push = group Registered Users  <1>
+    editTopicName = +force group Registered Users
+    submit = group Registered Users
+    label-Code-Review = -2..+2 group Registered Users
+    label-Verified = -1..+1 group Registered Users
+[access "refs/heads/test"]  <2>
+    push = +force group Registered Users
+[access "refs/heads/sandbox/*"]  <3>
+    push = +force group Registered Users
+[access "refs/heads/master"] <4>
+    push = block +force group Registered Users
+----
+
+<1> 注册用户可以`push`分支。
+<2> `test`分支可以覆盖。
+<3> `sandbox`下的分支可以覆盖。
+<4> `master`分支禁止`push`操作，只能通过`submit`。

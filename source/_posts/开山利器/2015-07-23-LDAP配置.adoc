@@ -1,0 +1,455 @@
+title: LDAP配置
+date: 2015-07-23 01:54:09
+id: ldap
+tags:
+categories:
+- 工具
+- 开山利器
+permalink: /about/
+---
+= LDAP配置
+
+:toc:
+:toc-placement!:
+:icons:
+:source-highlighter: highlight
+
+toc::[]
+
+== LDAP介绍
+
+轻型目录访问协议，即Lightweight Directory Access Protocol (LDAP)是一个访问在线目录服务的协议。目录是一组具有类似属性、以一定逻辑和层次组合的信息。常见的例子是电话簿，由以字母顺序排列的名字、地址和电话号码组成。最新版本的LDAP协议由RFC 4511所定义。
+
+=== LDAP的协议
+
+LDAP协议是跨平台的和标准的协议，因此应用程序就不用为LDAP目录放在什么样的服务器上操心了。实际上，LDAP得到了业界的广泛认可，因为它是Internet的标准。厂商都很愿意在产品中加入对LDAP的支持，因为他们根本不用考虑另一端（客户端或服务端）是怎么样的。LDAP服务器可以是任何一个开放源代码或商用的LDAP目录服务器（或者还可能是具有LDAP界面的关系型数据库），因为可以用同样的协议、客户端连接软件包和查询命令与LDAP服务器进行交互。与LDAP不同的是，如果软件厂商想在软件产品中集成对DBMS的支持，那么通常都要对每一个数据库服务器单独定制。不象很多商用的关系型数据库，你不必为LDAP的每一个客户端连接或许可协议付费。大多数的LDAP服务器安装起来很简单，也容易维护和优化。
+
+很多第三方的软件都支持LDAP协议，这也是我们选择使用LDAP作为账号管理服务器的一个重要的原因。
+
+== LDAP Entry
+
+Entry的objectClass类表示其继承的类，这些类有特定的定义，如： `groupOfNames` 一定要有个 `member`
+属性等。
+
+
+== LDAP的检索
+
+
+== LDAP服务器软件
+
+这里采用ApacheDS作为LDAP服务器软件，主要看中了它的易用性，它的缺点是支持的特性比较少，
+不过目前我们也用不到。
+
+下面介绍一下在Ubuntu服务器上安装相关的步骤。
+
+=== 下载
+
+到 http://directory.apache.org/apacheds/ 网站上下载软件包，当前最新版是 2.0.0-M19，
+执行命令 `sudo dpkg -i apacheds-2.0.0-M19-amd64.deb` ，即可安装成功。
+
+=== 启动
+
+执行命令 `sudo /etc/init.d/apacheds-2.0.0-M19-default start` 就启动起来了，当然需要先安装Java。
+
+默认的数据文件是放到 `/var/lib/apacheds-2.0.0-M19` 下，默认会启一个名为`default`的实例。
+
+=== 配置
+
+==== 实例配置
+
+进入 `default/conf` 目录，有个 `config.ldif` 的文件，就是 `default` instance的配置文件。
+ApacheDS提供了一个非常好用的GUI工具: *Apache Directory Studio* ，下载地址： http://directory.apache.org/studio/ 。
+
+使用 *Apache Directory Studio* 打开 `config.ldif` 文件，对这个实例进行配置。
+
+.端口设置
+image::/images/ldap/3.png[Overview, caption="图片1 "]
+
+.LDAP设置
+image::/images/ldap/2.png[Overview, caption="图片2 "]
+
+.Partitions设置
+image::/images/ldap/1.png[Overview, caption="图片3 "]
+
+==== 员工和组的设置
+
+这里我们以 *3S.CN* 为例，演示如何配置LDAP服务器。
+
+. 首先配置 *Base DN* 。
++
+----
+dn: dc=3s,dc=cn
+objectclass: domain
+objectclass: top
+dc: 3s
+----
+
+. 在 *Base DN* 下面建立 people, groups域，用来放置员工和组。
++
+----
+dn: ou=groups,dc=3s,dc=cn
+objectClass: organizationalUnit
+objectClass: top
+ou: groups
+
+dn: ou=people,dc=3s,dc=cn
+objectClass: organizationalUnit
+objectClass: top
+ou: people
+----
+
+. 在people下创建员工，我们使用 `inetOrgPerson`, `organizationalPerson` 作为员工的 *objectClass*。
++
+----
+dn: cn=admin,ou=people,dc=3s,dc=cn
+objectClass: inetOrgPerson
+objectClass: krb5KDCEntry
+objectClass: krb5Principal
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: zhangsan
+sn: 张
+givenName: 三
+displayName: 张三
+mail: zhangsan@3s.cn
+uid: zhangsan
+krb5KeyVersionNumber: 1
+krb5PrincipalName: root/admin@3S.CN
+krb5Key:: MBGgAwIBA6EKBAhAZDHpm3Ml8Q==
+krb5Key:: MBmgAwIBEaESBBDcJQYdYTS5xB18L02lX3/g
+krb5Key:: MBmgAwIBF6ESBBBlREnp7yjhSefWNSBL9S/0
+krb5Key:: MCGgAwIBEKEaBBjyYhw4Ac5nXV1dejGMQLwV6Sb48vGDm7Y=
+userPassword:: e1NTSEF9T3dzU2VKS3U3d216RmZTeEw2a3MzdGNtRU5Ka2RscVcrTVF4UEE9P
+ Q==
+----
+
++
+.员工相关属性说明
+[frame=top]
+|=====
+|字段| 含义
+|cn| 员工名，唯一，英文
+|uid| 同cn
+|displayName| 员工真实姓名
+|sn| 姓
+|givenName| 名
+|mail| 邮箱
+|=====
+
++
+NOTE: krb开头的属性与 *Kerberos* 相关，后面会详细介绍。
+
+. 在group域下创建组，以 _confluence_ 为例，创建管理员组 `confluence-administrators` ，这里使用 `groupOfUniqueNames`
+作为组的 *objectClass* 。
++
+----
+dn: cn=confluence-administrators,ou=groups,dc=3s,dc=cn
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: confluence-administrators
+uniqueMember: cn=admin,ou=people,dc=3s,dc=cn
+----
+
++
+.组相关属性说明
+[frame=top,footer]
+|=====
+|字段| 含义
+|cn | 组名
+|uniqueMember| 员工，可以多个
+|=====
+
+==== 访问控制
+
+安全角度来看，需要对 +LDAP+ 服务器做访问控制。
+
+===== 移除匿名访问和开启访问控制。
+
+参考下图，在 *Apache Directory Studio* 中对红框里的复选框操作
+
+.移除匿名访问和开启访问控制
+image::/images/ldap/4.png[访问控制, caption="图片4 "]
+
+===== 配置访问控制细节
+
+.所有人读权限
+----
+dn: cn=enableAllUsersRead,dc=3s,dc=cn
+objectClass: accessControlSubentry
+objectClass: subentry
+objectClass: top
+cn: enableAllUsersRead
+prescriptiveACI:{
+    identificationTag "enableAllUsersRead",
+    precedence 0,
+    authenticationLevel none,
+    itemOrUserFirst userFirst:
+    {
+        userClasses { allUsers },
+        userPermissions
+        {
+            {
+                protectedItems { entry, allUserAttributeTypesAndValues },
+                grantsAndDenials
+                {
+                    grantBrowse,
+                    grantFilterMatch,
+                    grantRead,
+                    grantCompare,
+                    grantReturnDN
+                }
+            }
+        }
+    }
+}
+subtreeSpecification: {}
+----
+
+
+.修改自己的权限
+----
+
+dn: cn=allowSelfAccessAndModification,dc=3s,dc=cn
+objectClass: accessControlSubentry
+objectClass: subentry
+objectClass: top
+cn: allowSelfAccessAndModification
+prescriptiveACI: {
+    identificationTag "allowSelfAccessAndModification",
+    precedence 10,
+    authenticationLevel simple,
+    itemOrUserFirst userFirst:
+    {
+        userClasses { thisEntry },
+        userPermissions
+        {
+            {
+                protectedItems { entry, allUserAttributeTypesAndValues },
+                grantsAndDenials
+                {
+                    grantBrowse,
+                    grantDiscloseOnError,
+                    grantExport,
+                    grantRename,
+                    grantImport,
+                    grantFilterMatch,
+                    grantInvoke,
+                    grantAdd,
+                    grantRead,
+                    grantReturnDN,
+                    grantRemove,
+                    grantCompare,
+                    grantModify
+                }
+            }
+        }
+    }
+}
+subtreeSpecification: {}
+----
+
+.设置管理员
+----
+dn: cn=enableAdminSuper,dc=3s,dc=cn
+objectClass: subentry
+objectClass: accessControlSubentry
+objectClass: top
+cn: enableAdminSuper
+prescriptiveACI: {
+    identificationTag "enableAdminSuper",
+    precedence 0,
+    authenticationLevel strong,
+    itemOrUserFirst userFirst:
+    {
+        userClasses
+        {
+            userGroup { "cn=Administrators,ou=groups,dc=3s,dc=cn" }
+        }
+        ,
+        userPermissions
+        {
+            {
+                protectedItems { entry, allUserAttributeTypesAndValues },
+                grantsAndDenials
+                {
+                    grantRemove,
+                    grantExport,
+                    grantCompare,
+                    grantImport,
+                    grantRead,
+                    grantFilterMatch,
+                    grantModify,
+                    grantInvoke,
+                    grantDiscloseOnError,
+                    grantRename,
+                    grantReturnDN,
+                    grantBrowse,
+                    grantAdd
+                }
+            }
+        }
+    }
+}
+subtreeSpecification: { }
+----
+
+
+== 第三方软件接入
+
+=== Gerrit
+
+Gerrit设置比较简单，直接编辑配置文件 `$GERRIT_HOME/etc/gerrit.config` 修改下面所列的配置项。
+
+[source, ini]
+----
+[auth]
+    type = LDAP  <1>
+[ldap]
+    server = ldap://localhost:10389
+    sslVerify = false
+    username = cn=ldap-admin,dc=3s,dc=cn  <2>
+    password = secret
+    accountBase = ou=people,dc=3s,dc=cn
+    accountPattern = (&(objectClass=person)(cn=${username}))
+
+    groupBase = ou=groups,dc=3s,dc=cn
+    groupPattern = (&(objectClass=groupOfUniqueNames)(cn=${groupname})
+    groupMemberPattern = (uniqueMember=${dn})
+----
+
+<1> 设置gerrit采用LDAP验证方式
+<2> 用于访问验证的用户名
+
+简单介绍一下各配置项的作用:
+
+. auth.type
+
+配置完毕后，就可以到后台设置了。
+
+使用LDAP服务器中配置的用户名密码进行登录， *Gerrit* 会自动根据LDAP服务器中的信息生成
+一个对应的用户。
+
+.Gerrit 登录页面
+image::/images/ldap/5.png[caption="图片5 "]
+
+此时，*Gerrit*已经将LDAP服务器的组也取回来了，但是都是*不可见的*，也不能编辑。
+这些组的名称都是以+ldap/+开头的，分配权限的时候输入+ldap/+会出现下拉提示来选择
+LDAP服务器上的组，参考下图。
+
+.选择LDAP的组
+image::/images/ldap/6.png[caption="图片6 "]
+
+=== confluence(wiki)
+
+登录管理员进入站点管理，在左侧的导航栏菜单中点击 User Directories。
+
+.User Directories
+image::/images/ldap/7.png[caption="图片7 "]
+
+点击`Add Directory`按钮，选择`LDAP`，单击`Next`按钮。
+
+.Add Directory
+image::/images/ldap/8.png[caption="图片8 "]
+
+主要配置项参考下图
+
+.LDAP Directory设置参考
+image::/images/ldap/9.png[caption="图片9 "]
+
+剩下的就可以在组里面看到LDAP服务器上的组了，按需在`空间权限`中分配权限。
+
+== Kerberos认证
+
+Kerberos认证的基础知识可以参考： link:../kerberos/[Kerberos认证]
+
+这里只是说一下ApacheDS附带的Kerberos服务器配置的一些说明。
+
+=== LDAP配置
+
+为正常启用Kerberos，还需要增加服务的定义
+
+.添加服务的定义
+----
+dn: ou=services,dc=3s,dc=cn
+objectClass: organizationalUnit
+objectClass: top
+ou: services
+
+dn: uid=krbtgt,ou=services,dc=3s,dc=cn
+objectClass: krb5KDCEntry
+objectClass: krb5Principal
+objectClass: organizationalUnit
+objectClass: top
+objectClass: uidObject
+krb5KeyVersionNumber: 1
+krb5PrincipalName: krbtgt/3S.CN@3S.CN
+ou: LDAP
+uid: krbtgt
+krb5Key:: MBGgAwIBA6EKBAiU5iyPT8d2pA==
+krb5Key:: MBmgAwIBEaESBBDpxlUPllfq84bHvAePm6gC
+krb5Key:: MBmgAwIBF6ESBBDX/LgfcFeQNaAuRDfl7OZO
+krb5Key:: MCGgAwIBEKEaBBhr6mhikfI7ztA3VBy5nptAg3qARaEyg98=
+userPassword:: bFpQazU4amNCNmhWUjJWUzlwd1E9e1NTSEF9dE1CcWVac0cralViR21sf35TjY5P
+
+dn: uid=ldap,ou=services,dc=3s,dc=cn
+objectClass: krb5KDCEntry
+objectClass: krb5Principal
+objectClass: organizationalUnit
+objectClass: top
+objectClass: uidObject
+krb5KeyVersionNumber: 1
+krb5PrincipalName: ldap/3s.cn@3S.CN
+ou: TGT
+uid: ldap
+krb5Key:: MBGgAwIBA6EKBAjQ0xNrXvGUMQ==
+krb5Key:: MBmgAwIBEaESBBC2cIRPf1hHoNqR96FnP9Ue
+krb5Key:: MBmgAwIBF6ESBBACZ9h7/tyhWTHOMfwRZmar
+krb5Key:: MCGgAwIBEKEaBBjLsOYNrQT4FVslEKuULLYCL/4j/mEv4DE=
+krb5Key:: MCmgAwIBEqEiBCBeU4zSkuBO/WYJV7Sce9zB/HymIqRnU4z2ps6GodfY1w==
+userPassword:: e1NTs02kSEF9SjZTcUZjVGI5dzVCMmcvUQ==itLQW4yaFhzMU9jdUUxclRZZ3Jqa
+
+----
+
+在用户的实体(Entity)中添加下列属性就可以使用Kerberos了，当然值只是参考
+
+.Kerberos用到的属性
+----
+objectClass: krb5KDCEntry
+objectClass: krb5Principal
+krb5KeyVersionNumber: 1
+krb5PrincipalName: root/admin@3S.CN
+krb5Key:: MBGgAwIBA6EKBAhAZDHpm3Ml8Q==
+krb5Key:: MBmgAwIBEaESBBDcJQYdYTS5xB18L02lX3/g
+krb5Key:: MBmgAwIBF6ESBBBlREnp7yjhSefWNSBL9S/0
+krb5Key:: MCGgAwIBEKEaBBjyYhw4Ac5nXV1dejGMQLwV6Sb48vGDm7Y=
+----
+
+=== Kerberos认证密码设置的坑
+
+为用户设置密码的时候（如下图），有个选项*“Select Hash Method”*，一般都会选用*SSHA*等，
+但是很奇怪的是使用这些Hash算法生成的密码都无法使用Kerberos登录，只有使用*Plaintext*方法
+设置的密码才可以正常的使用Kerberos登录。
+
+image::/images/ldap/10.png[]
+
+后来又发现即便采用了*Plaintext*方法生成的密码，再次刷新实体(Entity)后*userPassword*
+显示的函数*SSHA*方法Hash的，如下图。
+
+.使用*Plaintext*生成的密码，明文为platform。
+image::/images/ldap/12.png[]
+
+这个情况非常诡异，测试了一下和下图的设置有关。若勾选了*Enable server-side password hashing*，
+即使用了*Plaintext*设置密码也会
+存储为使用设置的Hashing方法进行一次Hash。
+
+.Enable server-side password hashing
+image::/images/ldap/11.png[]
+
+NOTE: 还是有个问题：就是使用了*SSHA* Hash的密码LDAP认证是没问题的，Kerberos认证通不过，
+不会是明确指定Hash算法的密码进行了两次Hash吧。
+
+所以最佳实践是：
+
+. 开启*Enable server-side password hashing*。
+. 密码设置时使用*Plaintext* Hash算法。

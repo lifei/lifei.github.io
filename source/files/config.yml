@@ -1,0 +1,4 @@
+handers:
+- paths: ['webapp', 'static']
+  patterns: ["*.py", "*.js"]
+  target: 192.168.249.1:repos

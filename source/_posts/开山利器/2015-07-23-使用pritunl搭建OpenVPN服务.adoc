@@ -1,0 +1,121 @@
+title: 使用pritunl搭建OpenVPN服务
+date: 2015-07-23 01:34:39
+tags:
+- OpenVPN
+---
+= 使用pritunl搭建OpenVPN服务
+
+== 介绍
+
+一直以来安装 VPN 服务提供全局加密代理是租用VPS（虚拟主机）的一个重要用途，无奈各种命令行操作和复杂繁琐的设置过程让小白们望而却步，特别是当这种技术被广泛运用到翻墙手段中后，国家防火墙 GFW （Great Fire Wall）就通过智能识别判定加大了对境外 VPN 服务器的限制和干扰，例如搭建最简单但安全性能较之最薄弱 PPTP 方式的 VPN 链接很早就遭到 联通和电信等 ISP 服务商的封杀，前年十八大之后，没有采用混淆技术的 Openvpn 也被干扰很难使用，因此让更多的初级用户转向其他翻墙手段或者购买商业付费服务。
+那么有没有一种简单有效的VPN方式，一方面能有一个相对简单的途径易于初级用户迅速搭建 VPN 服务，另一方面有能抵御 GFW 的干扰提供稳定有效的代理服务呢，最近我们找到一款免费开源的 VPN 平台软件— Pritunl，非常符合上述两个要求。
+
+
+访问它的官网，界面非常美观简洁，它采用 OpenVPN 代理方式，一方面提供了 API 供高级开发者使用，同时还针对不同平台和不同 VPS 供应商（包括 DigitalOcean和AWS）提供了详尽的安装使用说明，同时我们根据官网上提供的 Demo 测试发现，此款产品竟然具备图形化界面，方便了初级用户的使用，官方称其能在数分钟内完成搭建过程，这大大的降低了使用门槛。同时它还提供每月2.5美元的高级会员服务，提供更加强大的功能，我们将在后面予以描述。
+
+上面已经提到官网教程中已经为 DigitalOcean 等 VPS 服务商提供了详细的安装方法，但我们认为如果仅仅是搭建一个 VPN 服务器提供代理服务，那么上述主机中价格最低的 DigitalOcean 最低配的主机每月 5美元的租赁费用还是过高，512M的内存也有浪费之嫌，因此这里，我们使用最近非常火热的搬瓦工（BandwagonHost）主机作为本次测试的 VPS。
+
+搬瓦工之所以这么火热，就是因为它低配主机的廉价，非常符合国人搭建代理服务的需求。我们这里选用的是一款内存64M的单核主机，年费才3.99美元，平均每个月的开销才2元人民币，1.5G的硬盘和每月100G的流量也完全满足我们需求。它支持信用卡和 Paypal付款，目前有两个美国机房，一个地处东海岸的 Florida 州，一个地处西海岸的 Arizona 州（推荐）。
+
+价格的便宜不意味着服务的缩水，它带有一个强大的后台管理面板 KiwiVM，可以设置 Two-factor authentication 加强安全性，甚至还可以通过面板直接安装 OpenVPN服务。
+
+系统默认安装的 CentOS系统，又有编译安装过程太蛋疼，首先通过 KiwiVM 面板重新安装我们更加熟悉的 Ubuntu 12.04 32位系统，然后甚至都不需要使用 Putty ，直接使用面板中的 RootShell-Interactive 就可以进入命令行：
+
+== 安装
+
+.安装命令
+[source, bash]
+[caption="代码一、"]
+----
+apt-get install -y python-software-properties #安装add-apt-repository工具包
+
+add-apt-repository ppa:pritunl/ppa #添加软件源
+
+apt-get update #更新
+
+apt-get install -y pritunl #安装 pritunl
+
+apt-get upgrade -y #当新版本发布时用此命令进行更新
+----
+
+[NOTE]
+====
+`pritunl`依赖`mongodb`，而且其使用的语法是2.5版本才支持的，所以最好安装最新的`mongodb`。
+
+到`mongodb`官网下载最新版`mongodb`进行安装。
+====
+
+== 设置 Pritunl
+
+=== 修改配置文件
+
+.配置文件`/etc/pritunl.conf`
+[source, js]
+[caption="代码二、"]
+----
+{
+    "mongodb_uri": "mongodb://localhost:27017/pritunl",  //  <1>
+    "server_key_path": "/var/lib/pritunl/pritunl.key",
+    "log_path": "/var/log/pritunl.log",
+    "static_cache": true,
+    "server_cert_path": "/var/lib/pritunl/pritunl.crt",
+    "temp_path": "/tmp/pritunl_%r",
+    "bind_addr": "0.0.0.0",
+    "ssl": true,  //  <2>
+    "debug": false,  //  <3>
+    "www_path": "/usr/share/pritunl/www",
+    "local_address_interface": "auto",
+    "port": 9700  //  <4>
+}
+----
+
+<1> `mongodb`的地址。
+<2> 是否启用`https`。
+<3> 调试模式。
+<4> 提供服务的端口。
+
+=== 启动
+
+.启动命令
+[source, bash]
+[caption="代码、"]
+----
+sudo service pritunl start
+----
+
+=== 设置
+
+. 在浏览器中输入：https://<Server_Address>:9700/，注意用自己 VPS 的IP地址进行替换，
+正常情况就应该出现 Pritunl 的登陆界面，默认的用户名和密码都是“Admin”（或者pritunl）；
++
+image::/images/openvpn-images/1.png[]
+
+. 进入“Users”选项卡，点击“Add Organization”输入名称后添加组；
++
+image::/images/openvpn-images/2.png[]
+
+. 点击“Add User”命令输入名称后在组下添加用户；
++
+image::/images/openvpn-images/3.png[]
+
+. 继续点击“Servers”选项卡，点击“Add Server”输入名称后添加服务器；
++
+image::/images/openvpn-images/4.png[]
+
+. 然后点击“Attach Oranization”，将刚新建的组添加到服务器中；
++
+image::/images/openvpn-images/5.png[]
+
+. 最后点击“Start Server”运行服务，结束设置环节。
++
+image::/images/openvpn-images/6.png[]
+
+== 客户端
+
+到 OpenVPN 官网上下载 Windows 平台的桌面客户端并安装；
+
+进入 Pritunl 设置界面，点击“Users”选项卡，点击用户名右侧的图标下载 OpenVPN 的 Profile设置文件压缩包，里面包含密钥；
+
+用加压缩软件将其解压，并将 Profile 文件拷贝到 Open configuration file directory目录中；
+
+以管理员身份运行 OpenVPN（如果用一般用户运行可能会出现无法翻墙的情况），使用配置好的情景链接服务器，成功！

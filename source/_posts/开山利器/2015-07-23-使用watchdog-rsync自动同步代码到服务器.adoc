@@ -1,0 +1,45 @@
+title: 使用watchdog+rsync自动同步代码到服务器
+date: 2015-07-23 01:49:19
+tags:
+---
+= 使用`watchdog`+`rsync`自动同步代码到服务器
+
+== 初衷
+
+用IDE开发服务器开发的时候，编写代码要在本机进行，调试代码有需要在远程服务器上进行，
+于是就有了本文要实现的需求：本地修改完代码服务器端就是可调试的状态。
+
+== `watchdog`
+
+`watchdog`项目主页的介绍
+
+____
+Python API and shell utilities to monitor file system events.
+____
+
+之所以选择`watchdog`作为监控文件改变的lib库也是看中了他的跨平台特性，毕竟现在流行
+的操作系统比较多，而开发人员又是比较有想法的一类人，用习惯了的操作系统切换起来成本
+也挺高的。
+
+.支持的平台
+. Linux 2.6 (inotify)
+. Mac OS X (FSEvents, kqueue)
+. FreeBSD/BSD (kqueue)
+. Windows (ReadDirectoryChangesW with I/O completion ports; ReadDirectoryChangesW worker threads)
+. OS-independent (polling the disk for directory snapshots and comparing them periodically; slow and not recommended)
+
+== `rsync`
+
+官网自介
+____
+rsync is an open source utility that provides fast incremental file transfer. rsync is freely available under the GNU General Public License and is currently being maintained by Wayne Davison.
+____
+
+rsync可以增量同步文件，特别适合代码修改的场景，另外，它可以使用ssh协议，而ssh协议
+可以通过配置保存连接复用，不需要每次都连接认证服务器，大大提高同步速度，
+实现了长连接+增量双重提速。
+
+== 代码
+
+. link:/files/watch.py[Python源代码]
+. link:/files/config.yml[配置文件]

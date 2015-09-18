@@ -102,7 +102,7 @@ kadmin -q "ank -randkey host/client.7v1.net"
 
 === 在服务端配置.k5login文件
 
-..k5login
+[title=.k5login]
 ----
 username@7V1.NET
 ----

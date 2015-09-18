@@ -1,0 +1,133 @@
+layout: 使用kerberos实现ssh
+title: kerberos-sso
+date: 2015-09-18 14:32:00
+tags:
+---
+
+== SSHD配置
+
+.sshd_config
+----
+ChallengeResponseAuthentication no
+
+KerberosAuthentication no
+KerberosOrLocalPasswd no
+KerberosTicketCleanup no
+
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials yes
+GSSAPIStrictAcceptorCheck no
+GSSAPIKeyExchange no
+
+UsePAM yes
+----
+
+.整体参考
+----
+Protocol 2
+SyslogFacility AUTHPRIV
+LogLevel INFO
+PermitRoot no
+PasswordAuthentication yes
+ChallengeResponseAuthentication no
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials yes
+UsePAM yes
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+X11Forwarding yes
+Subsystem       sftp    /usr/libexec/openssh/sftp-server
+----
+
+== ssh server/client上Kerberos配置
+
+=== krb5.conf
+
+.krb5.conf
+----
+[logging]
+ default = FILE:/var/log/krb5libs.log
+
+[libdefaults]
+ default_realm = 7V1.NET
+ dns_lookup_realm = false
+ dns_lookup_kdc = false
+ ticket_lifetime = 24h
+ renew_lifetime = 7d
+ forwardable = true
+
+[realms]
+ 7V1.NET = {
+  kdc = 172.17.0.35
+  admin_server = 172.17.0.35
+  default_domain = 7v1.net
+ }
+
+[domain_realm]
+ .7v1.net = 7V1.NET
+ 7v1.net = 7V1.NET
+----
+
+NOTE: 这里使用7v1.net作为例子。
+
+=== 添加principal
+
+在`Kerberos`中注册本机
+
+.server
+----
+kadmin -q "ank -randkey host/ssh.7v1.net"
+----
+
+.client
+----
+kadmin -q "ank -randkey host/client.7v1.net"
+----
+
+=== 导出principal key
+
+把本机的key的添加到keytab中
+
+.server
+----
+kadmin -q "ktadd host/ssh.7v1.net"
+----
+
+.client
+----
+kadmin -q "ank -randkey host/client.7v1.net"
+----
+
+=== 在服务端配置.k5login文件
+
+..k5login
+----
+username@7V1.NET
+----
+
+== Kerberos服务器配置调整
+
+由于`Kerberos`版本升级兼容问题footnoteref:[note2,http://web.mit.edu/kerberos/krb5-devel/doc/admin/troubleshoot.html]，
+krb5 1.7及以后版本禁用了`DES encryption key`，会导致错误
+`credential verification failed: KDC has no support for encryption type`，
+请参考下面解决
+
+....
+This most commonly happens when trying to use a principal with only DES keys, in a release (MIT krb5 1.7 or later) which disables DES by default. DES encryption is considered weak due to its inadequate key size. If you cannot migrate away from its use, you can re-enable DES by adding allow_weak_crypto = true to the [libdefaults] section of krb5.conf.
+....
+
+== Trouble shooting
+
+=== “KDC has no support for encryption type”
+
+krb5 1.7及以后版本禁用了`DES encryption key`所致。
+
+=== “Wrong principal in request/debug1: Got no client credentials”
+
+服务器没有配置 .k5login
+
+=== “No key table entry found matching xxxxxx”
+
+服务端没有把导出key到keytab

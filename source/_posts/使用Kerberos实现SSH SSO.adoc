@@ -1,5 +1,5 @@
-layout: 使用kerberos实现ssh
-title: kerberos-sso
+title: 使用Kerberos实现SSH SSO
+id: kerberos-sso
 date: 2015-09-18 14:32:00
 tags:
 ---

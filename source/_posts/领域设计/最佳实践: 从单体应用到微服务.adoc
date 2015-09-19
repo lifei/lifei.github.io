@@ -1,0 +1,22 @@
+title: 最佳实现：从单体应用到微服务
+id: monolith-to-microservices
+date: 2015-07-17 01:45:12
+tags:
+- 单体应用
+- 微服务
+---
+
+....
+I’m firmly convinced that starting with a monolith is usually exactly the wrong thing to do.
+....
+
+上文是innoQ的联合创始人兼首席顾问Tilkov在谈到单体应用和微服务时的观点
+footnote:[http://martinfowler.com/articles/dont-start-monolith.html]。
+
+....
+You shouldn't start a new project with microservices, even if you're sure your application will be big enough to make it worthwhile.
+....
+
+
+而上文是面向对象领域大师、ThoughtWork首席科学家Martin Fowler在谈到单体应用和微服务时的观点
+footnote:[http://martinfowler.com/bliki/MonolithFirst.html]。

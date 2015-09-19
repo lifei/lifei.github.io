@@ -1,0 +1,46 @@
+@startuml
+
+title 部门图
+
+:CEO:
+
+VP1 -> CEO
+VP2 -> CEO
+
+Manager1 --> VP1
+Manager2 --> VP1
+
+Manager3 --> VP2
+Manager4 --> VP2
+
+Employee1 --> VP1
+Employee2 --> VP1
+
+Employee3 --> Manager1
+
+Employee4 --> Manager2
+Employee5 --> Manager2
+
+node 大部门A as A
+node 部门B as B
+node 部门C as C
+node 小部门D as D
+node 小部门E as E
+
+D --> C
+E --> C
+C -> A
+B -> A
+
+VP1 ... A
+Manager1 .. B
+Employee1 . B
+Employee2 . B
+Employee3 .. B
+
+Manager2 . C
+Employee4 . D
+Employee5 . E
+
+
+@enduml

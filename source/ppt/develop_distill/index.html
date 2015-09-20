@@ -15,7 +15,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
 		<link rel="stylesheet" href="http://lab.hakim.se/reveal-js/css/reveal.css">
-		<link rel="stylesheet" href="http://lab.hakim.se/reveal-js/css/theme/black.css" id="theme">
+		<link rel="stylesheet" href="../../css/black.css" id="theme">
 
 		<!-- Code syntax highlighting -->
 		<link rel="stylesheet" href="http://lab.hakim.se/reveal-js/lib/css/zenburn.css">
@@ -775,9 +775,9 @@
 				// Optional reveal.js plugins
 				dependencies: [
 					{ src: 'http://lab.hakim.se/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'http://lab.hakim.se/reveal-js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'http://lab.hakim.se/reveal-js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'http://lab.hakim.se/reveal-js/plugin/highlight/highlight.js', async: true, condition: function() { return true; }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'http://lab.hakim.se/reveal-js/plugin/markdown/marked.js', condition: function() { return true; } },
+					{ src: 'http://lab.hakim.se/reveal-js/plugin/markdown/markdown.js', condition: function() { return true; } },
+					{ src: 'http://10.4.17.164:8000/plugin/highlight/highlight.js', async: true, condition: function() { return true; }, callback: function() { hljs.initHighlightingOnLoad(); } },
 					{ src: 'http://lab.hakim.se/reveal-js/plugin/notes/notes.js', async: true }
 				]
 			});

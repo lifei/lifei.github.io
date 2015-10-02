@@ -199,10 +199,10 @@ EOF
 3. 进入这个镜像进行配置， 执行命令`docker exec -it openldap bash`，进入`bash`。
 4. 这个镜像采用环境变量作为配置项，先准备如下面的内容：
     ```sh
-    export ADMIN_DN=cn=admin,dc=7v1,dc=net
-    export ADMIN_PW=1234
-    export DOMAIN_DN=dc=7v1,dc=net
     export NAME=7v1
+    export DOMAIN_DN=dc=7v1,dc=net
+    export ADMIN_DN=cn=admin,$DOMAIN_DN
+    export ADMIN_PW=1234
     export KRB5REALM=7V1.NET
     export DOMAIN_REALM=7v1.net
     ```
@@ -221,9 +221,9 @@ EOF
 3. 进入这个镜像进行配置， 执行命令`docker exec -it kerberos bash`，进入`bash`。
 4. 这个镜像同样采用环境变量作为配置项，先准备如下面的内容：
     ```sh
-    export ADMIN_DN=cn=admin,dc=7v1,dc=net
-    export ADMIN_PW=1234
     export DOMAIN_DN=dc=7v1,dc=net
+    export ADMIN_DN=cn=admin,$DOMAIN_DN
+    export ADMIN_PW=1234
     export KRB5REALM=7V1.NET
     export DOMAIN_REALM=7v1.net
     export LDAP_HOST=openldap
@@ -239,23 +239,23 @@ EOF
 3. 重启openldap容器，创建测试账号`smith`
 ```sh
 # openldap容器中执行
-ldapadd -x -D $ADMIN_DN -w $ADMIN_PW <<EOF
-dn: ou=user,dc=7v1,dc=net
+UID=smith && ldapadd -x -D $ADMIN_DN -w $ADMIN_PW <<EOF
+dn: ou=people,$DOMAIN_DN
 objectClass: organizationalUnit
-ou: user
+ou: people
 
-dn: cn=smith,ou=user,dc=7v1,dc=net
+dn: cn=$UID,ou=people,$DOMAIN_DN
 objectclass: inetOrgPerson
-sn: smith
-uid: smith
-userpassword: {SASL}smith@7V1.NET
-description: swell guy
-ou: Human Resources
+sn: $UID
+uid: $UID
+userpassword: {SASL}$UID@$KRB5REALM
+description: $UID
+ou: people
 EOF
 
 kadmin -q "ank smith"
 
-ldapwhoami -x -D cn=smith,ou=user,dc=7v1,dc=net -w smith的密码
+ldapwhoami -x -D cn=smith,ou=people,$DOMAIN_DN -W
 ```
 
 ## 参考资料：

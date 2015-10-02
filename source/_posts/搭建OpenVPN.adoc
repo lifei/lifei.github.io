@@ -1,0 +1,32 @@
+title: 搭建OpenVPN
+date: 2015-10-03 02:05:16
+tags:
+---
+
+== 部署OpenVPN
+
+以`vpn.7v1.net`为例，参考地址`https://hub.docker.com/r/kylemanna/openvpn/`。
+
+[source, bash]
+----
+docker run --rm -it --hostname=vpn.7v1.net -p 1194:1194/udp --cap-add=NET_ADMIN lifei/openvpn /sbin/my_init -- bash
+
+# 初始化配置文件
+ovpn_genconfig -u udp://vpn.7v1.net:1194
+# 初始化pki
+ovpn_initpki
+# 生成request
+easyrsa build-client-full CLIENTNAME nopass
+# 该request的ovpn
+ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
+----
+
+== 设置授权
+
+修复服务器配置文件，增加`auth-user-pass-verify`，细节可参考`man openvpn`。
+
+----
+auth-user-pass-verify /etc/openvpn/check-user.sh via-env
+----
+
+client的配置文件增加`auth-user-pass`一项。

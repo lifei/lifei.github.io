@@ -21,6 +21,61 @@ easyrsa build-client-full CLIENTNAME nopass
 ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
 ----
 
+# 服务器配置文件摘录
+
+[source, conf]
+----
+
+# key和ca
+key /etc/openvpn/pki/private/server.rsphost.com.key
+ca /etc/openvpn/pki/ca.crt
+cert /etc/openvpn/pki/issued/server.rsphost.com.crt
+dh /etc/openvpn/pki/dh.pem
+
+# tls认证
+tls-auth /etc/openvpn/pki/ta.key
+key-direction 0
+
+keepalive 10 60
+
+persist-key
+persist-tun
+
+verb 3
+
+proto tcp
+port 1194
+dev tun0
+status /var/log/openvpn-status.log
+
+user nobody
+group nogroup
+
+# 为每个用户分配相同的虚拟IP
+ifconfig-pool-persist ipp.txt
+
+# 客户端直接可见
+client-to-client
+
+# VPN的虚拟网段
+server 10.8.0.0 255.255.0.0
+
+# 向客户端推送网段的配置信息
+# Gateway参数很重要，否则ping不通
+push "route 10.8.0.0 255.255.255.0 10.8.0.1"
+
+
+# 向客户端推送另外一个网段
+route 172.17.42.0 255.255.255.0
+push "route 172.17.42.0 255.255.255.0"
+
+# 向客户端推送DNS
+push dhcp-option DNS 172.17.42.1
+
+# 开启压缩，客户端配置文件中也需要开启
+comp-lzo
+----
+
 == 设置授权
 
 修复服务器配置文件，增加`auth-user-pass-verify`，细节可参考`man openvpn`。

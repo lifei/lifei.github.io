@@ -1,0 +1,1183 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh_CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>LDAP配置 | 飛哥の技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="李飛">
+    
+
+    
+    <meta name="description" content="&amp;lt;!-- toc disabled --&amp;gt;
+
+
+
+LDAP介绍
+
+
+轻型目录访问协议，即Lightweight Directory Access Protocol (LDAP)是一个访问在线目录服务的协议。目录是一组具有类似属性、以一定逻辑和层次组合的信息。常见的例子是电话簿，由以字母顺序排列的名字、地址和电话号码组成。最新版本的LDAP协议由RFC 4511所定义。
+
+
+LDAP的协议
+
+LDA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LDAP配置">
+<meta property="og:url" content="http://lifei.github.io/2015/07/23/ldap/index.html">
+<meta property="og:site_name" content="飛哥の技术博客">
+<meta property="og:description" content="&amp;lt;!-- toc disabled --&amp;gt;
+
+
+
+LDAP介绍
+
+
+轻型目录访问协议，即Lightweight Directory Access Protocol (LDAP)是一个访问在线目录服务的协议。目录是一组具有类似属性、以一定逻辑和层次组合的信息。常见的例子是电话簿，由以字母顺序排列的名字、地址和电话号码组成。最新版本的LDAP协议由RFC 4511所定义。
+
+
+LDAP的协议
+
+LDA">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/3.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/2.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/1.png">
+<meta property="og:image" content="http://lifei.github.io/./images/icons/note.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/4.png">
+<meta property="og:image" content="http://lifei.github.io/./images/icons/callouts/1.png">
+<meta property="og:image" content="http://lifei.github.io/./images/icons/callouts/2.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/5.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/6.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/7.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/8.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/9.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/10.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/12.png">
+<meta property="og:image" content="http://lifei.github.io/images/ldap/11.png">
+<meta property="og:image" content="http://lifei.github.io/./images/icons/note.png">
+<meta property="og:updated_time" content="2015-12-20T18:05:02.733Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LDAP配置">
+<meta name="twitter:description" content="&amp;lt;!-- toc disabled --&amp;gt;
+
+
+
+LDAP介绍
+
+
+轻型目录访问协议，即Lightweight Directory Access Protocol (LDAP)是一个访问在线目录服务的协议。目录是一组具有类似属性、以一定逻辑和层次组合的信息。常见的例子是电话簿，由以字母顺序排列的名字、地址和电话号码组成。最新版本的LDAP协议由RFC 4511所定义。
+
+
+LDAP的协议
+
+LDA">
+
+    
+    <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="飛哥の技术博客" title="飛哥の技术博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="飛哥の技术博客">飛哥の技术博客</a></h1>
+				<h2 class="blog-motto">关注业务开发</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:lifei.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/07/23/ldap/" title="LDAP配置" itemprop="url">LDAP配置</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="李飛" target="_blank" itemprop="author">李飛</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-22T17:54:09.000Z" itemprop="datePublished"> 發表於 2015-07-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_ldap"><span class="toc-number">1.</span> <span class="toc-text">LDAP介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#_ldap_2"><span class="toc-number">1.1.</span> <span class="toc-text">LDAP的协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_ldap_entry"><span class="toc-number">2.</span> <span class="toc-text">LDAP Entry</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_ldap_3"><span class="toc-number">3.</span> <span class="toc-text">LDAP的检索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_ldap_4"><span class="toc-number">4.</span> <span class="toc-text">LDAP服务器软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__"><span class="toc-number">4.1.</span> <span class="toc-text">下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">4.2.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___3"><span class="toc-number">4.3.</span> <span class="toc-text">配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#___4"><span class="toc-number">4.3.1.</span> <span class="toc-text">实例配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___5"><span class="toc-number">4.3.2.</span> <span class="toc-text">员工和组的设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___6"><span class="toc-number">4.3.3.</span> <span class="toc-text">访问控制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#___7"><span class="toc-number">4.3.3.1.</span> <span class="toc-text">移除匿名访问和开启访问控制。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#___8"><span class="toc-number">4.3.3.2.</span> <span class="toc-text">配置访问控制细节</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___9"><span class="toc-number">5.</span> <span class="toc-text">第三方软件接入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#_gerrit"><span class="toc-number">5.1.</span> <span class="toc-text">Gerrit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_confluence_wiki"><span class="toc-number">5.2.</span> <span class="toc-text">confluence(wiki)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_kerberos"><span class="toc-number">6.</span> <span class="toc-text">Kerberos认证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#_ldap_5"><span class="toc-number">6.1.</span> <span class="toc-text">LDAP配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_kerberos_2"><span class="toc-number">6.2.</span> <span class="toc-text">Kerberos认证密码设置的坑</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<div id="preamble">
+<div class="sectionbody">
+<!-- toc disabled -->
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ldap">LDAP介绍</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>轻型目录访问协议，即Lightweight Directory Access Protocol (LDAP)是一个访问在线目录服务的协议。目录是一组具有类似属性、以一定逻辑和层次组合的信息。常见的例子是电话簿，由以字母顺序排列的名字、地址和电话号码组成。最新版本的LDAP协议由RFC 4511所定义。</p>
+</div>
+<div class="sect2">
+<h3 id="_ldap_2">LDAP的协议</h3>
+<div class="paragraph">
+<p>LDAP协议是跨平台的和标准的协议，因此应用程序就不用为LDAP目录放在什么样的服务器上操心了。实际上，LDAP得到了业界的广泛认可，因为它是Internet的标准。厂商都很愿意在产品中加入对LDAP的支持，因为他们根本不用考虑另一端（客户端或服务端）是怎么样的。LDAP服务器可以是任何一个开放源代码或商用的LDAP目录服务器（或者还可能是具有LDAP界面的关系型数据库），因为可以用同样的协议、客户端连接软件包和查询命令与LDAP服务器进行交互。与LDAP不同的是，如果软件厂商想在软件产品中集成对DBMS的支持，那么通常都要对每一个数据库服务器单独定制。不象很多商用的关系型数据库，你不必为LDAP的每一个客户端连接或许可协议付费。大多数的LDAP服务器安装起来很简单，也容易维护和优化。</p>
+</div>
+<div class="paragraph">
+<p>很多第三方的软件都支持LDAP协议，这也是我们选择使用LDAP作为账号管理服务器的一个重要的原因。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ldap_entry">LDAP Entry</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Entry的objectClass类表示其继承的类，这些类有特定的定义，如： <code>groupOfNames</code> 一定要有个 <code>member</code>
+属性等。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ldap_3">LDAP的检索</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ldap_4">LDAP服务器软件</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>这里采用ApacheDS作为LDAP服务器软件，主要看中了它的易用性，它的缺点是支持的特性比较少，
+不过目前我们也用不到。</p>
+</div>
+<div class="paragraph">
+<p>下面介绍一下在Ubuntu服务器上安装相关的步骤。</p>
+</div>
+<div class="sect2">
+<h3 id="__">下载</h3>
+<div class="paragraph">
+<p>到 <a href="http://directory.apache.org/apacheds/" class="bare" target="_blank" rel="external">http://directory.apache.org/apacheds/</a> 网站上下载软件包，当前最新版是 2.0.0-M19，
+执行命令 <code>sudo dpkg -i apacheds-2.0.0-M19-amd64.deb</code> ，即可安装成功。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___2">启动</h3>
+<div class="paragraph">
+<p>执行命令 <code>sudo /etc/init.d/apacheds-2.0.0-M19-default start</code> 就启动起来了，当然需要先安装Java。</p>
+</div>
+<div class="paragraph">
+<p>默认的数据文件是放到 <code>/var/lib/apacheds-2.0.0-M19</code> 下，默认会启一个名为<code>default</code>的实例。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___3">配置</h3>
+<div class="sect3">
+<h4 id="___4">实例配置</h4>
+<div class="paragraph">
+<p>进入 <code>default/conf</code> 目录，有个 <code>config.ldif</code> 的文件，就是 <code>default</code> instance的配置文件。
+ApacheDS提供了一个非常好用的GUI工具: <strong>Apache Directory Studio</strong> ，下载地址： <a href="http://directory.apache.org/studio/" class="bare" target="_blank" rel="external">http://directory.apache.org/studio/</a> 。</p>
+</div>
+<div class="paragraph">
+<p>使用 <strong>Apache Directory Studio</strong> 打开 <code>config.ldif</code> 文件，对这个实例进行配置。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/3.png" alt="Overview">
+</div>
+<div class="title">图片1 端口设置</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/2.png" alt="Overview">
+</div>
+<div class="title">图片2 LDAP设置</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/1.png" alt="Overview">
+</div>
+<div class="title">图片3 Partitions设置</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="___5">员工和组的设置</h4>
+<div class="paragraph">
+<p>这里我们以 <strong>3S.CN</strong> 为例，演示如何配置LDAP服务器。</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>首先配置 <strong>Base DN</strong> 。</p>
+<div class="listingblock">
+<div class="content">
+<pre>dn: dc=3s,dc=cn
+objectclass: domain
+objectclass: top
+dc: 3s</pre>
+</div>
+</div>
+</li>
+<li>
+<p>在 <strong>Base DN</strong> 下面建立 people, groups域，用来放置员工和组。</p>
+<div class="listingblock">
+<div class="content">
+<pre>dn: ou=groups,dc=3s,dc=cn
+objectClass: organizationalUnit
+objectClass: top
+ou: groups
+
+dn: ou=people,dc=3s,dc=cn
+objectClass: organizationalUnit
+objectClass: top
+ou: people</pre>
+</div>
+</div>
+</li>
+<li>
+<p>在people下创建员工，我们使用 <code>inetOrgPerson</code>, <code>organizationalPerson</code> 作为员工的 <strong>objectClass</strong>。</p>
+<div class="listingblock">
+<div class="content">
+<pre>dn: cn=admin,ou=people,dc=3s,dc=cn
+objectClass: inetOrgPerson
+objectClass: krb5KDCEntry
+objectClass: krb5Principal
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: zhangsan
+sn: 张
+givenName: 三
+displayName: 张三
+mail: zhangsan@3s.cn
+uid: zhangsan
+krb5KeyVersionNumber: 1
+krb5PrincipalName: root/admin@3S.CN
+krb5Key:: MBGgAwIBA6EKBAhAZDHpm3Ml8Q==
+krb5Key:: MBmgAwIBEaESBBDcJQYdYTS5xB18L02lX3/g
+krb5Key:: MBmgAwIBF6ESBBBlREnp7yjhSefWNSBL9S/0
+krb5Key:: MCGgAwIBEKEaBBjyYhw4Ac5nXV1dejGMQLwV6Sb48vGDm7Y=
+userPassword:: e1NTSEF9T3dzU2VKS3U3d216RmZTeEw2a3MzdGNtRU5Ka2RscVcrTVF4UEE9P
+ Q==</pre>
+</div>
+</div>
+<table class="tableblock frame-top grid-all spread">
+<caption class="title">Table 1. 员工相关属性说明</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">字段</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">含义</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">员工名，唯一，英文</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">同cn</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">displayName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">员工真实姓名</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">姓</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">givenName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">名</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mail</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">邮箱</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note">
+</td>
+<td class="content">
+krb开头的属性与 <strong>Kerberos</strong> 相关，后面会详细介绍。
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>在group域下创建组，以 <em>confluence</em> 为例，创建管理员组 <code>confluence-administrators</code> ，这里使用 <code>groupOfUniqueNames</code>
+作为组的 <strong>objectClass</strong> 。</p>
+<div class="listingblock">
+<div class="content">
+<pre>dn: cn=confluence-administrators,ou=groups,dc=3s,dc=cn
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: confluence-administrators
+uniqueMember: cn=admin,ou=people,dc=3s,dc=cn</pre>
+</div>
+</div>
+<table class="tableblock frame-top grid-all spread">
+<caption class="title">Table 2. 组相关属性说明</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">字段</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">含义</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">组名</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uniqueMember</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">员工，可以多个</p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="___6">访问控制</h4>
+<div class="paragraph">
+<p>安全角度来看，需要对 LDAP 服务器做访问控制。</p>
+</div>
+<div class="sect4">
+<h5 id="___7">移除匿名访问和开启访问控制。</h5>
+<div class="paragraph">
+<p>参考下图，在 <strong>Apache Directory Studio</strong> 中对红框里的复选框操作</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/4.png" alt="访问控制">
+</div>
+<div class="title">图片4 移除匿名访问和开启访问控制</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="___8">配置访问控制细节</h5>
+<div class="listingblock">
+<div class="title">所有人读权限</div>
+<div class="content">
+<pre>dn: cn=enableAllUsersRead,dc=3s,dc=cn
+objectClass: accessControlSubentry
+objectClass: subentry
+objectClass: top
+cn: enableAllUsersRead
+prescriptiveACI:&#123;
+    identificationTag "enableAllUsersRead",
+    precedence 0,
+    authenticationLevel none,
+    itemOrUserFirst userFirst:
+    &#123;
+        userClasses &#123; allUsers &#125;,
+        userPermissions
+        &#123;
+            &#123;
+                protectedItems &#123; entry, allUserAttributeTypesAndValues &#125;,
+                grantsAndDenials
+                &#123;
+                    grantBrowse,
+                    grantFilterMatch,
+                    grantRead,
+                    grantCompare,
+                    grantReturnDN
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+subtreeSpecification: &#123;&#125;</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">修改自己的权限</div>
+<div class="content">
+<pre>dn: cn=allowSelfAccessAndModification,dc=3s,dc=cn
+objectClass: accessControlSubentry
+objectClass: subentry
+objectClass: top
+cn: allowSelfAccessAndModification
+prescriptiveACI: &#123;
+    identificationTag "allowSelfAccessAndModification",
+    precedence 10,
+    authenticationLevel simple,
+    itemOrUserFirst userFirst:
+    &#123;
+        userClasses &#123; thisEntry &#125;,
+        userPermissions
+        &#123;
+            &#123;
+                protectedItems &#123; entry, allUserAttributeTypesAndValues &#125;,
+                grantsAndDenials
+                &#123;
+                    grantBrowse,
+                    grantDiscloseOnError,
+                    grantExport,
+                    grantRename,
+                    grantImport,
+                    grantFilterMatch,
+                    grantInvoke,
+                    grantAdd,
+                    grantRead,
+                    grantReturnDN,
+                    grantRemove,
+                    grantCompare,
+                    grantModify
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+subtreeSpecification: &#123;&#125;</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">设置管理员</div>
+<div class="content">
+<pre>dn: cn=enableAdminSuper,dc=3s,dc=cn
+objectClass: subentry
+objectClass: accessControlSubentry
+objectClass: top
+cn: enableAdminSuper
+prescriptiveACI: &#123;
+    identificationTag "enableAdminSuper",
+    precedence 0,
+    authenticationLevel strong,
+    itemOrUserFirst userFirst:
+    &#123;
+        userClasses
+        &#123;
+            userGroup &#123; "cn=Administrators,ou=groups,dc=3s,dc=cn" &#125;
+        &#125;
+        ,
+        userPermissions
+        &#123;
+            &#123;
+                protectedItems &#123; entry, allUserAttributeTypesAndValues &#125;,
+                grantsAndDenials
+                &#123;
+                    grantRemove,
+                    grantExport,
+                    grantCompare,
+                    grantImport,
+                    grantRead,
+                    grantFilterMatch,
+                    grantModify,
+                    grantInvoke,
+                    grantDiscloseOnError,
+                    grantRename,
+                    grantReturnDN,
+                    grantBrowse,
+                    grantAdd
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+subtreeSpecification: &#123; &#125;</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___9">第三方软件接入</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_gerrit">Gerrit</h3>
+<div class="paragraph">
+<p>Gerrit设置比较简单，直接编辑配置文件 <code>$GERRIT_HOME/etc/gerrit.config</code> 修改下面所列的配置项。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-ini" data-lang="ini">[auth]
+    type = LDAP  
+[ldap]
+    server = ldap://localhost:10389
+    sslVerify = false
+    username = cn=ldap-admin,dc=3s,dc=cn  
+    password = secret
+    accountBase = ou=people,dc=3s,dc=cn
+    accountPattern = (&amp;(objectClass=person)(cn=$&#123;username&#125;))
+
+    groupBase = ou=groups,dc=3s,dc=cn
+    groupPattern = (&amp;(objectClass=groupOfUniqueNames)(cn=$&#123;groupname&#125;)
+    groupMemberPattern = (uniqueMember=$&#123;dn&#125;)</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><img src="./images/icons/callouts/1.png" alt="1"></td>
+<td>设置gerrit采用LDAP验证方式</td>
+</tr>
+<tr>
+<td><img src="./images/icons/callouts/2.png" alt="2"></td>
+<td>用于访问验证的用户名</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>简单介绍一下各配置项的作用:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>auth.type</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>配置完毕后，就可以到后台设置了。</p>
+</div>
+<div class="paragraph">
+<p>使用LDAP服务器中配置的用户名密码进行登录， <strong>Gerrit</strong> 会自动根据LDAP服务器中的信息生成
+一个对应的用户。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/5.png" alt="5.png">
+</div>
+<div class="title">图片5 Gerrit 登录页面</div>
+</div>
+<div class="paragraph">
+<p>此时，<strong>Gerrit</strong>已经将LDAP服务器的组也取回来了，但是都是<strong>不可见的</strong>，也不能编辑。
+这些组的名称都是以ldap/开头的，分配权限的时候输入ldap/会出现下拉提示来选择
+LDAP服务器上的组，参考下图。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/6.png" alt="6.png">
+</div>
+<div class="title">图片6 选择LDAP的组</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_confluence_wiki">confluence(wiki)</h3>
+<div class="paragraph">
+<p>登录管理员进入站点管理，在左侧的导航栏菜单中点击 User Directories。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/7.png" alt="7.png">
+</div>
+<div class="title">图片7 User Directories</div>
+</div>
+<div class="paragraph">
+<p>点击<code>Add Directory</code>按钮，选择<code>LDAP</code>，单击<code>Next</code>按钮。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/8.png" alt="8.png">
+</div>
+<div class="title">图片8 Add Directory</div>
+</div>
+<div class="paragraph">
+<p>主要配置项参考下图</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/9.png" alt="9.png">
+</div>
+<div class="title">图片9 LDAP Directory设置参考</div>
+</div>
+<div class="paragraph">
+<p>剩下的就可以在组里面看到LDAP服务器上的组了，按需在<code>空间权限</code>中分配权限。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kerberos">Kerberos认证</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kerberos认证的基础知识可以参考： <a href="../kerberos/">Kerberos认证</a></p>
+</div>
+<div class="paragraph">
+<p>这里只是说一下ApacheDS附带的Kerberos服务器配置的一些说明。</p>
+</div>
+<div class="sect2">
+<h3 id="_ldap_5">LDAP配置</h3>
+<div class="paragraph">
+<p>为正常启用Kerberos，还需要增加服务的定义</p>
+</div>
+<div class="listingblock">
+<div class="title">添加服务的定义</div>
+<div class="content">
+<pre>dn: ou=services,dc=3s,dc=cn
+objectClass: organizationalUnit
+objectClass: top
+ou: services
+
+dn: uid=krbtgt,ou=services,dc=3s,dc=cn
+objectClass: krb5KDCEntry
+objectClass: krb5Principal
+objectClass: organizationalUnit
+objectClass: top
+objectClass: uidObject
+krb5KeyVersionNumber: 1
+krb5PrincipalName: krbtgt/3S.CN@3S.CN
+ou: LDAP
+uid: krbtgt
+krb5Key:: MBGgAwIBA6EKBAiU5iyPT8d2pA==
+krb5Key:: MBmgAwIBEaESBBDpxlUPllfq84bHvAePm6gC
+krb5Key:: MBmgAwIBF6ESBBDX/LgfcFeQNaAuRDfl7OZO
+krb5Key:: MCGgAwIBEKEaBBhr6mhikfI7ztA3VBy5nptAg3qARaEyg98=
+userPassword:: bFpQazU4amNCNmhWUjJWUzlwd1E9e1NTSEF9dE1CcWVac0cralViR21sf35TjY5P
+
+dn: uid=ldap,ou=services,dc=3s,dc=cn
+objectClass: krb5KDCEntry
+objectClass: krb5Principal
+objectClass: organizationalUnit
+objectClass: top
+objectClass: uidObject
+krb5KeyVersionNumber: 1
+krb5PrincipalName: ldap/3s.cn@3S.CN
+ou: TGT
+uid: ldap
+krb5Key:: MBGgAwIBA6EKBAjQ0xNrXvGUMQ==
+krb5Key:: MBmgAwIBEaESBBC2cIRPf1hHoNqR96FnP9Ue
+krb5Key:: MBmgAwIBF6ESBBACZ9h7/tyhWTHOMfwRZmar
+krb5Key:: MCGgAwIBEKEaBBjLsOYNrQT4FVslEKuULLYCL/4j/mEv4DE=
+krb5Key:: MCmgAwIBEqEiBCBeU4zSkuBO/WYJV7Sce9zB/HymIqRnU4z2ps6GodfY1w==
+userPassword:: e1NTs02kSEF9SjZTcUZjVGI5dzVCMmcvUQ==itLQW4yaFhzMU9jdUUxclRZZ3Jqa</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在用户的实体(Entity)中添加下列属性就可以使用Kerberos了，当然值只是参考</p>
+</div>
+<div class="listingblock">
+<div class="title">Kerberos用到的属性</div>
+<div class="content">
+<pre>objectClass: krb5KDCEntry
+objectClass: krb5Principal
+krb5KeyVersionNumber: 1
+krb5PrincipalName: root/admin@3S.CN
+krb5Key:: MBGgAwIBA6EKBAhAZDHpm3Ml8Q==
+krb5Key:: MBmgAwIBEaESBBDcJQYdYTS5xB18L02lX3/g
+krb5Key:: MBmgAwIBF6ESBBBlREnp7yjhSefWNSBL9S/0
+krb5Key:: MCGgAwIBEKEaBBjyYhw4Ac5nXV1dejGMQLwV6Sb48vGDm7Y=</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_kerberos_2">Kerberos认证密码设置的坑</h3>
+<div class="paragraph">
+<p>为用户设置密码的时候（如下图），有个选项<strong>“Select Hash Method”</strong>，一般都会选用<strong>SSHA</strong>等，
+但是很奇怪的是使用这些Hash算法生成的密码都无法使用Kerberos登录，只有使用<strong>Plaintext</strong>方法
+设置的密码才可以正常的使用Kerberos登录。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/10.png" alt="10.png">
+</div>
+</div>
+<div class="paragraph">
+<p>后来又发现即便采用了<strong>Plaintext</strong>方法生成的密码，再次刷新实体(Entity)后<strong>userPassword</strong>
+显示的函数<strong>SSHA</strong>方法Hash的，如下图。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/12.png" alt="12.png">
+</div>
+<div class="title">Figure 1. 使用<strong>Plaintext</strong>生成的密码，明文为platform。</div>
+</div>
+<div class="paragraph">
+<p>这个情况非常诡异，测试了一下和下图的设置有关。若勾选了<strong>Enable server-side password hashing</strong>，
+即使用了<strong>Plaintext</strong>设置密码也会
+存储为使用设置的Hashing方法进行一次Hash。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/ldap/11.png" alt="11.png">
+</div>
+<div class="title">Figure 2. Enable server-side password hashing</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<img src="./images/icons/note.png" alt="Note">
+</td>
+<td class="content">
+还是有个问题：就是使用了<strong>SSHA</strong> Hash的密码LDAP认证是没问题的，Kerberos认证通不过，
+不会是明确指定Hash算法的密码进行了两次Hash吧。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>所以最佳实践是：</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>开启<strong>Enable server-side password hashing</strong>。</p>
+</li>
+<li>
+<p>密码设置时使用<strong>Plaintext</strong> Hash算法。</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/工具/">工具</a>►<a class="article-category-link" href="/categories/工具/开山利器/">开山利器</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lifei.github.io/2015/07/23/ldap/" data-title="LDAP配置 | 飛哥の技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/07/26/docker-dev-env/" title="使用Docker搭建OpenLDAP、Kerberos、Gerrit、Jenkins、TOTP环境">
+  <strong>上一篇：</strong><br/>
+  <span>
+  使用Docker搭建OpenLDAP、Kerberos、Gerrit、Jenkins、TOTP环境</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/07/23/watchdog-rsync/"  title="使用watchdog+rsync自动同步代码到服务器">
+ <strong>下一篇：</strong><br/> 
+ <span>使用watchdog+rsync自动同步代码到服务器
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/07/23/ldap/" data-title="LDAP配置" data-url="http://lifei.github.io/2015/07/23/ldap/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_ldap"><span class="toc-number">1.</span> <span class="toc-text">LDAP介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#_ldap_2"><span class="toc-number">1.1.</span> <span class="toc-text">LDAP的协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_ldap_entry"><span class="toc-number">2.</span> <span class="toc-text">LDAP Entry</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_ldap_3"><span class="toc-number">3.</span> <span class="toc-text">LDAP的检索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_ldap_4"><span class="toc-number">4.</span> <span class="toc-text">LDAP服务器软件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__"><span class="toc-number">4.1.</span> <span class="toc-text">下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">4.2.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___3"><span class="toc-number">4.3.</span> <span class="toc-text">配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#___4"><span class="toc-number">4.3.1.</span> <span class="toc-text">实例配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___5"><span class="toc-number">4.3.2.</span> <span class="toc-text">员工和组的设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___6"><span class="toc-number">4.3.3.</span> <span class="toc-text">访问控制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#___7"><span class="toc-number">4.3.3.1.</span> <span class="toc-text">移除匿名访问和开启访问控制。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#___8"><span class="toc-number">4.3.3.2.</span> <span class="toc-text">配置访问控制细节</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___9"><span class="toc-number">5.</span> <span class="toc-text">第三方软件接入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#_gerrit"><span class="toc-number">5.1.</span> <span class="toc-text">Gerrit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_confluence_wiki"><span class="toc-number">5.2.</span> <span class="toc-text">confluence(wiki)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_kerberos"><span class="toc-number">6.</span> <span class="toc-text">Kerberos认证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#_ldap_5"><span class="toc-number">6.1.</span> <span class="toc-text">LDAP配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_kerberos_2"><span class="toc-number">6.2.</span> <span class="toc-text">Kerberos认证密码设置的坑</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/开山利器/" title="开山利器">开山利器<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/单体应用/" title="单体应用">单体应用<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微服务/" title="微服务">微服务<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/领域实体/" title="领域实体">领域实体<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/API/" title="API">API<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenVPN/" title="OpenVPN">OpenVPN<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/运维/" title="运维">运维<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">歸檔</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">11</span></li></ul>
+  </div>
+
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">標簽雲</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/OpenVPN/" style="font-size: 10px;">OpenVPN</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/单体应用/" style="font-size: 10px;">单体应用</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+    </div>
+  </div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 大家好，我是李飛。 <br/>
+			这是我的博客。</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/https://github.com/lifei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:lifei.vip@outlook.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc-nd/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-nc-nd.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="李飛">李飛</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"lifei"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

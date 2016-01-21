@@ -1,0 +1,586 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh_CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>面向领域实体及关系的API设计 | 飛哥の技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="李飛">
+    
+
+    
+    <meta name="description" content="日常的业务开发过程中，很大一部分工作是就是各种API开发。不论是基于何种协议，何种序列化方法，(只读)API的主要开发过程可以简单总结为：
+
+处理参数，检查合法性。
+根据参数获取相关数据。
+加载需要的实体内容。
+把加载的实体按照约定的格式打包、序列化、输出到API。
+
+获取微博的例子举例来说，有一个API需要返回指定话题下的微博列表(http://somedomain/tweets/?topic_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向领域实体及关系的API设计">
+<meta property="og:url" content="http://lifei.github.io/2015/07/16/entity-relationship-based-api-design/index.html">
+<meta property="og:site_name" content="飛哥の技术博客">
+<meta property="og:description" content="日常的业务开发过程中，很大一部分工作是就是各种API开发。不论是基于何种协议，何种序列化方法，(只读)API的主要开发过程可以简单总结为：
+
+处理参数，检查合法性。
+根据参数获取相关数据。
+加载需要的实体内容。
+把加载的实体按照约定的格式打包、序列化、输出到API。
+
+获取微博的例子举例来说，有一个API需要返回指定话题下的微博列表(http://somedomain/tweets/?topic_">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/ZP0z3i8m38Ltdy8No0KYr8ML4GuG8XSgjRQ4Ko64UdVoOzGC36JAUy_-x2JEGHKlIW-8zNf-4YLy0-QpPjktiCWeoqASJfCcZyTTm6QzdMS4Qr6FnJnOmL0p6KUbJ9euMUtA9hT-cGwNYlx2QlWtoaO3x4pdXZQXULNtJ_1u3uh21EQYv8ho7JcwqYnyKqnYtU9-XZsm6z3OI-3N1m00">
+<meta property="og:updated_time" content="2015-12-20T18:05:02.735Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面向领域实体及关系的API设计">
+<meta name="twitter:description" content="日常的业务开发过程中，很大一部分工作是就是各种API开发。不论是基于何种协议，何种序列化方法，(只读)API的主要开发过程可以简单总结为：
+
+处理参数，检查合法性。
+根据参数获取相关数据。
+加载需要的实体内容。
+把加载的实体按照约定的格式打包、序列化、输出到API。
+
+获取微博的例子举例来说，有一个API需要返回指定话题下的微博列表(http://somedomain/tweets/?topic_">
+
+    
+    <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="飛哥の技术博客" title="飛哥の技术博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="飛哥の技术博客">飛哥の技术博客</a></h1>
+				<h2 class="blog-motto">关注业务开发</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:lifei.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/07/16/entity-relationship-based-api-design/" title="面向领域实体及关系的API设计" itemprop="url">面向领域实体及关系的API设计</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="李飛" target="_blank" itemprop="author">李飛</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-16T13:59:41.000Z" itemprop="datePublished"> 發表於 2015-07-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u83B7_u53D6_u5FAE_u535A_u7684_u4F8B_u5B50"><span class="toc-number">1.</span> <span class="toc-text">获取微博的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u4E00_u4E9B_u8BA8_u8BBA"><span class="toc-number">2.</span> <span class="toc-text">一些讨论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u95EE_u9898_u4E00"><span class="toc-number">2.1.</span> <span class="toc-text">问题一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u95EE_u9898_u4E8C"><span class="toc-number">2.2.</span> <span class="toc-text">问题二</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6362_u4E00_u79CDAPI_u683C_u5F0F"><span class="toc-number">3.</span> <span class="toc-text">换一种API格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7701_u6389pack"><span class="toc-number">4.</span> <span class="toc-text">省掉pack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main_Point"><span class="toc-number">5.</span> <span class="toc-text">Main Point</span></a></li></ol>
+		
+		</div>
+		
+		<p>日常的业务开发过程中，很大一部分工作是就是各种API开发。不论是基于何种协议，何种序列化方法，(只读)API的主要开发过程可以简单总结为：</p>
+<ol>
+<li>处理参数，检查合法性。</li>
+<li>根据参数获取相关数据。</li>
+<li>加载需要的实体内容。</li>
+<li>把加载的实体按照约定的格式打包、序列化、输出到API。</li>
+</ol>
+<h2 id="u83B7_u53D6_u5FAE_u535A_u7684_u4F8B_u5B50"><a href="#u83B7_u53D6_u5FAE_u535A_u7684_u4F8B_u5B50" class="headerlink" title="获取微博的例子"></a>获取微博的例子</h2><p>举例来说，有一个API需要返回指定话题下的微博列表(<code>http://somedomain/tweets/?topic_id=10000001&amp;offset=0&amp;count=20</code>)，其返回格式定义如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "<span class="attribute">error</span>": <span class="value"><span class="number">0</span></span>,</span><br><span class="line">    "<span class="attribute">data</span>": <span class="value">&#123;</span><br><span class="line">        "<span class="attribute">tweets</span>": <span class="value">[&#123;</span><br><span class="line">            "<span class="attribute">id</span>": <span class="value"><span class="number">20000000</span></span>,</span><br><span class="line">            "<span class="attribute">content</span>": <span class="value"><span class="string">"这是一条微博"</span></span>,</span><br><span class="line">            "<span class="attribute">create_time</span>": <span class="value"><span class="string">"2015-07-17 08:09:03"</span></span>,</span><br><span class="line">            "<span class="attribute">images</span>": <span class="value">[]</span>,</span><br><span class="line">            "<span class="attribute">user</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">id</span>": <span class="value"><span class="number">100000001</span></span>,</span><br><span class="line">                "<span class="attribute">name</span>": <span class="value"><span class="string">"张三"</span></span>,</span><br><span class="line">                "<span class="attribute">avatar_url</span>": <span class="value"><span class="string">"http://touxiao/zhangsan"</span></span><br><span class="line">            </span>&#125;</span>,</span><br><span class="line">            "<span class="attribute">comments</span>": <span class="value">[&#123;</span><br><span class="line">                "<span class="attribute">id</span>": <span class="value"><span class="number">30000001</span></span>,</span><br><span class="line">                "<span class="attribute">content</span>": <span class="value"><span class="string">"好微博"</span></span>,</span><br><span class="line">                "<span class="attribute">create_time</span>": <span class="value"><span class="string">"2015-07-17 08:09:03"</span></span>,</span><br><span class="line">                "<span class="attribute">user</span>": <span class="value">&#123;</span><br><span class="line">                    "<span class="attribute">id</span>": <span class="value"><span class="number">100000001</span></span>,</span><br><span class="line">                    "<span class="attribute">name</span>": <span class="value"><span class="string">"张三"</span></span>,</span><br><span class="line">                    "<span class="attribute">avatar_url</span>": <span class="value"><span class="string">"http://touxiao/zhangsan"</span></span><br><span class="line">                </span>&#125;</span><br><span class="line">            </span>&#125;]</span><br><span class="line">        </span>&#125;, ..., &#123;</span><br><span class="line">            "<span class="attribute">id</span>": <span class="value"><span class="number">20000001</span></span>,</span><br><span class="line">            "<span class="attribute">content</span>": <span class="value"><span class="string">"这是第二条微博"</span></span>,</span><br><span class="line">            "<span class="attribute">create_time</span>": <span class="value"><span class="string">"2015-07-17 08:09:03"</span></span>,</span><br><span class="line">            "<span class="attribute">images</span>": <span class="value">[]</span>,</span><br><span class="line">            "<span class="attribute">user</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">id</span>": <span class="value"><span class="number">100000002</span></span>,</span><br><span class="line">                "<span class="attribute">name</span>": <span class="value"><span class="string">"李四"</span></span>,</span><br><span class="line">                "<span class="attribute">avatar_url</span>": <span class="value"><span class="string">"http://touxiao/lisi"</span></span><br><span class="line">            </span>&#125;</span><br><span class="line">        </span>&#125;]</span>,</span><br><span class="line">        "<span class="attribute">offset</span>": <span class="value"><span class="number">20</span></span>,</span><br><span class="line">        "<span class="attribute">count</span>": <span class="value"><span class="number">20</span></span>,</span><br><span class="line">        "<span class="attribute">has_more</span>": <span class="value"><span class="literal">true</span></span><br><span class="line">    </span>&#125;</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，</p>
+<ul>
+<li><code>error</code>是错误码，<code>0</code>表示无错误。</li>
+<li><code>data</code>表示数据域，所有的数据均在<code>data</code>数据域下：<ul>
+<li><code>tweets</code>表示微博的列表。</li>
+<li><code>offset</code>为翻页标识。</li>
+<li><code>count</code>表示每页多少条微博。</li>
+<li><code>has_more</code>表示还可以继续翻页。</li>
+</ul>
+</li>
+</ul>
+<p>关系图</p>
+<img src="http://www.plantuml.com/plantuml/svg/ZP0z3i8m38Ltdy8No0KYr8ML4GuG8XSgjRQ4Ko64UdVoOzGC36JAUy_-x2JEGHKlIW-8zNf-4YLy0-QpPjktiCWeoqASJfCcZyTTm6QzdMS4Qr6FnJnOmL0p6KUbJ9euMUtA9hT-cGwNYlx2QlWtoaO3x4pdXZQXULNtJ_1u3uh21EQYv8ho7JcwqYnyKqnYtU9-XZsm6z3OI-3N1m00">
+<p>组件之间的关系</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">TweetList</span> <span class="attribute">tweets</span>=<span class="value">&#123;tweets&#125;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">Tweet</span> <span class="attribute">tweet</span>=<span class="value">&#123;tweet&#125;</span>&gt;</span></span><br><span class="line">        ...</span><br><span class="line">        <span class="tag">&lt;<span class="title">User</span> <span class="attribute">user</span>=<span class="value">&#123;tweet.user&#125;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">CommentList</span> <span class="attribute">comments</span>=<span class="value">&#123;tweet.comments&#125;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">Comment</span> <span class="attribute">comment</span>=<span class="value">&#123;comment&#125;</span>&gt;</span></span><br><span class="line">                ...</span><br><span class="line">                <span class="tag">&lt;<span class="title">User</span> <span class="attribute">user</span>=<span class="value">&#123;comment.user&#125;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">Comment</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">CommentList</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">Tweet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">TweetList</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>优点：</p>
+<ol>
+<li>对象之间的关系明确</li>
+<li>依赖关系明确</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>对象相互嵌套</li>
+<li>同一对象可能会出现在各处</li>
+</ol>
+<p>要实现这一个API，业务上基本需要实现4个函数。</p>
+<ol>
+<li><code>view</code>主函数，检查参数、依次调用相关函数，序列化结果。</li>
+<li><code>get_topic_tweets</code>主要业务函数，实现了获取某个话题下的微博功能。</li>
+<li><code>load</code>加载函数，加载打包API所需要的所有数据。</li>
+<li><code>pack</code>打包函数，将加载的数据按照API定义打包。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">view</span><span class="params">(request)</span>:</span></span><br><span class="line"></span><br><span class="line">    tweets = get_topic_tweets(request.args.get(<span class="string">'topci_id'</span>))</span><br><span class="line">    loaded_tweets = load(tweets)</span><br><span class="line">    packed_tweets = pack(loaded_tweets)</span><br><span class="line">    <span class="keyword">return</span> json.dumps(packed_tweets)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_topic_tweets</span><span class="params">(topic_id, offset=<span class="number">0</span>, count=<span class="number">20</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    获取指定topic下的tweets列表，按rate排序</span><br><span class="line">    """</span></span><br><span class="line">    <span class="keyword">return</span> [(tweet_id, rate), (tweet_id, rate)]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load</span><span class="params">(tweets)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    加载打包需要的所有数据</span><br><span class="line">    """</span></span><br><span class="line"></span><br><span class="line">    tweet_ids = map(lamada x: x[<span class="number">0</span>], tweets)</span><br><span class="line">    tweet_dict = TweetDAO.get_multi(tweet_ids)</span><br><span class="line"></span><br><span class="line">    user_ids = map(lamada x: x.user_id, tweet_dict.values())</span><br><span class="line">    user_dict = UserDAO.get_multi(user_ids)</span><br><span class="line"></span><br><span class="line">    ... load其他相关的实体，如标签、顶踩、关联的文章等等</span><br><span class="line"></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> tweet_id, rate <span class="keyword">in</span> tweets:</span><br><span class="line">        tweet = tweet_dict[tweet_id]</span><br><span class="line">        user = user_dict[tweet.user_id]</span><br><span class="line">        ... 其他</span><br><span class="line">        result.append(dict(tweet=tweet, user=user))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pack</span><span class="params">(tweets)</span>:</span></span><br><span class="line">    <span class="string">"""</span><br><span class="line">    打包成API约定的格式</span><br><span class="line">    """</span></span><br><span class="line"></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> tweet <span class="keyword">in</span> tweets:</span><br><span class="line">        data = &#123;&#125;</span><br><span class="line"></span><br><span class="line">        pack_tweet(data, tweet)</span><br><span class="line">        pack_user(data, tweet)</span><br><span class="line">        ... pack 其他</span><br><span class="line"></span><br><span class="line">        result.append(data)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<h2 id="u4E00_u4E9B_u8BA8_u8BBA"><a href="#u4E00_u4E9B_u8BA8_u8BBA" class="headerlink" title="一些讨论"></a>一些讨论</h2><p>这段代码本身其实没有什么问题，是一段非常标准的API实现代码。本文主要针对这个例子，讨论一下返回格式对API实现的影响，从而得出API格式的最佳实践。</p>
+<h3 id="u95EE_u9898_u4E00"><a href="#u95EE_u9898_u4E00" class="headerlink" title="问题一"></a>问题一</h3><p>假设还有一个API，是返回某个用户的微博列表 (/tweets/?user_id=100000001)，我们得到的结果将会是：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "<span class="attribute">error</span>": <span class="value"><span class="number">0</span></span>,</span><br><span class="line">    "<span class="attribute">data</span>": <span class="value">&#123;</span><br><span class="line">        "<span class="attribute">tweets</span>": <span class="value">[&#123;</span><br><span class="line">            "<span class="attribute">id</span>": <span class="value"><span class="number">20000000</span></span>,</span><br><span class="line">            "<span class="attribute">content</span>": <span class="value"><span class="string">"这是一条微博"</span></span>,</span><br><span class="line">            "<span class="attribute">create_time</span>": <span class="value"><span class="string">"2015-07-17 08:09:03"</span></span>,</span><br><span class="line">            "<span class="attribute">images</span>": <span class="value">[]</span>,</span><br><span class="line">            "<span class="attribute">user</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">id</span>": <span class="value"><span class="number">100000001</span></span>,</span><br><span class="line">                "<span class="attribute">name</span>": <span class="value"><span class="string">"张三"</span></span>,</span><br><span class="line">                "<span class="attribute">avatar_url</span>": <span class="value"><span class="string">"http://touxiao/zhangsan"</span></span><br><span class="line">            </span>&#125;</span><br><span class="line">        </span>&#125;, ..., &#123;</span><br><span class="line">            "<span class="attribute">id</span>": <span class="value"><span class="number">20000001</span></span>,</span><br><span class="line">            "<span class="attribute">content</span>": <span class="value"><span class="string">"这是第二条微博"</span></span>,</span><br><span class="line">            "<span class="attribute">create_time</span>": <span class="value"><span class="string">"2015-07-17 08:09:03"</span></span>,</span><br><span class="line">            "<span class="attribute">images</span>": <span class="value">[]</span>,</span><br><span class="line">            "<span class="attribute">user</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">id</span>": <span class="value"><span class="number">100000001</span></span>,</span><br><span class="line">                "<span class="attribute">name</span>": <span class="value"><span class="string">"张三"</span></span>,</span><br><span class="line">                "<span class="attribute">avatar_url</span>": <span class="value"><span class="string">"http://touxiao/zhangsan"</span></span><br><span class="line">            </span>&#125;</span><br><span class="line">        </span>&#125;]</span>,</span><br><span class="line">        "<span class="attribute">offset</span>": <span class="value"><span class="number">20</span></span>,</span><br><span class="line">        "<span class="attribute">count</span>": <span class="value"><span class="number">20</span></span>,</span><br><span class="line">        "<span class="attribute">has_more</span>": <span class="value"><span class="literal">true</span></span><br><span class="line">    </span>&#125;</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure>
+<p>所有的<code>user</code>域都是张三的信息，重复出现了20次，有点浪费。</p>
+<h3 id="u95EE_u9898_u4E8C"><a href="#u95EE_u9898_u4E8C" class="headerlink" title="问题二"></a>问题二</h3><p>随着业务的增长，一条微博的数据结构变得越来越复杂了，譬如：图片、视频、文章、组图、卡片、评论、<br>转发、各种统计等等等，中间还将穿插这各种版本信息，对应的<code>load</code>和<code>pack</code>代码将变成：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">def <span class="function"><span class="title">load</span><span class="params">(tweets, version)</span></span>:</span><br><span class="line">    <span class="function"><span class="title">load_tweets</span><span class="params">(tweets)</span></span></span><br><span class="line">    <span class="function"><span class="title">load_users</span><span class="params">(tweets)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> version &gt;= <span class="number">2</span>:</span><br><span class="line">        <span class="function"><span class="title">load_images</span><span class="params">(tweets)</span></span></span><br><span class="line">        <span class="function"><span class="title">load_videos</span><span class="params">(tweets)</span></span></span><br><span class="line">        <span class="function"><span class="title">load_articles</span><span class="params">(tweets)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> version &gt;= <span class="number">4</span>:</span><br><span class="line">        <span class="function"><span class="title">load_group_images</span><span class="params">(tweets)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> version &gt;= <span class="number">6</span>:</span><br><span class="line">        <span class="function"><span class="title">load_cards</span><span class="params">(tweets)</span></span></span><br><span class="line">        <span class="function"><span class="title">load_comments</span><span class="params">(tweets)</span></span></span><br><span class="line">        <span class="function"><span class="title">load_retweets</span><span class="params">(tweets)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> version &gt;= <span class="number">7</span>:</span><br><span class="line">        <span class="function"><span class="title">load_stats</span><span class="params">(tweets)</span></span></span><br><span class="line"></span><br><span class="line">def <span class="function"><span class="title">pack</span><span class="params">(tweets)</span></span>:</span><br><span class="line">    <span class="function"><span class="title">pack_tweets</span><span class="params">(tweets)</span></span></span><br><span class="line">    <span class="function"><span class="title">pack_users</span><span class="params">(tweets)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> version &gt;= <span class="number">2</span>:</span><br><span class="line">        <span class="function"><span class="title">pack_images</span><span class="params">(tweets)</span></span></span><br><span class="line">        <span class="function"><span class="title">pack_videos</span><span class="params">(tweets)</span></span></span><br><span class="line">        <span class="function"><span class="title">pack_articles</span><span class="params">(tweets)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> version &gt;= <span class="number">4</span>:</span><br><span class="line">        <span class="function"><span class="title">pack_group_images</span><span class="params">(tweets)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> version &gt;= <span class="number">6</span>:</span><br><span class="line">        <span class="function"><span class="title">pack_cards</span><span class="params">(tweets)</span></span></span><br><span class="line">        <span class="function"><span class="title">pack_comments</span><span class="params">(tweets)</span></span></span><br><span class="line">        <span class="function"><span class="title">pack_retweets</span><span class="params">(tweets)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> version &gt;= <span class="number">7</span>:</span><br><span class="line">        <span class="function"><span class="title">pack_stats</span><span class="params">(tweets)</span></span></span><br></pre></td></tr></table></figure>
+<p>在这个例子里面，<code>load</code>和<code>pack</code>要做到一致，<code>load</code>的内容不能比<code>pack</code>需要的少。</p>
+<p>而且，<code>pack</code>函数有可能被100个view函数调用，维护开销会越来越高。</p>
+<h2 id="u6362_u4E00_u79CDAPI_u683C_u5F0F"><a href="#u6362_u4E00_u79CDAPI_u683C_u5F0F" class="headerlink" title="换一种API格式"></a>换一种API格式</h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    "<span class="attribute">error</span>": <span class="value"><span class="number">0</span></span>,</span><br><span class="line">    "<span class="attribute">data</span>": <span class="value">&#123;</span><br><span class="line">        "<span class="attribute">list</span>": <span class="value">[[<span class="number">20000001</span>, <span class="number">10000</span>], ..., [<span class="number">20000020</span>, <span class="number">10000</span>]]</span>,</span><br><span class="line">        "<span class="attribute">tweets</span>": <span class="value">&#123;</span><br><span class="line">            "<span class="attribute">20000001</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">id</span>": <span class="value"><span class="number">20000001</span></span>,</span><br><span class="line">                "<span class="attribute">content</span>": <span class="value"><span class="string">"这是一条微博"</span></span>,</span><br><span class="line">                "<span class="attribute">create_time</span>": <span class="value"><span class="string">"2015-07-17 08:09:03"</span></span>,</span><br><span class="line">                "<span class="attribute">images</span>": <span class="value">[]</span>,</span><br><span class="line">                "<span class="attribute">user_id</span>": <span class="value"><span class="number">100000001</span></span><br><span class="line">            </span>&#125;</span>, "<span class="attribute">...</span>": <span class="value">...</span>,</span><br><span class="line">            "<span class="attribute">20000020</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">id</span>": <span class="value"><span class="number">20000020</span></span>,</span><br><span class="line">                "<span class="attribute">content</span>": <span class="value"><span class="string">"这是第二条微博"</span></span>,</span><br><span class="line">                "<span class="attribute">create_time</span>": <span class="value"><span class="string">"2015-07-17 08:09:03"</span></span>,</span><br><span class="line">                "<span class="attribute">images</span>": <span class="value">[]</span>,</span><br><span class="line">                "<span class="attribute">user_id</span>": <span class="value"><span class="number">100000001</span></span><br><span class="line">            </span>&#125;</span><br><span class="line">        </span>&#125;</span>,</span><br><span class="line">        "<span class="attribute">users</span>": <span class="value">&#123;</span><br><span class="line">            "<span class="attribute">100000001</span>": <span class="value">&#123;</span><br><span class="line">                "<span class="attribute">id</span>": <span class="value"><span class="number">100000001</span></span>,</span><br><span class="line">                "<span class="attribute">name</span>": <span class="value"><span class="string">"张三"</span></span>,</span><br><span class="line">                "<span class="attribute">avatar_url</span>": <span class="value"><span class="string">"http://touxiao/zhangsan"</span></span><br><span class="line">            </span>&#125;</span><br><span class="line">        </span>&#125;</span>,</span><br><span class="line">        "<span class="attribute">images</span>": <span class="value">...</span>,</span><br><span class="line">        "<span class="attribute">videos</span>": <span class="value">...</span>,</span><br><span class="line">        "<span class="attribute">articles</span>": <span class="value">...</span>,</span><br><span class="line">        "<span class="attribute">...</span>": <span class="value">...</span>,</span><br><span class="line">        "<span class="attribute">offset</span>": <span class="value"><span class="number">20</span></span>,</span><br><span class="line">        "<span class="attribute">count</span>": <span class="value"><span class="number">20</span></span>,</span><br><span class="line">        "<span class="attribute">has_more</span>": <span class="value"><span class="literal">true</span></span><br><span class="line">    </span>&#125;</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure>
+<p>有哪些变化：</p>
+<ol>
+<li>打包格式更程序员化，节省流量。</li>
+<li>实体之间的关系不再耦合紧密。</li>
+<li><code>load</code>即<code>pack</code>，不再需要二次组织。</li>
+<li>客户端可能需要做更多的工作。</li>
+</ol>
+<h2 id="u7701_u6389pack"><a href="#u7701_u6389pack" class="headerlink" title="省掉pack"></a>省掉<code>pack</code></h2><p><code>json.dumps</code>函数有一个参数为<code>cls</code>，可以让我们定义一个<code>Encoder</code>根据对象的类型做特定的序列化处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EntityEncoder</span><span class="params">(json.JSONEncoder)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">default</span><span class="params">(self, obj)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> isinstance(obj, Tweet):</span><br><span class="line">            <span class="keyword">return</span> dict(id=obj.id, content=obj.content, ...)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">elif</span> isinstance(obj, User):</span><br><span class="line">            <span class="keyword">return</span> dict(id=obj.id, name=obj.name, avatar_url=obj.avatar_url)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> json.JSONEncoder.default(self, obj)</span><br></pre></td></tr></table></figure>
+<p>从而实现<code>load</code>即<code>pack</code>的效果，<code>view</code>代码将变成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">view</span><span class="params">(request)</span>:</span></span><br><span class="line"></span><br><span class="line">    tweets = get_topic_tweets(request.args.get(<span class="string">'topci_id'</span>))</span><br><span class="line">    result = load(tweets)</span><br><span class="line">    <span class="keyword">return</span> json.dumps(result, cls=EntityEncoder)</span><br></pre></td></tr></table></figure>
+<p>这样做的一个好处是对本项目中的任何实体对象，全部采用统一的打包格式，要知道，统一一致就意味着生产力。<br>也对项目的抽象能力提了更高的要求：需要更好的抽象每个实体。</p>
+<h2 id="Main_Point"><a href="#Main_Point" class="headerlink" title="Main Point"></a>Main Point</h2><ol>
+<li>API返回的数据结构与领域实体的数据结构相同，不再进行嵌套等复杂封装。</li>
+<li>领域实体之间的关系通过关系域表示，譬如：<code>belongs to</code>, <code>has many</code> =&gt; {“id”: [“ids”]}等。</li>
+<li>API的定义与实体定义严格对应，在任何出现地方，故在API设计上，需要从实体作为出发点，把实体作为数据的组织单元。</li>
+<li>这样的API设计可以维护前后端数据结构的统一。</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/API/">API</a><a href="/tags/领域实体/">领域实体</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lifei.github.io/2015/07/16/entity-relationship-based-api-design/" data-title="面向领域实体及关系的API设计 | 飛哥の技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/07/17/cijn3co8e0000v8m6qkdnai7m/" title="最佳实现：从单体应用到微服务">
+  <strong>上一篇：</strong><br/>
+  <span>
+  最佳实现：从单体应用到微服务</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/07/16/entity-relationship-based-api-design/" data-title="面向领域实体及关系的API设计" data-url="http://lifei.github.io/2015/07/16/entity-relationship-based-api-design/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#u83B7_u53D6_u5FAE_u535A_u7684_u4F8B_u5B50"><span class="toc-number">1.</span> <span class="toc-text">获取微博的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u4E00_u4E9B_u8BA8_u8BBA"><span class="toc-number">2.</span> <span class="toc-text">一些讨论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#u95EE_u9898_u4E00"><span class="toc-number">2.1.</span> <span class="toc-text">问题一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#u95EE_u9898_u4E8C"><span class="toc-number">2.2.</span> <span class="toc-text">问题二</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u6362_u4E00_u79CDAPI_u683C_u5F0F"><span class="toc-number">3.</span> <span class="toc-text">换一种API格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#u7701_u6389pack"><span class="toc-number">4.</span> <span class="toc-text">省掉pack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Main_Point"><span class="toc-number">5.</span> <span class="toc-text">Main Point</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/开山利器/" title="开山利器">开山利器<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/单体应用/" title="单体应用">单体应用<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微服务/" title="微服务">微服务<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/领域实体/" title="领域实体">领域实体<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/API/" title="API">API<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenVPN/" title="OpenVPN">OpenVPN<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/运维/" title="运维">运维<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">歸檔</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">11</span></li></ul>
+  </div>
+
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">標簽雲</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/OpenVPN/" style="font-size: 10px;">OpenVPN</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/单体应用/" style="font-size: 10px;">单体应用</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+    </div>
+  </div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 大家好，我是李飛。 <br/>
+			这是我的博客。</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/https://github.com/lifei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:lifei.vip@outlook.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc-nd/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-nc-nd.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="李飛">李飛</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"lifei"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

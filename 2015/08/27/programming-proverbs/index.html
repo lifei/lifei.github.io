@@ -1,0 +1,811 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh_CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>每个程序员都应该熟知的编程格言 | 飛哥の技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="李飛">
+    
+
+    
+    <meta name="description" content="无风不起浪 (There is no smoke without fire)
+
+
+设计糟糕的代码通常表现以下 的一些现象：
+
+
+
+
+巨大的类或者方法
+
+
+大区块注释的代码
+
+
+重复的逻辑
+
+
+过多if/else层次嵌套
+
+
+
+
+
+
+Poorly designed code tends to manifest itself through some common tell-tale signs.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每个程序员都应该熟知的编程格言">
+<meta property="og:url" content="http://lifei.github.io/2015/08/27/programming-proverbs/index.html">
+<meta property="og:site_name" content="飛哥の技术博客">
+<meta property="og:description" content="无风不起浪 (There is no smoke without fire)
+
+
+设计糟糕的代码通常表现以下 的一些现象：
+
+
+
+
+巨大的类或者方法
+
+
+大区块注释的代码
+
+
+重复的逻辑
+
+
+过多if/else层次嵌套
+
+
+
+
+
+
+Poorly designed code tends to manifest itself through some common tell-tale signs.">
+<meta property="og:updated_time" content="2015-12-20T18:05:02.732Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="每个程序员都应该熟知的编程格言">
+<meta name="twitter:description" content="无风不起浪 (There is no smoke without fire)
+
+
+设计糟糕的代码通常表现以下 的一些现象：
+
+
+
+
+巨大的类或者方法
+
+
+大区块注释的代码
+
+
+重复的逻辑
+
+
+过多if/else层次嵌套
+
+
+
+
+
+
+Poorly designed code tends to manifest itself through some common tell-tale signs.">
+
+    
+    <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="飛哥の技术博客" title="飛哥の技术博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="飛哥の技术博客">飛哥の技术博客</a></h1>
+				<h2 class="blog-motto">关注业务开发</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:lifei.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/08/27/programming-proverbs/" title="每个程序员都应该熟知的编程格言" itemprop="url">每个程序员都应该熟知的编程格言</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="李飛" target="_blank" itemprop="author">李飛</a>
+		
+  <p class="article-time">
+    <time datetime="2015-08-27T09:51:26.000Z" itemprop="datePublished"> 發表於 2015-08-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__there_is_no_smoke_without_fire"><span class="toc-number">1.</span> <span class="toc-text">无风不起浪 (There is no smoke without fire)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__an_ounce_of_prevention_is_worth_a_pound_of_cure"><span class="toc-number">2.</span> <span class="toc-text">预防为主，治疗为辅 (An ounce of prevention is worth a pound of cure）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__as_you_sow_so_shall_you_reap"><span class="toc-number">3.</span> <span class="toc-text">种瓜得瓜，种豆得豆 （As you sow, so shall you reap)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__great_haste_makes_great_waste"><span class="toc-number">4.</span> <span class="toc-text">欲速则不达（Great haste makes great waste)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__look_before_you_leap"><span class="toc-number">5.</span> <span class="toc-text">三思而后行 (Look before you leap)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__silence_is_construed_as_approval"><span class="toc-number">6.</span> <span class="toc-text">沉默就是赞同（Silence is construed as approval）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__a_bird_in_the_hand_is_worth_two_in_the_bush"><span class="toc-number">7.</span> <span class="toc-text">双鸟在林不如一鸟在手（A bird in the hand is worth two in the bush）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__with_great_power_comes_great_responsibility"><span class="toc-number">8.</span> <span class="toc-text">能力越大责任越大（With great power comes great responsibility）</span></a></li></ol>
+		
+		</div>
+		
+		<div class="sect1">
+<h2 id="__there_is_no_smoke_without_fire">无风不起浪 (There is no smoke without fire)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>设计糟糕的代码通常表现以下 的一些现象：</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>巨大的类或者方法</p>
+</li>
+<li>
+<p>大区块注释的代码</p>
+</li>
+<li>
+<p>重复的逻辑</p>
+</li>
+<li>
+<p>过多<code>if/else</code>层次嵌套</p>
+</li>
+</ul>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Poorly designed code tends to manifest itself through some common tell-tale signs.  Some examples of these are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Giant classes and/or functions</p>
+</li>
+<li>
+<p>Large blocks of commented out code</p>
+</li>
+<li>
+<p>Duplicated logic</p>
+</li>
+<li>
+<p>Deeply nested <code>if/else</code> blocks</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Developers often refer to these as code smells, but personally, I think the term "code smoke" or "code fumes" is more appropriate as it implies a higher sense of urgency.  If you don&#8217;t address the underlying problem it will come back to burn you later on.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__an_ounce_of_prevention_is_worth_a_pound_of_cure">预防为主，治疗为辅 (An ounce of prevention is worth a pound of cure）</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>程序员经常错误地认为高效率编码就是快速编码，很多程序员不经思索和设计就直接编写代码。
+很不幸地是，这种 Leeroy Jenkins鲁莽做法将会编写出槽糕的代码，结果导致需要不断维护和修改代码，
+甚至有可能这些槽糕的代码将会被替换掉。因此，编码效率不仅以编码的时间，而且还有调试代码的时间。
+捡了芝麻丢了西瓜。磨刀不误砍柴工。</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Toyota&#8217;s assembly line of the 1980s was famously efficient due to its revolutionary approach towards defect prevention.  Each member of the assembly line was given the ability to halt production when they noticed a problem in their sector.  The idea was that it was better to halt production and fix the problem as early on as possible than to continue producing faulty units that would be tougher and more costly to fix/replace/recall later on.</p>
+</div>
+<div class="paragraph">
+<p>Developers often make the faulty assumption that productivity = cranking out code quickly.  Many programmers dive straight into coding without a second thought towards design.  Unfortunately, this Leeroy Jenkins approach towards software development tends to lead to sloppy, fragile code that will need to be constantly monitored and patched — perhaps even replaced altogether down the line.  Ultimately, productivity must be measured not only in how much time is spent writing it, but also by how much time is spent debugging it.  A short term gain may prove to be a long term loss if one isn&#8217;t careful.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__as_you_sow_so_shall_you_reap">种瓜得瓜，种豆得豆 （As you sow, so shall you reap)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>《注重实效的程序员》一书中有这样一段话解释“破窗理论”：</p>
+</div>
+<div class="paragraph">
+<p>不要留着“破窗户”（不良的设计、错误的决策或者糟糕的代码）不修。
+发现一个就修一个，如果没有足够的时间进行适当的修复，就先把它保留起来。
+或许你可以把出问题的代码放到注释中，或是显示“未实现”消息，或用虚拟数据加以替代。
+采取一些措施，防止进一步的恶化，这表明局势尚在掌控之中。</p>
+</div>
+<div class="paragraph">
+<p>我们见过整洁良好的系统在出现“破窗”之后立马崩溃。
+虽然促使软件崩溃的原因还有其他因素（我们将在其他地方接触到），但（对“破窗”）置之不理，肯定会更快地加速系统崩溃。</p>
+</div>
+<div class="paragraph">
+<p>简而言之，好的代码会促生好的代码，糟糕的代码也会促生糟糕的代码。
+别低估了习惯的力量。没人想去整理糟糕的代码，同样没人想把完美的代码弄得一团糟。
+写好你的代码，它才更可能经得住时间的考验。</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>"The Pragmatic Programmer" has this to say about the Broken Window theory:</p>
+</div>
+<div class="paragraph">
+<p>Don&#8217;t leave "broken windows" (bad designs, wrong decisions, or poor code) unrepaired. Fix each one as soon as it is discovered. If there is insufficient time to fix it properly, then board it up. Perhaps you can comment out the offending code, or display a "Not Implemented" message, or substitute dummy data instead. Take some action to prevent further damage and to show that you&#8217;re on top of the situation.</p>
+</div>
+<div class="paragraph">
+<p>We&#8217;ve seen clean, functional systems deteriorate pretty quickly once windows start breaking. There are other factors that can contribute to software rot, and we&#8217;ll touch on some of them elsewhere, but neglect accelerates the rot faster than any other factor.</p>
+</div>
+<div class="paragraph">
+<p>In short, good code begets good code and bad code begets bad code.  Do not underestimate the power of inertia.  No one wants to be the one who has to clean up sloppy code, but neither does anyone want to be the one that makes a mess out of beautiful code.  Write it right and your code will have a far better chance at standing the test of time.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__great_haste_makes_great_waste">欲速则不达（Great haste makes great waste)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>没时间对一个新功能进行适当的单元测试？好吧，你可以先完成一次测试运行，然后你就可以随时回来继续测试它。</p>
+</div>
+<div class="paragraph">
+<p>当访问Y属性时，会不会碰到奇怪的对象引用错误？无论怎样，把代码放到try/catch语句块中。我们要钓到大鱼啦！</p>
+</div>
+<div class="paragraph">
+<p>是不是似曾相识呢？这是因为我们在以前已经都做到了。并且在某些情况下、它是无可非议的。
+毕竟，我们有最后期限，还得满足客户和经理。但不要过于频繁操作，否则你会发现你的代码不稳定，
+有很多热修复、逻辑重复、未测试的方案和错误处理。最后，你要么是把事情草草做完，要么是把事情好好做完。</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Managers, clients, and programmers are getting more impatient by the day.  Everything needs to be done and it needs to be done now.  Because of this, the temptation to throw together hacks and quick-fixes becomes very tough to resist.</p>
+</div>
+<div class="paragraph">
+<p>No time to properly unit test a new feature?  Oh well, it works for the one test run you put it through.  You can always come back to it later!</p>
+</div>
+<div class="paragraph">
+<p>Mysterious object referencing error when you try to access property Y?  Whatever, just throw a try/catch block around the code.  We&#8217;ve got bigger fish to fry!</p>
+</div>
+<div class="paragraph">
+<p>Sound familiar?  It&#8217;s because we&#8217;ve all done it at some point in time.  And in certain instances, it is justifiable.  After all, we have deadlines to meet and clients/managers to satisfy.  But do it too often and you&#8217;ll soon find yourself with a very unstable code base full of hotfixes, duplicated logic, untested solutions, and porous error handling.  In the end, you have to strike a balance between getting things done and getting things done right.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__look_before_you_leap">三思而后行 (Look before you leap)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>“敏捷开发”这个词最近被频繁滥用，经常被程序员用来掩饰他们在软件开发过程中的糟糕规划/设计阶段。
+我们是设计者，看到产品朝正当方向有实质进展，我们理应高兴。
+但意外的是，UML图和用例分析似乎并不能满足我们的愿望。
+所以，在不知自己做什么的情况下或者不知自己身处何处时，我们开发人员经常就稀里糊涂地写代码了。</p>
+</div>
+<div class="paragraph">
+<p>这就好比你要去吃饭，但你根本没有想好去哪里吃。
+因为你太饿了，所以你迫不及待地找个餐馆，定个桌位。
+然后你上车开车后沿途在想（找地方吃饭）。
+只是，这样会耗费更多的时间，因为你要过较多的U型弯道，还在餐馆前停车，也许最后因等待时间过长而不吃了。
+确切地说，你最后应该能找到地方吃饭，但你可能吃的饭并不是你想吃的，并且这样花费的时间，可能比你直接在想去的餐馆订餐所花的时间更长。</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>The term "Agile Development" is used and abused frequently these days, often as a way for programmers to justify ignoring the dreaded planning/designing phase of software development.  We are creators, and as such we derive pleasure from seeing actual progress made towards a finished product.  Surprisingly, UML diagrams and use case analysis just don&#8217;t seem to satisfy that desire.  So, we developers often start off coding without any idea of what we are doing or where we are going.  It&#8217;s like heading out for dinner when you haven&#8217;t yet decided where you want to go.  You&#8217;re hungry so you don&#8217;t want to waste time finding a restaurant and booking a table.  Instead, you just hop in your car and figure you&#8217;ll think of something along the way.  Only, it ends up taking you longer because you have to make a bunch of U-turns and stops at restaurants that end up having too long of a wait.  True, you&#8217;ll probably find your way to food eventually, but you probably didn&#8217;t end up with the meal you wanted and it probably took a lot more time and hassle than it would have had you just called and booked a reservation at a restaurant you wanted to go to.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__silence_is_construed_as_approval">沉默就是赞同（Silence is construed as approval）</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>我什么都没看见！没看见！</p>
+</div>
+<div class="paragraph">
+<p>"破窗理论"与"变成惯性理论"有着宏观的联系。</p>
+</div>
+<div class="paragraph">
+<p>编程社区就好像一个现实社区。每个作品都是一个开发者的缩影。
+糟糕的代码发布的越多，就越容易反映现状。
+如果你不去努力编写优秀、整洁和稳定的代码，那你每天都将和糟糕的代码相伴了。</p>
+</div>
+<div class="paragraph">
+<p>同样地，如果你看到别人写出了糟糕的代码，你就要跟这个人提出来。
+注意，这时候机智就应该用上场了，一般情况下，程序员都愿意承认他们在软件开发中还是有不懂的地方，并且会感谢你的好意。
+互相帮助对大家都有利，而对问题视而不见，只会使问题一直存在。</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>This ties in with the theory on broken windows and programming inertia, only on a larger scale.</p>
+</div>
+<div class="paragraph">
+<p>The programming community is just that, a community.  Each programmer is a reflection on the craft.  The more bad code that is released into the wild, the more it becomes the status quo.  If you don&#8217;t make an effort to write good, clean,SOLID code, you will find yourself having to work with it on a day-to-day basis.</p>
+</div>
+<div class="paragraph">
+<p>Likewise, if you see poorly designed code written by someone else, you should make the effort to bring it up with the creator. I should note, however, that tact ought to be employed in such a situation. In general, programmers are willing to admit that they do not know everything there is to know about software development and will appreciate the gesture.  We all benefit when we help each other out.  Turning a blind eye to problems only perpetuates them.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__a_bird_in_the_hand_is_worth_two_in_the_bush">双鸟在林不如一鸟在手（A bird in the hand is worth two in the bush）</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>如果可以讨论系统架构和重构，那么就差找个时间把事情做完。为了使正常运作的东西更加简洁而做改动，权衡改动的利弊很重要。
+当然了，简洁是一个理想目标， 但总会有可以通过重构改进的代码。
+在编程世界中，为了代码不过时，会频繁简单改动代码。但有时候你又必须保证代码对客户有价值。
+那么，你面临一个简单窘境：你不能一石二鸟。你在重构旧代码上所发时间越多，你编写新代码的时间就越少。
+在及时改进代码和维护程序之间，也需要找到平衡点。</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>There is a time and place to discuss system architecture and refactoring opportunities, and a time to just get things done.
+It is important to weigh the pros and cons of revamping something that already works just to make it cleaner.  It&#8217;s an admirable goal, of course, but there will always be code that you want to restructure.  The programming world simply changes too frequently for code to not get outdated.  But at some point you have to provide value to your customers.  The simple fact remains: you can&#8217;t do two things at once.  The more time you spend refactoring old code, the less time you spend creating new code.  Striking a balance is critical to enhancing as well as maintaining your application in a timely manner.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__with_great_power_comes_great_responsibility">能力越大责任越大（With great power comes great responsibility）</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>毫无疑问，软件已成为我们生活中一个既基本又重要的一部分。正因如此，开发优秀软件格外重要。
+乒乓球游戏中的Bug是一回事，航天飞机导向系统或者航空交通管制系统中的Bug是另外一回事。
+Slashdot曾发表一文，讲述了单单Google News的一个小失误使一家公司股票蒸发11.4亿美元。
+其他例子参见《软件Bug引发的十次严重后果》。
+这些例子便说明了我们正行使着多大的权利。
+你今天写的代码，无论你是否有意，说不定有朝一日在重要的应用程序中派上用场，这想想都令人害怕。
+编写正确合格的代码吧！</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Software has undoubtedly become an integral and vital part of our lives.  Because of this, practicing good software development is more crucial than ever.  It&#8217;s one thing to have a bug in a game of Pong, it&#8217;s another to have one in the guidance system of a space shuttle or air traffic control system.  Slashdot recently posted an article describing how a minor glitch in Google News singlehandedly evaporated $1.14 billion in shareholder wealth.  Events such as these demonstrate how much power we wield.  It&#8217;s a little frightening to think that the code you write today, whether you intend it to or not, may one day be recycled and depended upon for mission-critical applications.  Write accordingly.</p>
+</div>
+</blockquote>
+</div>
+</div>
+</div>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lifei.github.io/2015/08/27/programming-proverbs/" data-title="每个程序员都应该熟知的编程格言 | 飛哥の技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/09/18/kerberos-ssh/" title="SSH 使用 Kerberos 认证">
+  <strong>上一篇：</strong><br/>
+  <span>
+  SSH 使用 Kerberos 认证</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/08/27/design-patterns-state/"  title="设计模式之状态模式(State)">
+ <strong>下一篇：</strong><br/> 
+ <span>设计模式之状态模式(State)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/08/27/programming-proverbs/" data-title="每个程序员都应该熟知的编程格言" data-url="http://lifei.github.io/2015/08/27/programming-proverbs/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__there_is_no_smoke_without_fire"><span class="toc-number">1.</span> <span class="toc-text">无风不起浪 (There is no smoke without fire)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__an_ounce_of_prevention_is_worth_a_pound_of_cure"><span class="toc-number">2.</span> <span class="toc-text">预防为主，治疗为辅 (An ounce of prevention is worth a pound of cure）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__as_you_sow_so_shall_you_reap"><span class="toc-number">3.</span> <span class="toc-text">种瓜得瓜，种豆得豆 （As you sow, so shall you reap)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__great_haste_makes_great_waste"><span class="toc-number">4.</span> <span class="toc-text">欲速则不达（Great haste makes great waste)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__look_before_you_leap"><span class="toc-number">5.</span> <span class="toc-text">三思而后行 (Look before you leap)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__silence_is_construed_as_approval"><span class="toc-number">6.</span> <span class="toc-text">沉默就是赞同（Silence is construed as approval）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__a_bird_in_the_hand_is_worth_two_in_the_bush"><span class="toc-number">7.</span> <span class="toc-text">双鸟在林不如一鸟在手（A bird in the hand is worth two in the bush）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__with_great_power_comes_great_responsibility"><span class="toc-number">8.</span> <span class="toc-text">能力越大责任越大（With great power comes great responsibility）</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/开山利器/" title="开山利器">开山利器<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/单体应用/" title="单体应用">单体应用<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微服务/" title="微服务">微服务<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/领域实体/" title="领域实体">领域实体<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/API/" title="API">API<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenVPN/" title="OpenVPN">OpenVPN<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/运维/" title="运维">运维<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">歸檔</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">11</span></li></ul>
+  </div>
+
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">標簽雲</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/OpenVPN/" style="font-size: 10px;">OpenVPN</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/单体应用/" style="font-size: 10px;">单体应用</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+    </div>
+  </div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 大家好，我是李飛。 <br/>
+			这是我的博客。</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/https://github.com/lifei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:lifei.vip@outlook.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc-nd/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-nc-nd.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="李飛">李飛</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"lifei"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

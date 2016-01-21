@@ -1,0 +1,701 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh_CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>飛哥の技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="李飛">
+    
+
+    
+    <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="飛哥の技术博客">
+<meta property="og:url" content="http://lifei.github.io/index.html">
+<meta property="og:site_name" content="飛哥の技术博客">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="飛哥の技术博客">
+<meta name="twitter:description">
+
+    
+    <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="飛哥の技术博客" title="飛哥の技术博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="飛哥の技术博客">飛哥の技术博客</a></h1>
+				<h2 class="blog-motto">关注业务开发</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:lifei.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main">
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/12/30/tech-stack/" title="业务研发的技术栈" itemprop="url">
+  
+    <h1 itemprop="name">业务研发的技术栈</h1>
+    
+     
+           <p itemprop="description" >语言
+
+
+
+
+Python2/3
+
+
+SQL
+
+
+HTML5
+
+
+CSS/Less
+
+
+Jinja2
+
+
+Javascript/ES2015
+
+
+Lua
+
+
+Cython
+
+
+C/C++
+
+
+Bash
+
+
+Go
+
+
+
+
+
+
+类库
+
+
+
+
+Flask
+
+
+nosetests
+
+
+D</p>
+        
+    
+    <time datetime="2015-12-29T16:00:00.000Z" itemprop="datePublished">2015-12-30</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/12/20/webpack/" title="基于 Webpack 的前端资源构建方案" itemprop="url">
+  
+    <h1 itemprop="name">基于 Webpack 的前端资源构建方案</h1>
+    
+     
+           <p itemprop="description" >背景
+
+
+前端资源构建过程中有一些特定的需求需要工具解决。
+
+
+
+
+需求
+
+
+
+
+支持 ES6、JSX、LESS 等格式的源文件编译成浏览器识别的格式；
+
+
+支持静态文件压缩；
+
+
+支持静态文件名 hash 化，支持 hash 后的文件名及路径注入到后端模版文件中；
+
+此特性可以</p>
+        
+    
+    <time datetime="2015-12-20T02:00:00.000Z" itemprop="datePublished">2015-12-20</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/11/30/wsgi-thrift/" title="基于 WSGI Middleware 的 Thrift Server" itemprop="url">
+  
+    <h1 itemprop="name">基于 WSGI Middleware 的 Thrift Server</h1>
+    
+     
+           <p itemprop="description" >背景
+
+
+随着项目模块化不断深入，越来越多的模块被拆分到不同的 GIT 库中。
+模块之间会存在相互的依赖，譬如多个项目都需要读取 Employee 的信息等。
+
+
+本地调用可以解决一部分问题，但即便是本地调用也需要依赖大量的外部资源，
+如 Database、Redis 等，这些资</p>
+        
+    
+    <time datetime="2015-11-29T16:00:00.000Z" itemprop="datePublished">2015-11-30</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/11/20/build-package-deploy-system/" title="构建、打包、部署系统设计" itemprop="url">
+  
+    <h1 itemprop="name">构建、打包、部署系统设计</h1>
+    
+     
+           <p itemprop="description" >背景
+
+
+任何项目都存在构建、打包和部署的需求。
+
+
+
+
+场景
+
+
+
+
+在指定 10 台机器上部署 A 项目的 B、C、D 服务。
+
+
+上线 A 项目最新的代码并重启 B、C、D 服务。
+
+
+A 项目依赖了 E、F 项目，上线的时候需要同时部署 E、F 项目的代码。
+
+
+E 项目</p>
+        
+    
+    <time datetime="2015-11-19T16:00:00.000Z" itemprop="datePublished">2015-11-20</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/10/03/openvpn-server/" title="搭建 OpenVPN 服务器" itemprop="url">
+  
+    <h1 itemprop="name">搭建 OpenVPN 服务器</h1>
+    
+     
+           <p itemprop="description" >部署OpenVPN
+
+
+以vpn.7v1.net为例，参考地址https://hub.docker.com/r/kylemanna/openvpn/。
+
+
+
+docker run --rm -it --hostname=vpn.7v1.net -p 1194:1194/udp -</p>
+        
+    
+    <time datetime="2015-10-02T18:05:16.000Z" itemprop="datePublished">2015-10-03</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/09/18/kerberos-ssh/" title="SSH 使用 Kerberos 认证" itemprop="url">
+  
+    <h1 itemprop="name">SSH 使用 Kerberos 认证</h1>
+    
+     
+           <p itemprop="description" >背景
+
+
+Kerberos 是一款第三方认证软件，提供专属的 Kerberos 认证协议。在集群环境下，对统一的认证管理非常有帮助。我们常见的 SSH 认证方式有用户名密码认证，公钥私钥认证等，这些认证比较适合个人使用，但如果管辖的机器过多，就会出现调整认证的不方便。譬如：有 1</p>
+        
+    
+    <time datetime="2015-09-18T06:32:00.000Z" itemprop="datePublished">2015-09-18</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/08/27/programming-proverbs/" title="每个程序员都应该熟知的编程格言" itemprop="url">
+  
+    <h1 itemprop="name">每个程序员都应该熟知的编程格言</h1>
+    
+     
+           <p itemprop="description" >无风不起浪 (There is no smoke without fire)
+
+
+设计糟糕的代码通常表现以下 的一些现象：
+
+
+
+
+巨大的类或者方法
+
+
+大区块注释的代码
+
+
+重复的逻辑
+
+
+过多if/else层次嵌套
+
+
+
+
+
+
+Poorly designed code ten</p>
+        
+    
+    <time datetime="2015-08-27T09:51:26.000Z" itemprop="datePublished">2015-08-27</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/08/27/design-patterns-state/" title="设计模式之状态模式(State)" itemprop="url">
+  
+    <h1 itemprop="name">设计模式之状态模式(State)</h1>
+    
+     
+           <p itemprop="description" >概述
+
+
+在软件开发过程中，应用程序可能会根据不同的情况作出不同的处理。
+最直接的解决方案是将这些所有可能发生的情况全都考虑到。
+然后使用if&amp;#8230;&amp;#8203; else语句来做状态判断来进行不同情况的处理。
+但是对复杂状态的判断就显得“力不从心了”。
+随着增加新的状态</p>
+        
+    
+    <time datetime="2015-08-27T03:21:15.000Z" itemprop="datePublished">2015-08-27</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/08/26/oo/" title="面向对象的设计原则" itemprop="url">
+  
+    <h1 itemprop="name">面向对象的设计原则</h1>
+    
+     
+           <p itemprop="description" >我们在应用程序开发中，一般要求尽量两做到可维护性和可复用性。
+
+
+应用程序的复用可以提高应用程序的开发效率和质量，节约开发成本，恰当的复用还可以改善系统的可维护性。
+而在面向对象的设计里面，可维护性复用都是以面向对象设计原则为基础的，这些设计原则首先都是复用的原则，
+遵循这些设计</p>
+        
+    
+    <time datetime="2015-08-26T12:33:31.000Z" itemprop="datePublished">2015-08-26</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/08/26/good-git-commit-message/" title="一个优秀的提交应该包含什么?" itemprop="url">
+  
+    <h1 itemprop="name">一个优秀的提交应该包含什么?</h1>
+    
+     
+           <p itemprop="description" >英文出处：http://dev.solita.fi/2013/07/04/whats-in-a-good-commit.html
+
+
+首先我们来听一个令人恶心的例子。
+
+
+你看到问题 F00-123被解决了。
+这是关于一个你自己很熟悉的子系统的Bug，所以直觉告诉你造成这个Bug</p>
+        
+    
+    <time datetime="2015-08-26T11:58:47.000Z" itemprop="datePublished">2015-08-26</time>
+  </a>
+</section>
+
+
+
+
+
+
+
+  <nav id="page-nav" class="clearfix unexpand">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
+  </nav>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/开山利器/" title="开山利器">开山利器<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/单体应用/" title="单体应用">单体应用<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微服务/" title="微服务">微服务<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/领域实体/" title="领域实体">领域实体<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/API/" title="API">API<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenVPN/" title="OpenVPN">OpenVPN<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/运维/" title="运维">运维<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">歸檔</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">11</span></li></ul>
+  </div>
+
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">標簽雲</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/OpenVPN/" style="font-size: 10px;">OpenVPN</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/单体应用/" style="font-size: 10px;">单体应用</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+    </div>
+  </div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 大家好，我是李飛。 <br/>
+			这是我的博客。</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/https://github.com/lifei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:lifei.vip@outlook.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc-nd/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-nc-nd.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="李飛">李飛</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"lifei"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+ </html>

@@ -1,0 +1,944 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh_CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>基于 Webpack 的前端资源构建方案 | 飛哥の技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="李飛">
+    
+
+    
+    <meta name="description" content="背景
+
+
+前端资源构建过程中有一些特定的需求需要工具解决。
+
+
+
+
+需求
+
+
+
+
+支持 ES6、JSX、LESS 等格式的源文件编译成浏览器识别的格式；
+
+
+支持静态文件压缩；
+
+
+支持静态文件名 hash 化，支持 hash 后的文件名及路径注入到后端模版文件中；
+
+此特性可以发布所有静态文件到一个统一的目录，由 nginx 直接接入，消除静态文件的版本概念，使得静态资源的上线更加方便、安全，无">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于 Webpack 的前端资源构建方案">
+<meta property="og:url" content="http://lifei.github.io/2015/12/20/webpack/index.html">
+<meta property="og:site_name" content="飛哥の技术博客">
+<meta property="og:description" content="背景
+
+
+前端资源构建过程中有一些特定的需求需要工具解决。
+
+
+
+
+需求
+
+
+
+
+支持 ES6、JSX、LESS 等格式的源文件编译成浏览器识别的格式；
+
+
+支持静态文件压缩；
+
+
+支持静态文件名 hash 化，支持 hash 后的文件名及路径注入到后端模版文件中；
+
+此特性可以发布所有静态文件到一个统一的目录，由 nginx 直接接入，消除静态文件的版本概念，使得静态资源的上线更加方便、安全，无">
+<meta property="og:updated_time" content="2016-01-21T17:19:55.354Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于 Webpack 的前端资源构建方案">
+<meta name="twitter:description" content="背景
+
+
+前端资源构建过程中有一些特定的需求需要工具解决。
+
+
+
+
+需求
+
+
+
+
+支持 ES6、JSX、LESS 等格式的源文件编译成浏览器识别的格式；
+
+
+支持静态文件压缩；
+
+
+支持静态文件名 hash 化，支持 hash 后的文件名及路径注入到后端模版文件中；
+
+此特性可以发布所有静态文件到一个统一的目录，由 nginx 直接接入，消除静态文件的版本概念，使得静态资源的上线更加方便、安全，无">
+
+    
+    <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="飛哥の技术博客" title="飛哥の技术博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="飛哥の技术博客">飛哥の技术博客</a></h1>
+				<h2 class="blog-motto">关注业务开发</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:lifei.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/12/20/webpack/" title="基于 Webpack 的前端资源构建方案" itemprop="url">基于 Webpack 的前端资源构建方案</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="李飛" target="_blank" itemprop="author">李飛</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-20T02:00:00.000Z" itemprop="datePublished"> 發表於 2015-12-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___4"><span class="toc-number">4.</span> <span class="toc-text">工程结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___6"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__webpack_config_js"><span class="toc-number">6.</span> <span class="toc-text">附录：webpack.config.js 示例</span></a></li></ol>
+		
+		</div>
+		
+		<div class="sect1">
+<h2 id="__">背景</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>前端资源构建过程中有一些特定的需求需要工具解决。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___2">需求</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>支持 ES6、JSX、LESS 等格式的源文件编译成浏览器识别的格式；</p>
+</li>
+<li>
+<p>支持静态文件压缩；</p>
+</li>
+<li>
+<p>支持静态文件名 hash 化，支持 hash 后的文件名及路径注入到后端模版文件中；</p>
+<div class="paragraph">
+<p>此特性可以发布所有静态文件到一个统一的目录，由 nginx 直接接入，消除静态文件的版本概念，使得静态资源的上线更加方便、安全，无需回滚。</p>
+</div>
+</li>
+<li>
+<p>支持发布到任意路径或网址下，发布后的网址自动注入到后端模版文件中；</p>
+</li>
+<li>
+<p>支持静态文件自动合并，能够很好的处理公共库和组件文件的合并；</p>
+<div class="paragraph">
+<p>多页面应用更好的复用公共组件，利用 HTTP 协议缓存机制。</p>
+</div>
+</li>
+<li>
+<p>先进的依赖处理机制；</p>
+</li>
+<li>
+<p>兼容后端模版引擎，不冲突；</p>
+</li>
+<li>
+<p>对开发友好，方便调试；</p>
+<div class="ulist">
+<ul>
+<li>
+<p>支持环境变量，区分开发环境和生产环境；</p>
+</li>
+<li>
+<p>方便调试和开发，可见即可得；</p>
+</li>
+<li>
+<p>强大方便的 Source Map 支持，可以直接对源代码进行调试；</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>第三方库的支持，如：Framework7 不能采用 <code>import $$ from 'dom7';</code> 这种方式被引入；</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___3">方案</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>经调研，决定采用 webpack 作为前端构建工具。对于各种需求，解决方案如下：</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>采用 webpack 的 babel-loader 解决 ES6、JSX 等语言的编译问题；</p>
+</li>
+<li>
+<p>采用 less-loader 解决 less 语言的编译问题；</p>
+</li>
+<li>
+<p>静态文件压缩采用 webpack 提供的 UglifyJsPlugin 插件实现；</p>
+</li>
+<li>
+<p>采用环境变量 NODE_ENV 来区分生产环境和开发环境；</p>
+</li>
+<li>
+<p>后端模版的支持</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>无需注入的模版可采用 file-loader 直接拷贝到目标目录下；</p>
+</li>
+<li>
+<p>需要注入静态文件的模版使用 HtmlWebpackPlugin 插件来生成；</p>
+<div class="ulist">
+<ul>
+<li>
+<p>在 HtmlWebpackPlugin 插件中使用 2.0 版支持的 loader 机制并配合 raw-loader 来解决 HtmlWebpackPlugin所采用的 Javascript 模版与 Jinja2 模版语法相互冲突的问题；</p>
+</li>
+<li>
+<p>对于 Jinja2 模版中使用 extends 模版集成特性且需要注入静态文件的情况，通过子模版里面显示的声明<code>&lt;/head&gt;</code>和<code>&lt;/body&gt;</code>来实现。同时开启 HtmlWebpackPlugin 插件的 minify 特性，可以去掉多余的<code>&lt;/head&gt;</code>和<code>&lt;/body&gt;</code>；</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>字体、图片文件采用 file-loader 拷贝至目标路径，需要修改的开启 hash 化特性；</p>
+</li>
+<li>
+<p>静态资源文件名 hash 化采用 webpack 提供的<code>[chunkhash]</code>或<code>[hash]</code>机制来实现，保留8位；</p>
+</li>
+<li>
+<p>使用 CommonsChunkPlugin 插件提取公共的 chunks 合并到一个文件中；</p>
+</li>
+<li>
+<p>使用 ExtractTextPlugin 插件将 chunks 提取成独立的文件；</p>
+</li>
+<li>
+<p>对一些不规范的第三方库，可以采用 Webpack 的 extenals 机制来引入；</p>
+</li>
+<li>
+<p>将公共的库文件都放到 libs.js 下，避免每次构建时都重新生成这个文件，导致 HTTP 协议的缓存机制失效，刷新页面时需要下载大量的重复的文件。</p>
+</li>
+<li>
+<p>开启 devtool，设置为 <code>#eval-module-source-map</code>，这种设置对开发和调试最友好；</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___4">工程结构</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>前端工程的目录结构约定如下：</p>
+</div>
+<div class="listingblock">
+<div class="title">源文件</div>
+<div class="content">
+<pre>/front-end
+  /apps  &lt;- 模块
+    /list &lt;- 组件或页面
+      list.js
+      list.html
+    /detail
+      detail.js
+      detail.html
+  /shares
+    ...
+  /common
+    base.html</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">目标文件</div>
+<div class="content">
+<pre>/templates
+  /apps
+     list.html
+     detail.html
+     base.html
+  /shares
+     ...
+/static
+  /js
+    /apps
+      list.847263.min.js
+      detail.847263.min.js
+    /shares
+      ...
+  /css
+    apps.829384.min.css
+    shares.123872.min.css
+  /images
+  /fonts</pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___5">对应关系</h3>
+<div class="paragraph">
+<p><strong>模块/组件/类别 &#8658; 类别/模块/组件</strong></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="title">讨论：前端文件统一放置在一个单独的目录或 git 库</div>
+<div class="paragraph">
+<p>静态文件单独放置在一个统一的目录或 git 库下，主要的出发点是：可以比较方便的获取到前端静态文件的版本号。</p>
+</div>
+<div class="paragraph">
+<p>执行命令:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git log -1 --pretty=%h origin/online -- front-end</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>可以获取到前端目录最新的版本号，通过比对，可以获知本次提交有没有更新前端源文件，从而做到智能打包。</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___6">部署</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="___7">静态资源</h3>
+<div class="paragraph">
+<p>由于引入静态资源文件名 hash 化的特性，消除了静态资源的版本概念，
+静态资源可采用 nginx 直接接入的方式来部署，譬如直接接入 MFS、NFS、GFS 等公共存储的静态文件目录。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___8">后端模版</h3>
+<div class="paragraph">
+<p>构建后的后端模版目标文件是后端代码的一部分，必须要部署在各台后端机器的特定目录下；
+因此模版文件采用<strong>改进过的包更新方式</strong>来实现模版文件的部署。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+包更新会新建一个主题来讨论。
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__webpack_config_js">附录：webpack.config.js 示例</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="title">webpack.config.js</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="pi">'use strict'</span>;
+
+<span class="comment">/**
+ * Webpack Entry
+ */</span>
+<span class="keyword">let</span> entry = &#123;
+  <span class="string">'apps/list'</span>: [
+    <span class="string">'./apps/static/js/list.js'</span>
+  ],
+  <span class="string">'apps/detail'</span>: [
+    <span class="string">'./apps/static/js/detail.js'</span>
+  ],
+  <span class="string">'apps/manifest'</span>: [
+    <span class="string">'./apps/templates/manifest.xml'</span>
+  ],
+  <span class="string">'shares/app'</span>: [
+    <span class="string">'./shares/static/share.less'</span>
+  ],
+  <span class="string">'common'</span>: [
+    <span class="string">'jquery'</span>,
+    <span class="string">'./common/less/app.less'</span>
+  ],
+  <span class="string">'templates'</span>: [
+    <span class="string">'./common/templates/ga.html'</span>,
+    <span class="string">'./common/templates/base.html'</span>,
+    <span class="string">'./stats/templates/dragon_tiger_rank.html'</span>
+  ]
+&#125;;
+
+
+<span class="comment">/**
+ * 独立的页面
+ */</span>
+<span class="keyword">let</span> htmls = [&#123;
+  chunks: [<span class="string">'common'</span>, <span class="string">'apps/list'</span>],
+  template: <span class="string">'apps/templates/list.html'</span>
+&#125;, &#123;
+  chunks: [<span class="string">'common'</span>, <span class="string">'apps/detail'</span>],
+  template: <span class="string">'apps/templates/detail.html'</span>
+&#125;, &#123;
+  chunks: [<span class="string">'shares/app'</span>],
+  template: <span class="string">'shares/templates/app.html'</span>
+&#125;, &#123;
+  chunks: [<span class="string">'shares/app'</span>],
+  template: <span class="string">'shares/templates/error.html'</span>
+&#125;, &#123;
+  chunks: [<span class="string">'shares/app'</span>],
+  template: <span class="string">'shares/templates/outofdate.html'</span>
+&#125;, &#123;
+  chunks: [<span class="string">'shares/app'</span>],
+  template: <span class="string">'shares/templates/dingtalk.html'</span>
+&#125;];
+
+<span class="comment">// 以下代码所有工程保持一致</span>
+
+<span class="keyword">const</span> CommonsChunkPlugin = <span class="built_in">require</span>(<span class="string">'webpack/lib/optimize/CommonsChunkPlugin'</span>);
+<span class="keyword">const</span> RemoveEmptyChunksPlugin = <span class="built_in">require</span>(<span class="string">'webpack/lib/optimize/RemoveEmptyChunksPlugin'</span>);
+<span class="keyword">const</span> MergeDuplicateChunksPlugin = <span class="built_in">require</span>(<span class="string">'webpack/lib/optimize/MergeDuplicateChunksPlugin'</span>);
+<span class="keyword">const</span> RemoveParentModulesPlugin = <span class="built_in">require</span>(<span class="string">'webpack/lib/optimize/RemoveParentModulesPlugin'</span>);
+<span class="keyword">const</span> UglifyJsPlugin = <span class="built_in">require</span>(<span class="string">'webpack/lib/optimize/UglifyJsPlugin'</span>);
+<span class="keyword">const</span> ExtractTextPlugin = <span class="built_in">require</span>(<span class="string">'extract-text-webpack-plugin'</span>);
+<span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>);
+<span class="keyword">const</span> debug = process.env.NODE_ENV !== <span class="string">'production'</span>;
+<span class="keyword">const</span> COMMON_INIT = <span class="string">'static/js/init.js'</span>;
+
+<span class="keyword">let</span> plugins = [
+  <span class="keyword">new</span> CommonsChunkPlugin(&#123;
+    name: <span class="string">'common'</span>,
+    filename: COMMON_INIT
+  &#125;),
+  <span class="keyword">new</span> ExtractTextPlugin(<span class="string">'css/[name]'</span>, debug ? <span class="string">'static/css/[name].css'</span> : <span class="string">'static/css/[name].[hash:8].css'</span>)
+];
+
+<span class="keyword">if</span> (!debug) &#123;
+  plugins.push(<span class="keyword">new</span> UglifyJsPlugin(&#123;
+    compress: &#123;
+      warnings: <span class="literal">false</span>
+    &#125;,
+    except: [<span class="string">'$super'</span>, <span class="string">'$'</span>, <span class="string">'exports'</span>, <span class="string">'require'</span>]
+  &#125;));
+&#125;
+
+htmls.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">o</span>) </span>&#123;
+  <span class="keyword">let</span> template = o.template;
+  <span class="keyword">let</span> filename = template.replace(<span class="string">'/templates'</span>, <span class="string">''</span>);
+  <span class="keyword">let</span> params = &#123;
+    chunks: o.chunks,
+    filename: <span class="string">'templates/'</span> + filename,
+    template: <span class="string">'!raw!./'</span> + template,
+    inject: <span class="literal">true</span>,
+    minify: &#123;
+      removeComments: <span class="literal">true</span>
+    &#125;
+  &#125;;
+
+  plugins.push(<span class="keyword">new</span> HtmlWebpackPlugin(params));
+&#125;);
+
+<span class="built_in">module</span>.exports = &#123;
+  entry: entry,
+  output: &#123;
+    path: <span class="string">'../rutland/'</span>,
+    filename: debug ? <span class="string">'static/js/[name].js'</span> : <span class="string">'static/js/[name].[chunkhash:8].min.js'</span>,
+    publicPath: <span class="string">'/rutland/'</span>
+  &#125;,
+  <span class="built_in">module</span>: &#123;
+    loaders: [&#123;
+      test: <span class="regexp">/\.js[x]?$/</span>,
+      exclude: <span class="regexp">/node_modules/</span>,
+      loader: <span class="string">'babel?presets[]=es2015&amp;presets[]=react'</span>
+    &#125;, &#123;
+      test: <span class="regexp">/\.less$/</span>,
+      loader: ExtractTextPlugin.extract(<span class="string">'style-loader'</span>, <span class="string">'css-loader!less-loader'</span>)
+    &#125;, &#123;
+      test: <span class="regexp">/\.css$/</span>,
+      loader: ExtractTextPlugin.extract(<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>)
+    &#125;, &#123;
+      test: <span class="regexp">/\.(ttf|eot|svg|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/</span>,
+      loader: <span class="string">'file?name=static/font/[name].[ext]'</span>
+    &#125;, &#123;
+      test: <span class="regexp">/\.(html|xml)$/</span>,
+      loader: <span class="string">'file?name=templates/[1]/[2]&amp;regExp=([^/]+)[/\\\\]templates[/\\\\](.+)$'</span>
+    &#125;]
+  &#125;,
+  plugins: plugins
+&#125;;</code></pre>
+</div>
+</div>
+</div>
+</div>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Webpack/">Webpack</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lifei.github.io/2015/12/20/webpack/" data-title="基于 Webpack 的前端资源构建方案 | 飛哥の技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/12/30/tech-stack/" title="业务研发的技术栈">
+  <strong>上一篇：</strong><br/>
+  <span>
+  业务研发的技术栈</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/11/30/wsgi-thrift/"  title="基于 WSGI Middleware 的 Thrift Server">
+ <strong>下一篇：</strong><br/> 
+ <span>基于 WSGI Middleware 的 Thrift Server
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/12/20/webpack/" data-title="基于 Webpack 的前端资源构建方案" data-url="http://lifei.github.io/2015/12/20/webpack/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___4"><span class="toc-number">4.</span> <span class="toc-text">工程结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___6"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__webpack_config_js"><span class="toc-number">6.</span> <span class="toc-text">附录：webpack.config.js 示例</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分類</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/开山利器/" title="开山利器">开山利器<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/单体应用/" title="单体应用">单体应用<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/微服务/" title="微服务">微服务<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/领域实体/" title="领域实体">领域实体<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/API/" title="API">API<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenVPN/" title="OpenVPN">OpenVPN<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/运维/" title="运维">运维<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">歸檔</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">11</span></li></ul>
+  </div>
+
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">標簽雲</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/OpenVPN/" style="font-size: 10px;">OpenVPN</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/单体应用/" style="font-size: 10px;">单体应用</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+    </div>
+  </div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 大家好，我是李飛。 <br/>
+			这是我的博客。</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/https://github.com/lifei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:lifei.vip@outlook.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc-nd/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-nc-nd.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="李飛">李飛</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"lifei"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

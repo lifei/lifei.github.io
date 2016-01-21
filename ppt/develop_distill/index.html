@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>开发精要</title>
+
+		<meta name="description" content="开发精要">
+		<meta name="author" content="李飛">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="http://lab.hakim.se/reveal-js/css/reveal.css">
+		<link rel="stylesheet" href="../../css/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="http://lab.hakim.se/reveal-js/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = 'http://lab.hakim.se/reveal-js/' + (window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css');
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="http://lab.hakim.se/reveal-js/lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+		<style>
+		ul, ol {
+			text-align: left;
+			width: 100%;
+		}
+
+		p {
+			text-align: left;
+		}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown>
+					<script type="text/plain">
+					# DEVELOP DISTILLED
+
+					#### lifei@Bytedance.com
+					</script>
+				</section>
+				<section>
+					<section data-markdown>
+						<script type="text/plain">
+						# 从数据结构/算法说起
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						程序等于数据结构加算法。
+
+						尼古拉斯·沃斯
+						<!-- .element: style="text-align: right" -->
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						烂程序员关心的是代码。好程序员关心的是数据结构和它们之间的关系。
+						<!-- .element: style="text-align: left" -->
+
+						林纳斯·托瓦兹
+						<!-- .element: style="text-align: right" -->
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 问题
+
+						* 微博
+						  1. 聚合：把N个好友的微博聚合成Feed
+						  2. 翻页：load more/refresh
+						  3. 我关注的人/关注我的人 还关注了
+						* 好友的评论
+						  * 从几千条评论中找出好友的评论
+						* LRU本地缓存
+						* 阅读排行榜
+						* 组织架构/汇报关系
+						* 是否看过某个段子
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 常用的数据结构
+
+						* list, set, dict, heap, linked list, queue
+						* skip list, sorted set, bitmap, bloom filter
+						* tree, B-Tree, LSM-Tree
+						* graph
+						* ...
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 开源组件中的数据结构
+
+						* 数据库
+						* memcached
+						* redis
+						* leveldb、bigtable、HBase
+						* GIT
+						</script>
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						<script type="text/plain">
+						# 面向对象
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 面向对象(OO)
+
+						* 面向对象是一种对现实世界理解和抽象的方法，是计算机编程技术发展到一定阶段后的产物。
+						* 面向对象是指一种程序设计范型，同时也是一种程序开发的方法。
+						它将对象作为程序的基本单元，将程序和数据封装其中，以*提高软件的重用性、灵活性和扩展性*。
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 目的
+						### 提高软件的重用性、灵活性和扩展性
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 几个名词
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 原则 (Principle)
+
+						* 原则是指事物的本质，是事物的原生规则。
+						* 原则是看待问题、处理问题的准则。
+						对问题的看法和处理，往往会受到立场、观点、方法的影响。
+						* 原则是从自然界和人类历史中抽象出来的，正确反映事物的客观规律。
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 模式 (Pattern)
+
+						* 模式是指从生产经验和生活经验中经过抽象和升华提炼出来的核心知识体系。
+						* *解决某一类问题的方法论*。
+						把解决某类问题的方法总结归纳到理论高度，那就是模式。
+						* 模式是一种指导，在一个良好的指导下，有助于你完成任务，
+						有助于你作出一个优良的设计方案，达到事半功倍的效果，而且会得到解决问题的最佳办法。
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/plain">
+						## 反模式 (Anti-Pattern)
+
+						* 指的是在实践中明显出现但又低效或是有待优化的设计模式，是用来解决问题的带有共同性的不良方法。
+						* 1995由Andrew Koenig在其著作《反模式》一书中提出。
+						* 两个关键因素
+						  1. 行动、过程和结构中的一些重复出现的乍一看是有益的，但最终得不偿失的模式。
+						  2. 在实践中证明且可重复的清晰记录的重构方案。
+						* 代码层面： `Bad Smell` (马丁·福勒的《重构》一书)
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 面向对象的设计原则
+
+						* 单一职责原则 (Single-Responsibility Principle)
+						* 里氏代换原则 (Liskov Substitution Principle)
+						* 依赖倒置原则 (Dependence Inversion Principle)
+						* 合成/聚合复用原则 (Composite/Aggregate Reuse Principle)
+						* 迪米特原则 (Law of Demeter)
+						* 接口隔离原则 (Interface Segregation Principle)
+						* 开放－封闭原则 (Open-Closed Principle)
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 设计模式
+
+						* GOF在1995年出版《设计模式》一书
+						* 设计模式就是实现了面向对象设计原则的方法论。
+						* 23种经典的设计模式
+						* 程序员沟通语言: Factory、Builder、Strategy、Observor、Proxy、
+						Adapter、Listener、Delegate、Prototype、Visitor、Iterator、
+						Decorator、Bridge、Mediator、Singleton、State、Event/Request...
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 问题：预留库存
+
+						1. 库存有三种：开屏、CPT、GD
+						2. 预留条件：
+						  1. GD广告需要在GD系统中检查余量
+						  2. 开屏和CPT检查是否有冲突，但检查逻辑不一样
+						  3. 检查账户中的钱是否够预扣费
+						3. 预留操作:
+						  1. 在数据库中登记预留记录
+						  2. GD广告需要在GD系统中预留
+						  3. 对账户中的钱进行预扣费操作
+						4. 异常处理
+						  1. 数据库回滚
+						  2. GD系统取消预留
+						  3. 取消预扣费
+
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 模板方法(Template Method)
+
+						```python
+						class AbsReserveHandler(object):
+							def check():
+								raise NotImplement()
+							def reserve():
+								raise NotImplement()
+							def callback():
+								raise NotImplement()
+							def do():
+								self.check()
+								try:
+									self.reserve()
+								except:
+									self.callback()
+
+						class GDReserveHandler(object):
+							def check():
+								gd_check()
+							def reserve():
+								gd_reserve()
+							def callback():
+								gd_callback()
+						...
+
+						# 反模式
+						```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						<!-- .slide: style="text-align: left" -->
+						## 问题：React跨平台组件
+
+						* React
+						* React iOS
+						* React Android
+						* 实现一次业务逻辑跑通三个平台: React Bytedance
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						# UML建模语言
+
+						* 用于设计沟通
+						* 工程师基本技能
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 分析模式
+						* 财务、合同、交易
+						* 组织结构、权限设计
+						* ...
+						</script>
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						<script type="text/plain">
+						# 架构模式
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						* 理论
+						  * 企业应用架构模式
+						  * MVC/MVVM/MVT/Flux
+						  * RPC、RESTful
+						  * OAUTH2
+						  * 更多...
+						* 实践
+						  * ORM
+						  * Spring、Hibernate
+						  * Rails/Django/flask
+						  * AngularJS/React
+						  * thrift
+
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 企业应用架构模式
+
+						* 《企业应用架构模式》作者在一组专家级合作者的帮助下，
+						将40多种经常出现的解决方案转化成模式，最终写成这本能够应用于任何一种企业应用平台的、
+						关于解决方案的、不可或缺的手册。
+						* 《企业应用架构模式》获得了2003年度美国软件开发杂志图书类的生产效率奖和读者选择奖。
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## [Patterns Implemented by SQLAlchemy](http://techspot.zzzeek.org/2012/02/07/patterns-implemented-by-sqlalchemy/)
+
+						17种设计模式
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						![Patterns Implemented by SQLAlchemy](sqlalchemy2.png)
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						<!-- .slide: style="text-align: left" -->
+						## 问题：使用MySQL实现发票连号
+
+						1. `autoincrement`不能保证连号
+						2. 笨方法: 预先生成记录
+						2. 本质：ID生成及并发冲突处理
+						3. 模式：ID生成器、乐观离线锁
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						<!-- .slide: style="text-align: left" -->
+						## 问题：Request对象
+
+						cookie里存储有install_id(安装ID)，数据库里存有install_id与
+						device_id(设备ID)的映射关系；
+
+						1. 实现`request.device_id`
+						1. 实现`request.install`
+						3. 与`get_device_id(request)`比较
+
+						`city_code`可以通过`ip2city`计算出来。
+
+						1. 实现`request.city_code`
+						1. 与`get_city_code(request)`比较
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## Flux
+
+						* Flux is the application architecture that Facebook uses for building client-side web applications.
+						* It complements React's composable view components by utilizing a unidirectional data flow.
+						* It's more of a pattern rather than a formal framework.
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						![](http://cdn4.infoqstatic.com/statics_s1_20150902-03315u3/resource/news/2014/05/facebook-mvc-flux/zh/resources/0519000.png)
+
+						![](https://facebook.github.io/flux/img/flux-simple-f8-diagram-with-client-action-1300w.png)
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 没有银弹
+
+						1. 悲观锁 VS 乐观锁
+						2. 单体应用 VS 微服务
+						3. cookie VS session
+						4. BPM VS Koloda
+
+						![](https://yobriefca.se/images/blog/micro-service-architecture.png)
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						# 苦练基本功，熟悉每种模式，才能游刃有余
+
+						</script>
+					</section>
+
+				</section>
+				<section>
+					<section data-markdown>
+						<script type="text/plain">
+						# 工程模式
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						* 版本控制: git, gerrit
+						* 单元测试: unittest, coverage...
+						* CI: Jenkins, pep8, pylint, eslint...
+						* 配置管理: json/yaml, etcd/zookeeper, naming service
+						* 日志管理: logging, scribe, logstash...
+						* 监控: opentsdb, statsd...
+						* 部署: virtualenv, docker, puppet, uwsgi...
+						* 任务调度: celery, gearman, Storm...
+						* 前端: fis...
+						* 基础组件、性能调优、其他...
+
+						发现它们背后解决的问题及采用的方案，Why & How
+						## 最佳实践
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 问题：配置管理
+
+						#### 当我们谈论配置管理时我们在谈论什么
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						1. 多环境：生产环境、测试环境、开发环境
+						2. 可复用：环境无关配置复用
+						3. 全局唯一：单例、可访问
+						4. 键值设计
+						4. 服务注册、发现
+						5. 灾备
+						6. 连接管理
+						7. ......
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 问题：日志管理
+
+						#### 当我们谈论日志管理时我们在谈论什么
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 问题：API版本号的设计
+
+						* 版本号的生成
+						  1. 自增整数
+						  2. 客户端版本号
+						  3. 每个实体一个版本，拼出来一个版本号
+						* 版本号的管理
+						  1. 每个API独立一个版本
+						  2. 所有API共用一个版本
+						  3. 每个实体一个版本
+  						* 版本号放在哪
+  						  1. https://domain/v1/service/name/
+  						  2. https://domain/service/name/v1/
+  						  3. 放在HEAD中(RESTful)
+
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						当我们谈论API版本号时我们在谈论什么
+
+						* 向前兼容
+						* 实现简单
+						* 负载均衡友好
+						* 缓存/CDN友好
+
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 问题：优雅地重启
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						# 产品思维
+
+						### 研发解决研发自己的问题
+						</script>
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						<script type="text/plain">
+						# Case Study
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 资源管理
+
+						#### 指定日期范围内，各资源的占用情况
+
+						| 资源名称 | 09-01 | 09-02 | 09-03 |
+						| ---- | ---- |
+						| 开屏轮播一| 红色(项目1) | 黄色(项目2) | 灰色(项目3) |
+						| 开屏轮播二| 红色(项目4) | 黄色(项目5) | 灰色(项目6) |
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 业务
+
+						```
+						{
+							"开屏轮播一": {
+								"09-01": {
+									"color": "red",
+									"projects": [...]
+								},
+								"09-02": {
+									"color": "yellow",
+									"projects": [...]
+								},
+								...
+							},
+							...
+						}
+						```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## API
+
+						```json
+						{
+							success: true,
+							data: [{
+								"name": "开屏轮播一",
+								"dates": [{
+									"date": "09-01",
+									"color": "red",
+									"projects": [{
+										"name": "项目1"
+									}]
+								}, {
+									"date": "09-02",
+									"color": "yellow",
+									"projects": [{
+										"name": "项目2"
+									}]
+								}]
+							}]
+						}
+						```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## DB
+
+						##### plan表
+
+						| id | resource_id | project_id | date |
+						| ---- | ---- |
+						| 1 | 开屏轮播一 | 项目1 | 09-01|
+						| 2 | 开屏轮播一 | 项目2 | 09-02|
+						| 3 | 开屏轮播一 | 项目3 | 09-03|
+						| 4 | 开屏轮播二 | 项目4 | 09-01|
+						| 5 | 开屏轮播二 | 项目5 | 09-02|
+						| 6 | 开屏轮播二 | 项目6 | 09-03|
+
+						另外还有project表、resource表。
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 组织树
+
+						* 汇报关系决定可见性
+						* 部门决定筛选范围
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 业务
+
+						| | |
+						|---|---|
+						|![](http://www.plantuml.com/plantuml/img/SoWkIImgAStDuU8goIp9ILLujh7zMTVIfwsRds_U_NJsFYukBYjdLtyhBgwm04C5NLqx1I0Fo3Q2ixby4_CIqrEB8B90LJ018xW0JCGOAc844p212t2vvXRav5UcfaACWPa95pP25OQB6oEB6y65JP25ZRcu75BpKa2U1000)|![](http://www.plantuml.com/plantuml/img/SoWkIImgAStDuU8goIp9ILLusRpYvVGLJsVlu-BYoijFILLuicFMqww5pnTCUTe_KI6nMC4H8loqhHMezEdsfKzRjuE4dU32pxPjHQXsHXREz0z6oBWWopZcfHJbPwOWP5svk5mKT7NjW0QuGcbd1I3boEK4vZfoSJcavgK07Gu0)
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						```
+						class EmployeeNode(object):
+							employee_id  # 员工ID
+							department_id  # 员工所属部门ID
+							children  # 子节点
+
+						class DepartmentNode(object):
+							children  # 子节点
+							department_id  # 部门ID
+
+						# 检索出子节点
+						children = find_subnodes(root, employee_id)
+
+						# 从子节点中筛选出部门
+						children = filter_by_department(children, departments)
+
+						# 按部门重建展示数据结构
+						display_data = rebuild(children, departments)
+						```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 展示
+						![](uml3.png)
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 存储
+
+						#### employee_leader_ref表
+						| id | employee_id | leader_id |
+						|---|---|---|
+						|1|2|1|
+						|2|3|1|
+						|3|4|1|
+
+						#### department_ref表
+						| id | department_id| parent_id |
+						|---|---|
+						|1|2|1|
+						|2|3|2|
+						|3|4|2|
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/plain">
+						## 各个层的数据结构特点
+
+						* 业务：
+						  * 读多写少/写多读少
+						  * 更新频繁
+						  * 反映业务逻辑
+						  * 关注检索和筛选条件
+						* 存储
+						  * 关系型数据库: 索引
+						  * NoSQL: K/V、文档、键有序、复杂数据结构
+						* 缓存：同NoSQL，业务相关
+						* 展示：
+						  * 组件化
+						  * 内聚
+
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/plain">
+						## 缓存
+
+						* 本质是一种资源交换的策略
+						* 相对廉价的资源换取稀缺的资源
+						* 空间换CPU或IO
+						* 业务研发中一般对业务友好、对展示友好
+
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						烂程序员关心的是代码。好程序员关心的是数据结构和它们之间的关系。
+						<!-- .element: style="text-align: left" -->
+
+						林纳斯·托瓦兹
+						<!-- .element: style="text-align: right" -->
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						烂程序员关心的是代码。好程序员关心的是数据结构和它们之间的关系。
+						<!-- .element: style="text-align: left" -->
+
+						林纳斯·托瓦兹
+						<!-- .element: style="text-align: right" -->
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						烂程序员关心的是代码。好程序员关心的是数据结构和它们之间的关系。
+						<!-- .element: style="text-align: left" -->
+
+						林纳斯·托瓦兹
+						<!-- .element: style="text-align: right" -->
+						</script>
+					</section>
+				</section>
+				<section>
+					<section data-markdown>
+						<script type="text/plain">
+						# 业务研发
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 特点
+
+						1. 业务逻辑复杂
+						2. 需求变化快
+						3. 多种驱动维度：产品、技术、数据、用户、设计
+						4. 持续交付
+						5. 快速反馈
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 敏捷开发
+
+						1. 顺应市场的对价值的诉求和日益复杂的业务而产生的方法论。
+						2. 追求高质量软件的方法论和过程。
+						3. 基础：*单元测试、自动化构建与持续集成*。
+
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 敏捷利器
+
+						1. 工具：Python、WebStorm、pep8、pylint、ESLint等。
+						2. 设计评审：分享你的设计，得出最佳实践。
+						3. Code Review：高标准、高要求、共同进步。
+						4. 单元测试、自动化测试：保驾护航。
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 软实力
+
+						1. 产品思维，关注效果。
+						2. 关心进度，推进项目，关注产出(闯红灯理论)。
+						3. 高质量，可依赖。
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/plain">
+						## 工作模式
+
+						* 写文档
+						* 工作安排
+						* 沟通
+						</script>
+					</section>
+				</section>
+				<section data-markdown>
+					<script type="text/plain">
+					# 分享你的模式
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/plain">
+					# End
+
+					Note:
+					This will only display in the notes window.
+					</script>
+				</section>
+			</div>
+		</div>
+
+		<script src="http://lab.hakim.se/reveal-js/lib/js/head.min.js"></script>
+		<script src="http://lab.hakim.se/reveal-js/js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'http://lab.hakim.se/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'http://lab.hakim.se/reveal-js/plugin/markdown/marked.js', condition: function() { return true; } },
+					{ src: 'http://lab.hakim.se/reveal-js/plugin/markdown/markdown.js', condition: function() { return true; } },
+					{ src: 'http://10.4.17.164:8000/plugin/highlight/highlight.js', async: true, condition: function() { return true; }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'http://lab.hakim.se/reveal-js/plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

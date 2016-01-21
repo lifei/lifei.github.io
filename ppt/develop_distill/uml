@@ -1,0 +1,23 @@
+@startuml
+
+title 汇报关系图
+
+
+:CEO:
+
+VP1 --> CEO
+VP2 --> CEO
+
+Manager1 --> VP1
+Manager2 --> VP1
+
+Manager3 --> VP2
+Manager4 --> VP2
+
+Employee1 --> Manager1
+Employee2 --> Manager1
+
+Employee3 --> Manager2
+Employee4 --> Manager3
+
+@enduml

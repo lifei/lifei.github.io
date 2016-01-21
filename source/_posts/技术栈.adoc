@@ -1,0 +1,84 @@
+title: 业务研发的技术栈
+id: tech-stack
+date: 2015-12-30
+---
+
+= 技术栈
+
+== 语言
+
+. Python2/3
+. SQL
+. HTML5
+. CSS/Less
+. Jinja2
+. Javascript/ES2015
+. Lua
+. Cython
+. C/C++
+. Bash
+. _Go_
+
+== 类库
+
+. Flask
+. nosetests
+. Django
+. Gunicorn
+. SQLAlchemy
+. Thrift
+. GEvent
+. Celery/RQ
+. Jinja2
+. requests
+. ExtJS
+. jQuery
+. React
+. Redux
+. Webpack
+. immutable-js
+. Framework7
+
+== 协议/标准/风格
+
+. *HTTP/HTTPS*
+. *WSGI*
+. *OAuth2.0*
+. *RESTful*
+. CAS
+. XMPP
+. LDAP
+. Kerberos
+
+
+== 组件
+
+. MySQL
+. Docker
+. Redis
+. Memcached
+. Nginx
+. NSQ
+. Etcd
+. uWSGi
+. OpenTSDB
+. Scribe
+
+== 安全
+
+. SQL注入
+. 越权
+. XSS
+. XSRF
+. 跨域
+. 爆破
+. CSP
+. DDos
+
+== 工具
+
+. *Git*
+. *Gerrit*
+. *Linux Tools*
+. *SSH*
+. Pycharm/WebStorm

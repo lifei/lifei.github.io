@@ -1,0 +1,261 @@
+title: 基于 Webpack 的前端资源构建方案
+id: webpack
+date: 2015-12-20 10:00:00
+tags:
+- Webpack
+---
+
+= 基于 Webpack 的前端资源构建方案
+:author: lifei<lifei.vip@outlook.com>
+
+== 背景
+
+前端资源构建过程中有一些特定的需求需要工具解决。
+
+== 需求
+
+. 支持 ES6、JSX、LESS 等格式的源文件编译成浏览器识别的格式；
+. 支持静态文件压缩；
+. 支持静态文件名 hash 化，支持 hash 后的文件名及路径注入到后端模版文件中；
++
+此特性可以发布所有静态文件到一个统一的目录，由 nginx 直接接入，消除静态文件的版本概念，使得静态资源的上线更加方便、安全，无需回滚。
+. 支持发布到任意路径或网址下，发布后的网址自动注入到后端模版文件中；
+. 支持静态文件自动合并，能够很好的处理公共库和组件文件的合并；
++
+多页面应用更好的复用公共组件，利用 HTTP 协议缓存机制。
+. 先进的依赖处理机制；
+. 兼容后端模版引擎，不冲突；
+. 对开发友好，方便调试；
+* 支持环境变量，区分开发环境和生产环境；
+* 方便调试和开发，可见即可得；
+* 强大方便的 Source Map 支持，可以直接对源代码进行调试；
+. 第三方库的支持，如：Framework7 不能采用 `import $$ from 'dom7';` 这种方式被引入；
+
+== 方案
+
+经调研，决定采用 webpack 作为前端构建工具。对于各种需求，解决方案如下：
+
+. 采用 webpack 的 babel-loader 解决 ES6、JSX 等语言的编译问题；
+. 采用 less-loader 解决 less 语言的编译问题；
+. 静态文件压缩采用 webpack 提供的 UglifyJsPlugin 插件实现；
+. 采用环境变量 NODE_ENV 来区分生产环境和开发环境；
+. 后端模版的支持
+.. 无需注入的模版可采用 file-loader 直接拷贝到目标目录下；
+.. 需要注入静态文件的模版使用 HtmlWebpackPlugin 插件来生成；
+* 在 HtmlWebpackPlugin 插件中使用 2.0 版支持的 loader 机制并配合 raw-loader 来解决 HtmlWebpackPlugin所采用的 Javascript 模版与 Jinja2 模版语法相互冲突的问题；
+* 对于 Jinja2 模版中使用 extends 模版集成特性且需要注入静态文件的情况，通过子模版里面显示的声明`</head>`和`</body>`来实现。同时开启 HtmlWebpackPlugin 插件的 minify 特性，可以去掉多余的`</head>`和`</body>`；
+. 字体、图片文件采用 file-loader 拷贝至目标路径，需要修改的开启 hash 化特性；
+. 静态资源文件名 hash 化采用 webpack 提供的`[chunkhash]`或`[hash]`机制来实现，保留8位；
+. 使用 CommonsChunkPlugin 插件提取公共的 chunks 合并到一个文件中；
+. 使用 ExtractTextPlugin 插件将 chunks 提取成独立的文件；
+. 对一些不规范的第三方库，可以采用 Webpack 的 extenals 机制来引入；
+. 将公共的库文件都放到 libs.js 下，避免每次构建时都重新生成这个文件，导致 HTTP 协议的缓存机制失效，刷新页面时需要下载大量的重复的文件。
+. 开启 devtool，设置为 `#eval-module-source-map`，这种设置对开发和调试最友好；
+
+== 工程结构
+
+前端工程的目录结构约定如下：
+
+.源文件
+----
+/front-end
+  /apps  <- 模块
+    /list <- 组件或页面
+      list.js
+      list.html
+    /detail
+      detail.js
+      detail.html
+  /shares
+    ...
+  /common
+    base.html
+----
+
+.目标文件
+----
+/templates
+  /apps
+     list.html
+     detail.html
+     base.html
+  /shares
+     ...
+/static
+  /js
+    /apps
+      list.847263.min.js
+      detail.847263.min.js
+    /shares
+      ...
+  /css
+    apps.829384.min.css
+    shares.123872.min.css
+  /images
+  /fonts
+----
+
+=== 对应关系
+
+*模块/组件/类别 => 类别/模块/组件*
+
+[NOTE]
+.讨论：前端文件统一放置在一个单独的目录或 git 库
+====
+静态文件单独放置在一个统一的目录或 git 库下，主要的出发点是：可以比较方便的获取到前端静态文件的版本号。
+
+执行命令:
+----
+git log -1 --pretty=%h origin/online -- front-end
+----
+
+可以获取到前端目录最新的版本号，通过比对，可以获知本次提交有没有更新前端源文件，从而做到智能打包。
+====
+
+== 部署
+
+=== 静态资源
+
+由于引入静态资源文件名 hash 化的特性，消除了静态资源的版本概念，
+静态资源可采用 nginx 直接接入的方式来部署，譬如直接接入 MFS、NFS、GFS 等公共存储的静态文件目录。
+
+=== 后端模版
+
+构建后的后端模版目标文件是后端代码的一部分，必须要部署在各台后端机器的特定目录下；
+因此模版文件采用*改进过的包更新方式*来实现模版文件的部署。
+
+NOTE: 包更新会新建一个主题来讨论。
+
+
+== 附录：webpack.config.js 示例
+
+.webpack.config.js
+[source, javascript]
+----
+'use strict';
+
+/**
+ * Webpack Entry
+ */
+let entry = {
+  'apps/list': [
+    './apps/static/js/list.js'
+  ],
+  'apps/detail': [
+    './apps/static/js/detail.js'
+  ],
+  'apps/manifest': [
+    './apps/templates/manifest.xml'
+  ],
+  'shares/app': [
+    './shares/static/share.less'
+  ],
+  'common': [
+    'jquery',
+    './common/less/app.less'
+  ],
+  'templates': [
+    './common/templates/ga.html',
+    './common/templates/base.html',
+    './stats/templates/dragon_tiger_rank.html'
+  ]
+};
+
+
+/**
+ * 独立的页面
+ */
+let htmls = [{
+  chunks: ['common', 'apps/list'],
+  template: 'apps/templates/list.html'
+}, {
+  chunks: ['common', 'apps/detail'],
+  template: 'apps/templates/detail.html'
+}, {
+  chunks: ['shares/app'],
+  template: 'shares/templates/app.html'
+}, {
+  chunks: ['shares/app'],
+  template: 'shares/templates/error.html'
+}, {
+  chunks: ['shares/app'],
+  template: 'shares/templates/outofdate.html'
+}, {
+  chunks: ['shares/app'],
+  template: 'shares/templates/dingtalk.html'
+}];
+
+// 以下代码所有工程保持一致
+
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+const RemoveEmptyChunksPlugin = require('webpack/lib/optimize/RemoveEmptyChunksPlugin');
+const MergeDuplicateChunksPlugin = require('webpack/lib/optimize/MergeDuplicateChunksPlugin');
+const RemoveParentModulesPlugin = require('webpack/lib/optimize/RemoveParentModulesPlugin');
+const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const debug = process.env.NODE_ENV !== 'production';
+const COMMON_INIT = 'static/js/init.js';
+
+let plugins = [
+  new CommonsChunkPlugin({
+    name: 'common',
+    filename: COMMON_INIT
+  }),
+  new ExtractTextPlugin('css/[name]', debug ? 'static/css/[name].css' : 'static/css/[name].[hash:8].css')
+];
+
+if (!debug) {
+  plugins.push(new UglifyJsPlugin({
+    compress: {
+      warnings: false
+    },
+    except: ['$super', '$', 'exports', 'require']
+  }));
+}
+
+htmls.forEach(function (o) {
+  let template = o.template;
+  let filename = template.replace('/templates', '');
+  let params = {
+    chunks: o.chunks,
+    filename: 'templates/' + filename,
+    template: '!raw!./' + template,
+    inject: true,
+    minify: {
+      removeComments: true
+    }
+  };
+
+  plugins.push(new HtmlWebpackPlugin(params));
+});
+
+module.exports = {
+  entry: entry,
+  output: {
+    path: '../rutland/',
+    filename: debug ? 'static/js/[name].js' : 'static/js/[name].[chunkhash:8].min.js',
+    publicPath: '/rutland/'
+  },
+  module: {
+    loaders: [{
+      test: /\.js[x]?$/,
+      exclude: /node_modules/,
+      loader: 'babel?presets[]=es2015&presets[]=react'
+    }, {
+      test: /\.less$/,
+      loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
+    }, {
+      test: /\.css$/,
+      loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+    }, {
+      test: /\.(ttf|eot|svg|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      loader: 'file?name=static/font/[name].[ext]'
+    }, {
+      test: /\.(html|xml)$/,
+      loader: 'file?name=templates/[1]/[2]&regExp=([^/]+)[/\\\\]templates[/\\\\](.+)$'
+    }]
+  },
+  plugins: plugins
+};
+----

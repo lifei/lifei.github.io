@@ -1,7 +1,10 @@
-title: 搭建OpenVPN
+title: 搭建 OpenVPN 服务器
+id: openvpn-server
 date: 2015-10-03 02:05:16
 tags:
 ---
+
+= 搭建 OpenVPN 服务器
 
 == 部署OpenVPN
 

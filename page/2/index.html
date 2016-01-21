@@ -78,54 +78,6 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2015/08/03/cijn3coaw000rv8m6dn674nbl/" title="基于Nginx搭建rtmp流媒体服务器" itemprop="url">
-  
-    <h1 itemprop="name">基于Nginx搭建rtmp流媒体服务器</h1>
-    
-     
-           <p itemprop="description" >背景什么是RTMP？RTMP解决什么问题？HLS是什么？它和RTMP有什么区别？编译安装https://github.com/arut/nginx-rtmp-module
-123456789101112131415161718192021222324252627282930FRO</p>
-        
-    
-    <time datetime="2015-08-03T14:53:06.000Z" itemprop="datePublished">2015-08-03</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2015/07/31/cijn3cob1000sv8m6uz5q3llo/" title="浅谈API版本" itemprop="url">
-  
-    <h1 itemprop="name">浅谈API版本</h1>
-    
-     
-           <p itemprop="description" >几种版本
-https://api.example.com/v1/service/interface/
-https://api.example.com/service/interface/v1/
-USE HTTP HEAD
-
-对负载均衡友好
-
-业务场景</p>
-        
-    
-    <time datetime="2015-07-31T09:29:44.000Z" itemprop="datePublished">2015-07-31</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
     <a href="/2015/07/27/openldap-kerberos/" title="Kerberos服务使用OpenLDAP存储" itemprop="url">
   
     <h1 itemprop="name">Kerberos服务使用OpenLDAP存储</h1>
@@ -167,170 +119,22 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种</p>
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2015/07/26/docker-dev-env/" title="使用Docker搭建OpenLDAP、Kerberos、Gerrit、Jenkins、TOTP环境" itemprop="url">
+    <a href="/2015/07/16/entity-relationship-based-api-design/" title="面向领域实体及关系的API设计" itemprop="url">
   
-    <h1 itemprop="name">使用Docker搭建OpenLDAP、Kerberos、Gerrit、Jenkins、TOTP环境</h1>
+    <h1 itemprop="name">面向领域实体及关系的API设计</h1>
     
      
-           <p itemprop="description" >背景OpenLDAPDockerfile12345678910111213FROM ubuntuRUN echo &quot;deb http://mirrors.163.com/ubuntu/ trusty main restricted&quot; &amp;gt; /etc/apt/sources.l</p>
+           <p itemprop="description" >日常的业务开发过程中，很大一部分工作是就是各种API开发。不论是基于何种协议，何种序列化方法，(只读)API的主要开发过程可以简单总结为：
+
+处理参数，检查合法性。
+根据参数获取相关数据。
+加载需要的实体内容。
+把加载的实体按照约定的格式打包、序列化、输出到API。
+
+获取微博的</p>
         
     
-    <time datetime="2015-07-25T17:12:34.000Z" itemprop="datePublished">2015-07-26</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2015/07/23/ldap/" title="LDAP配置" itemprop="url">
-  
-    <h1 itemprop="name">LDAP配置</h1>
-    
-     
-           <p itemprop="description" >&lt;!-- toc disabled --&gt;
-
-
-
-LDAP介绍
-
-
-轻型目录访问协议，即Lightweight Directory Access Protocol (LDAP)是一个访问在线目录服务的协议。目录是一组具有类似属性、以一定逻辑和层次组合的信息。常见的例子是电话簿，由</p>
-        
-    
-    <time datetime="2015-07-22T17:54:09.000Z" itemprop="datePublished">2015-07-23</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2015/07/23/watchdog-rsync/" title="使用watchdog+rsync自动同步代码到服务器" itemprop="url">
-  
-    <h1 itemprop="name">使用watchdog+rsync自动同步代码到服务器</h1>
-    
-     
-           <p itemprop="description" >初衷
-
-
-用IDE开发服务器开发的时候，编写代码要在本机进行，调试代码有需要在远程服务器上进行，
-于是就有了本文要实现的需求：本地修改完代码服务器端就是可调试的状态。
-
-
-
-
-watchdog
-
-
-watchdog项目主页的介绍
-
-
-
-
-Python API and shell </p>
-        
-    
-    <time datetime="2015-07-22T17:49:19.000Z" itemprop="datePublished">2015-07-23</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2015/07/23/cijn3co9u000lv8m6aydznkf1/" title="Gerrit权限设置" itemprop="url">
-  
-    <h1 itemprop="name">Gerrit权限设置</h1>
-    
-     
-           <p itemprop="description" >主要权限说明
-
-
-refs/*下常用的权限
-
-
-read
-
-获取整个仓库数据
-
-owner
-
-有这个权限的用户相当于该项目的创建者
-
-
-
-
-
-refs/heads/下常用的权限
-
-
-refs/heads/*
-
-对所有分支有效
-
-refs/heads/branch_name
-
-对指</p>
-        
-    
-    <time datetime="2015-07-22T17:46:55.000Z" itemprop="datePublished">2015-07-23</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2015/07/23/pritunl-openvpn/" title="使用pritunl搭建OpenVPN服务" itemprop="url">
-  
-    <h1 itemprop="name">使用pritunl搭建OpenVPN服务</h1>
-    
-     
-           <p itemprop="description" >介绍
-
-
-一直以来安装 VPN 服务提供全局加密代理是租用VPS（虚拟主机）的一个重要用途，无奈各种命令行操作和复杂繁琐的设置过程让小白们望而却步，特别是当这种技术被广泛运用到翻墙手段中后，国家防火墙 GFW （Great Fire Wall）就通过智能识别判定加大了对境外 VP</p>
-        
-    
-    <time datetime="2015-07-22T17:34:39.000Z" itemprop="datePublished">2015-07-23</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2015/07/20/2d-mysql-sharding/" title="二维sharding：可扩展的MySQL多索引分表方案" itemprop="url">
-  
-    <h1 itemprop="name">二维sharding：可扩展的MySQL多索引分表方案</h1>
-    
-     
-           <p itemprop="description" >为什么要做Sharding当数据量越来越大的时候，特别是数据量大到一台机器无法处理所有的数据时，
-思路由一维上升为二维</p>
-        
-    
-    <time datetime="2015-07-20T13:12:41.000Z" itemprop="datePublished">2015-07-20</time>
+    <time datetime="2015-07-16T13:59:41.000Z" itemprop="datePublished">2015-07-16</time>
   </a>
 </section>
 
@@ -341,7 +145,7 @@ refs/heads/branch_name
 
 
   <nav id="page-nav" class="clearfix unexpand">
-    <a class="extend prev" rel="prev" href="/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
   </nav>
 
 </div>
@@ -357,11 +161,7 @@ refs/heads/branch_name
 		<ul>
 		
 		  
-			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
-		  
 		
-		  
-			<li><a href="/categories/工具/开山利器/" title="开山利器">开山利器<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -374,11 +174,11 @@ refs/heads/branch_name
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/单体应用/" title="单体应用">单体应用<sup>1</sup></a></li>
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/微服务/" title="微服务">微服务<sup>1</sup></a></li>
+				<li><a href="/tags/wsgi/" title="wsgi">wsgi<sup>1</sup></a></li>
 			
 		
 			
@@ -390,7 +190,7 @@ refs/heads/branch_name
 			
 		
 			
-				<li><a href="/tags/OpenVPN/" title="OpenVPN">OpenVPN<sup>1</sup></a></li>
+				<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
 			
 		
 			
@@ -398,7 +198,7 @@ refs/heads/branch_name
 			
 		
 			
-				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+				<li><a href="/tags/thrift/" title="thrift">thrift<sup>1</sup></a></li>
 			
 		
 			
@@ -409,6 +209,12 @@ refs/heads/branch_name
 				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
 			
 		
+			
+		
+			
+		
+			
+		
 		</ul>
 </div>
 
@@ -416,7 +222,7 @@ refs/heads/branch_name
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">歸檔</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">11</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">3</span></li></ul>
   </div>
 
 
@@ -424,7 +230,7 @@ refs/heads/branch_name
   <div class="tagcloudlist">
     <p class="asidetitle">標簽雲</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/OpenVPN/" style="font-size: 10px;">OpenVPN</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/单体应用/" style="font-size: 10px;">单体应用</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/wsgi/" style="font-size: 10px;">wsgi</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
     </div>
   </div>
 

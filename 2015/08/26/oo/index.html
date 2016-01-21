@@ -11,24 +11,30 @@
     
 
     
-    <meta name="description" content="我们在应用程序开发中，一般要求尽量两做到可维护性和可复用性。
+    <meta name="description" content="背景
+
+
+我们在应用程序开发中，一般要求尽量两做到可维护性和可复用性。
 
 
 应用程序的复用可以提高应用程序的开发效率和质量，节约开发成本，恰当的复用还可以改善系统的可维护性。
 而在面向对象的设计里面，可维护性复用都是以面向对象设计原则为基础的，这些设计原则首先都是复用的原则，
 遵循这些设计原则可以有效地提高系统的复用性，同时提高系统的可维护性。
-面向对象设计原则和设计模式也是对系统进行合理重构的指导方针。">
+面向对象设计原则和设计模式也是对系统进行合理重构的指">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面向对象的设计原则">
 <meta property="og:url" content="http://lifei.github.io/2015/08/26/oo/index.html">
 <meta property="og:site_name" content="飛哥の技术博客">
-<meta property="og:description" content="我们在应用程序开发中，一般要求尽量两做到可维护性和可复用性。
+<meta property="og:description" content="背景
+
+
+我们在应用程序开发中，一般要求尽量两做到可维护性和可复用性。
 
 
 应用程序的复用可以提高应用程序的开发效率和质量，节约开发成本，恰当的复用还可以改善系统的可维护性。
 而在面向对象的设计里面，可维护性复用都是以面向对象设计原则为基础的，这些设计原则首先都是复用的原则，
 遵循这些设计原则可以有效地提高系统的复用性，同时提高系统的可维护性。
-面向对象设计原则和设计模式也是对系统进行合理重构的指导方针。">
+面向对象设计原则和设计模式也是对系统进行合理重构的指">
 <meta property="og:image" content="http://lifei.github.io/images/oo/list.jpg">
 <meta property="og:image" content="http://lifei.github.io/images/oo/user.jpg">
 <meta property="og:image" content="http://lifei.github.io/images/oo/head.png">
@@ -36,16 +42,19 @@
 <meta property="og:image" content="http://lifei.github.io/images/oo/LoD.png">
 <meta property="og:image" content="http://lifei.github.io/images/oo/isl.png">
 <meta property="og:image" content="http://lifei.github.io/images/oo/isl2.png">
-<meta property="og:updated_time" content="2015-12-20T18:05:02.731Z">
+<meta property="og:updated_time" content="2016-01-21T17:45:42.609Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面向对象的设计原则">
-<meta name="twitter:description" content="我们在应用程序开发中，一般要求尽量两做到可维护性和可复用性。
+<meta name="twitter:description" content="背景
+
+
+我们在应用程序开发中，一般要求尽量两做到可维护性和可复用性。
 
 
 应用程序的复用可以提高应用程序的开发效率和质量，节约开发成本，恰当的复用还可以改善系统的可维护性。
 而在面向对象的设计里面，可维护性复用都是以面向对象设计原则为基础的，这些设计原则首先都是复用的原则，
 遵循这些设计原则可以有效地提高系统的复用性，同时提高系统的可维护性。
-面向对象设计原则和设计模式也是对系统进行合理重构的指导方针。">
+面向对象设计原则和设计模式也是对系统进行合理重构的指">
 
     
     <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
@@ -121,11 +130,14 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_1_single_responsibility_principle_srp"><span class="toc-number">1.</span> <span class="toc-text">1. 单一职责原则(Single Responsibility Principle, SRP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_2_open_closed_principle_ocp"><span class="toc-number">2.</span> <span class="toc-text">2.开闭原则( Open-Closed Principle, OCP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_3_liskov_substitution_principle_lsp"><span class="toc-number">3.</span> <span class="toc-text">3.里氏代换原则( Liskov Substitution Principle, LSP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_4_dependence_inversion_principle_dip"><span class="toc-number">4.</span> <span class="toc-text">4.依赖倒转原则( Dependence Inversion Principle, DIP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_5_composite_aggregate_reuse_principle_carp"><span class="toc-number">5.</span> <span class="toc-text">5. 合成/聚合复用原则(Composite/Aggregate Reuse Principle，CARP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_6_law_of_demeter_lod"><span class="toc-number">6.</span> <span class="toc-text">6.迪米特法则(Law of Demeter, LoD)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_7_interface_segregation_principle_isl"><span class="toc-number">7.</span> <span class="toc-text">7.接口隔离法则(Interface Segregation Principle, ISL）</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_1_single_responsibility_principle_srp"><span class="toc-number">2.</span> <span class="toc-text">1. 单一职责原则（Single Responsibility Principle，SRP）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_2_open_closed_principle_ocp"><span class="toc-number">3.</span> <span class="toc-text">2.开闭原则( Open-Closed Principle, OCP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_3_liskov_substitution_principle_lsp"><span class="toc-number">4.</span> <span class="toc-text">3.里氏代换原则( Liskov Substitution Principle, LSP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_4_dependence_inversion_principle_dip"><span class="toc-number">5.</span> <span class="toc-text">4.依赖倒转原则( Dependence Inversion Principle, DIP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_5_composite_aggregate_reuse_principle_carp"><span class="toc-number">6.</span> <span class="toc-text">5. 合成/聚合复用原则(Composite/Aggregate Reuse Principle，CARP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_6_law_of_demeter_lod"><span class="toc-number">7.</span> <span class="toc-text">6.迪米特法则(Law of Demeter, LoD)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_7_interface_segregation_principle_isl"><span class="toc-number">8.</span> <span class="toc-text">7.接口隔离法则(Interface Segregation Principle, ISL）</span></a></li></ol>
 		
 		</div>
 		
-		<div class="paragraph">
+		<div class="sect1">
+<h2 id="__">背景</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>我们在应用程序开发中，一般要求尽量两做到可维护性和可复用性。</p>
 </div>
 <div class="paragraph">
@@ -139,16 +151,18 @@
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/oo/list.jpg" alt="list.jpg">
+<img src="/images/oo/list.jpg" alt="综述">
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_1_single_responsibility_principle_srp">1. 单一职责原则(Single Responsibility Principle, SRP)</h2>
+<h2 id="_1_single_responsibility_principle_srp">1. 单一职责原则（Single Responsibility Principle，SRP）</h2>
 <div class="sectionbody">
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
-<p>类的职责要单一，不能将太多的职责放在一个类中。（高内聚、低耦合）</p>
+<p>类的职责要单一，不能将太多的职责放在一个类中（高内聚、低耦合）。</p>
 </div>
 </blockquote>
 </div>
@@ -734,7 +748,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_1_single_responsibility_principle_srp"><span class="toc-number">1.</span> <span class="toc-text">1. 单一职责原则(Single Responsibility Principle, SRP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_2_open_closed_principle_ocp"><span class="toc-number">2.</span> <span class="toc-text">2.开闭原则( Open-Closed Principle, OCP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_3_liskov_substitution_principle_lsp"><span class="toc-number">3.</span> <span class="toc-text">3.里氏代换原则( Liskov Substitution Principle, LSP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_4_dependence_inversion_principle_dip"><span class="toc-number">4.</span> <span class="toc-text">4.依赖倒转原则( Dependence Inversion Principle, DIP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_5_composite_aggregate_reuse_principle_carp"><span class="toc-number">5.</span> <span class="toc-text">5. 合成/聚合复用原则(Composite/Aggregate Reuse Principle，CARP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_6_law_of_demeter_lod"><span class="toc-number">6.</span> <span class="toc-text">6.迪米特法则(Law of Demeter, LoD)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_7_interface_segregation_principle_isl"><span class="toc-number">7.</span> <span class="toc-text">7.接口隔离法则(Interface Segregation Principle, ISL）</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_1_single_responsibility_principle_srp"><span class="toc-number">2.</span> <span class="toc-text">1. 单一职责原则（Single Responsibility Principle，SRP）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_2_open_closed_principle_ocp"><span class="toc-number">3.</span> <span class="toc-text">2.开闭原则( Open-Closed Principle, OCP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_3_liskov_substitution_principle_lsp"><span class="toc-number">4.</span> <span class="toc-text">3.里氏代换原则( Liskov Substitution Principle, LSP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_4_dependence_inversion_principle_dip"><span class="toc-number">5.</span> <span class="toc-text">4.依赖倒转原则( Dependence Inversion Principle, DIP )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_5_composite_aggregate_reuse_principle_carp"><span class="toc-number">6.</span> <span class="toc-text">5. 合成/聚合复用原则(Composite/Aggregate Reuse Principle，CARP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_6_law_of_demeter_lod"><span class="toc-number">7.</span> <span class="toc-text">6.迪米特法则(Law of Demeter, LoD)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_7_interface_segregation_principle_isl"><span class="toc-number">8.</span> <span class="toc-text">7.接口隔离法则(Interface Segregation Principle, ISL）</span></a></li></ol>
  
   </div>
 
@@ -748,11 +762,7 @@
 		<ul>
 		
 		  
-			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
-		  
 		
-		  
-			<li><a href="/categories/工具/开山利器/" title="开山利器">开山利器<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -765,11 +775,11 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/单体应用/" title="单体应用">单体应用<sup>1</sup></a></li>
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/微服务/" title="微服务">微服务<sup>1</sup></a></li>
+				<li><a href="/tags/wsgi/" title="wsgi">wsgi<sup>1</sup></a></li>
 			
 		
 			
@@ -781,7 +791,7 @@
 			
 		
 			
-				<li><a href="/tags/OpenVPN/" title="OpenVPN">OpenVPN<sup>1</sup></a></li>
+				<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
 			
 		
 			
@@ -789,7 +799,7 @@
 			
 		
 			
-				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+				<li><a href="/tags/thrift/" title="thrift">thrift<sup>1</sup></a></li>
 			
 		
 			
@@ -800,6 +810,12 @@
 				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
 			
 		
+			
+		
+			
+		
+			
+		
 		</ul>
 </div>
 
@@ -807,7 +823,7 @@
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">歸檔</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">11</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">3</span></li></ul>
   </div>
 
 
@@ -815,7 +831,7 @@
   <div class="tagcloudlist">
     <p class="asidetitle">標簽雲</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/OpenVPN/" style="font-size: 10px;">OpenVPN</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/单体应用/" style="font-size: 10px;">单体应用</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/wsgi/" style="font-size: 10px;">wsgi</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
     </div>
   </div>
 

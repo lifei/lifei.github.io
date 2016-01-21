@@ -25,7 +25,7 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种 CI 几乎都是�
 <meta property="og:image" content="http://lifei.github.io/images/jenkins-gerrit-verified/4.png">
 <meta property="og:image" content="http://lifei.github.io/images/jenkins-gerrit-verified/5.png">
 <meta property="og:image" content="http://lifei.github.io/images/jenkins-gerrit-verified/7.png">
-<meta property="og:updated_time" content="2016-01-21T16:04:35.332Z">
+<meta property="og:updated_time" content="2016-01-21T17:43:48.843Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 Jenkins 实现为 Gerrit 的 Patchset 自动 Verified 机制">
 <meta name="twitter:description" content="背景Gerrit 是一款优秀的 Code Review 工具，提供了一套完整的 Git 工作流，有别于 gitflow 等其他工作流，Gerrit 的思想是必须是验证过、Review 过、测试过的代码才能够合并到代码库中。
@@ -118,17 +118,17 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种 CI 几乎都是�
 <p>在文件的底部加上</p>
 <figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[label <span class="string">"Verified"</span>]</span><br><span class="line">    <span class="keyword">function</span> = MaxWithBlock</span><br><span class="line">    <span class="keyword">value</span> = -<span class="number">1</span> Fails</span><br><span class="line">    <span class="keyword">value</span> =  <span class="number">0</span> No score</span><br><span class="line">    <span class="keyword">value</span> = +<span class="number">1</span> Verified</span><br></pre></td></tr></table></figure>
 <p>提交并 push 到远端，使其生效。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add -u</span><br><span class="line">git ci -m <span class="string">'Add Label Verified'</span></span><br><span class="line">git push origin meta/config:meta/config</span><br></pre></td></tr></table></figure>
-<p>此时，会在后台中<code>Projects</code> &gt; <code>Access</code>中看到下面的“Label Verified”已经出现在 “Add Permission…” 下拉菜单中了。</p>
-<p><img src="/images/jenkins-gerrit-verified/1.png" alt="Verified 已经出现在 Permission 下拉菜单中了"></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add -u</span><br><span class="line">git ci -m <span class="string">'Enable Label Verified'</span></span><br><span class="line">git push origin meta/config:meta/config</span><br></pre></td></tr></table></figure>
+<p>此时，会在后台中 Projects &gt; Access 中看到下面的“Label Verified”已经出现在 “Add Permission…” 下拉菜单中了。</p>
+<p><img src="/images/jenkins-gerrit-verified/1.png" alt="“Label Verified”出现在“Add Permission...”下拉菜单中"></p>
 <h2 id="u914D_u7F6EJenkins"><a href="#u914D_u7F6EJenkins" class="headerlink" title="配置Jenkins"></a>配置Jenkins</h2><h3 id="u201CGerrit_Trigger_u201D_u63D2_u4EF6__u5B89_u88C5_u548C_u914D_u7F6E"><a href="#u201CGerrit_Trigger_u201D_u63D2_u4EF6__u5B89_u88C5_u548C_u914D_u7F6E" class="headerlink" title="“Gerrit Trigger”插件 安装和配置"></a>“Gerrit Trigger”插件 安装和配置</h3><p>Jenkins 插件管理中安装“Gerrit Trigger”插件。</p>
 <p><img src="/images/jenkins-gerrit-verified/2.png" alt="Jenkins 插件管理中安装“Gerrit Trigger”插件。"></p>
 <p>安装完毕后，会在“系统设置”页面出现“Gerrit Trigger”的配置项。</p>
 <p><img src="/images/jenkins-gerrit-verified/3.png" alt="“Gerrit Trigger”的配置项"></p>
-<p>进入“Gerrit Trigger”配置页面，点击左侧菜单的 “Add New Server” 来添加“Gerrit 服务器”。</p>
+<p>进入“Gerrit Trigger”配置页面，点击左侧菜单的“Add New Server”来添加“Gerrit 服务器”。</p>
 <p><img src="/images/jenkins-gerrit-verified/4.png" alt="添加“Gerrit 服务器”"></p>
 <p>根据实际情况，配置“Gerrit 服务器”信息。</p>
-<h3 id="u65B0_u5EFA_u9879_u76EE"><a href="#u65B0_u5EFA_u9879_u76EE" class="headerlink" title="新建项目"></a>新建项目</h3><p>进入“新建项目”页面，选择“构建一个自由风格的软件项目”，“源码管理”选择“None”，“构建触发器”选择“Gerrit Trigger”，<br>“Gerrit Trigger”配置项中，“Trigger on”增加“Patchset Created”，<br>“Specify what Gerrit project(s) to trigger a build on.”中增加项目和Branch pattern。</p>
+<h3 id="u65B0_u5EFA_u9879_u76EE"><a href="#u65B0_u5EFA_u9879_u76EE" class="headerlink" title="新建项目"></a>新建项目</h3><p>进入“新建项目”页面，选择“构建一个自由风格的软件项目”，“源码管理”选择“Git”，“构建触发器”选择“Gerrit Trigger”，<br>“Gerrit Trigger”配置项中，“Trigger on”增加“Patchset Created”，<br>“Specify what Gerrit project(s) to trigger a build on.”中增加项目和 Branch pattern。</p>
 <p><img src="/images/jenkins-gerrit-verified/5.png" alt="“构建触发器”配置"></p>
 <h2 id="u7528_u6237_u914D_u7F6E"><a href="#u7528_u6237_u914D_u7F6E" class="headerlink" title="用户配置"></a>用户配置</h2><p>Jenkins 需要一个 Gerrit 用户来与 Gerrit 通讯，这个用户的权限也需要配置一下。</p>
 <h3 id="u201CNon-Interactive_Users_u201D_u7EC4"><a href="#u201CNon-Interactive_Users_u201D_u7EC4" class="headerlink" title="“Non-Interactive Users”组"></a>“Non-Interactive Users”组</h3><p>Gerrit内置有个用户组 “Non-Interactive Users”组，这个组的用户可以批量执行动作，<code>All-Projects</code>里权限设置如下。</p>
@@ -174,9 +174,9 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种 CI 几乎都是�
 
 
 <div class="next">
-<a href="/2015/07/26/docker-dev-env/"  title="使用Docker搭建OpenLDAP、Kerberos、Gerrit、Jenkins、TOTP环境">
+<a href="/2015/07/16/entity-relationship-based-api-design/"  title="面向领域实体及关系的API设计">
  <strong>下一篇：</strong><br/> 
- <span>使用Docker搭建OpenLDAP、Kerberos、Gerrit、Jenkins、TOTP环境
+ <span>面向领域实体及关系的API设计
 </span>
 </a>
 </div>
@@ -209,11 +209,7 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种 CI 几乎都是�
 		<ul>
 		
 		  
-			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
-		  
 		
-		  
-			<li><a href="/categories/工具/开山利器/" title="开山利器">开山利器<sup>1</sup></a></li>
 		  
 		
 		</ul>
@@ -226,11 +222,11 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种 CI 几乎都是�
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/单体应用/" title="单体应用">单体应用<sup>1</sup></a></li>
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/微服务/" title="微服务">微服务<sup>1</sup></a></li>
+				<li><a href="/tags/wsgi/" title="wsgi">wsgi<sup>1</sup></a></li>
 			
 		
 			
@@ -242,7 +238,7 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种 CI 几乎都是�
 			
 		
 			
-				<li><a href="/tags/OpenVPN/" title="OpenVPN">OpenVPN<sup>1</sup></a></li>
+				<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
 			
 		
 			
@@ -250,7 +246,7 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种 CI 几乎都是�
 			
 		
 			
-				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+				<li><a href="/tags/thrift/" title="thrift">thrift<sup>1</sup></a></li>
 			
 		
 			
@@ -261,6 +257,12 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种 CI 几乎都是�
 				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
 			
 		
+			
+		
+			
+		
+			
+		
 		</ul>
 </div>
 
@@ -268,7 +270,7 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种 CI 几乎都是�
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">歸檔</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">11</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">3</span></li></ul>
   </div>
 
 
@@ -276,7 +278,7 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种 CI 几乎都是�
   <div class="tagcloudlist">
     <p class="asidetitle">標簽雲</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/OpenVPN/" style="font-size: 10px;">OpenVPN</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/单体应用/" style="font-size: 10px;">单体应用</a> <a href="/tags/微服务/" style="font-size: 10px;">微服务</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/wsgi/" style="font-size: 10px;">wsgi</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
     </div>
   </div>
 

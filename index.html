@@ -78,79 +78,6 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2015/12/30/tech-stack/" title="业务研发的技术栈" itemprop="url">
-  
-    <h1 itemprop="name">业务研发的技术栈</h1>
-    
-     
-           <p itemprop="description" >语言
-
-
-
-
-Python2/3
-
-
-SQL
-
-
-HTML5
-
-
-CSS/Less
-
-
-Jinja2
-
-
-Javascript/ES2015
-
-
-Lua
-
-
-Cython
-
-
-C/C++
-
-
-Bash
-
-
-Go
-
-
-
-
-
-
-类库
-
-
-
-
-Flask
-
-
-nosetests
-
-
-D</p>
-        
-    
-    <time datetime="2015-12-29T16:00:00.000Z" itemprop="datePublished">2015-12-30</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
     <a href="/2015/12/20/webpack/" title="基于 Webpack 的前端资源构建方案" itemprop="url">
   
     <h1 itemprop="name">基于 Webpack 的前端资源构建方案</h1>
@@ -166,103 +93,6 @@ D</p>
         
     
     <time datetime="2015-12-20T02:00:00.000Z" itemprop="datePublished">2015-12-20</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2015/11/30/wsgi-thrift/" title="基于 WSGI Middleware 的 Thrift Server" itemprop="url">
-  
-    <h1 itemprop="name">基于 WSGI Middleware 的 Thrift Server</h1>
-    
-     
-           <p itemprop="description" >背景
-
-
-随着项目模块化不断深入，越来越多的模块被拆分到不同的 GIT 库中。
-模块之间会存在相互的依赖，譬如多个项目都需要读取 Employee 的信息等。
-
-
-本地调用可以解决一部分问题，但即便是本地调用也需要依赖大量的外部资源，
-如 Database、Redis 等，这些资</p>
-        
-    
-    <time datetime="2015-11-29T16:00:00.000Z" itemprop="datePublished">2015-11-30</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2015/11/20/build-package-deploy-system/" title="构建、打包、部署系统设计" itemprop="url">
-  
-    <h1 itemprop="name">构建、打包、部署系统设计</h1>
-    
-     
-           <p itemprop="description" >背景
-
-
-任何项目都存在构建、打包和部署的需求。
-
-
-
-
-场景
-
-
-
-
-在指定 10 台机器上部署 A 项目的 B、C、D 服务。
-
-
-上线 A 项目最新的代码并重启 B、C、D 服务。
-
-
-A 项目依赖了 E、F 项目，上线的时候需要同时部署 E、F 项目的代码。
-
-
-E 项目</p>
-        
-    
-    <time datetime="2015-11-19T16:00:00.000Z" itemprop="datePublished">2015-11-20</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2015/10/03/openvpn-server/" title="搭建 OpenVPN 服务器" itemprop="url">
-  
-    <h1 itemprop="name">搭建 OpenVPN 服务器</h1>
-    
-     
-           <p itemprop="description" >部署OpenVPN
-
-
-以vpn.7v1.net为例，参考地址https://hub.docker.com/r/kylemanna/openvpn/。
-
-
-
-docker run --rm -it --hostname=vpn.7v1.net -p 1194:1194/udp -</p>
-        
-    
-    <time datetime="2015-10-02T18:05:16.000Z" itemprop="datePublished">2015-10-03</time>
   </a>
 </section>
 
@@ -341,33 +171,6 @@ Poorly designed code ten</p>
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2015/08/27/design-patterns-state/" title="设计模式之状态模式(State)" itemprop="url">
-  
-    <h1 itemprop="name">设计模式之状态模式(State)</h1>
-    
-     
-           <p itemprop="description" >概述
-
-
-在软件开发过程中，应用程序可能会根据不同的情况作出不同的处理。
-最直接的解决方案是将这些所有可能发生的情况全都考虑到。
-然后使用if&amp;#8230;&amp;#8203; else语句来做状态判断来进行不同情况的处理。
-但是对复杂状态的判断就显得“力不从心了”。
-随着增加新的状态</p>
-        
-    
-    <time datetime="2015-08-27T03:21:15.000Z" itemprop="datePublished">2015-08-27</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
     <a href="/2015/08/26/oo/" title="面向对象的设计原则" itemprop="url">
   
     <h1 itemprop="name">面向对象的设计原则</h1>
@@ -420,10 +223,27 @@ Poorly designed code ten</p>
 
 
 
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/07/26/jenkins-gerrit-verified/" title="使用 Jenkins 实现为 Gerrit 的 Patchset 自动 Verified 机制" itemprop="url">
+  
+    <h1 itemprop="name">使用 Jenkins 实现为 Gerrit 的 Patchset 自动 Verified 机制</h1>
+    
+     
+           <p itemprop="description" >背景Gerrit 是一款优秀的 Code Review 工具，提供了一套完整的 Git 工作流，有别于 gitflow 等其他工作流，Gerrit 的思想是必须是验证过、Review 过、测试过的代码才能够合并到代码库中。
+Jenkins 是自动化测试、CI 领域的事实标准，各种</p>
+        
+    
+    <time datetime="2015-07-26T06:39:47.000Z" itemprop="datePublished">2015-07-26</time>
+  </a>
+</section>
 
-  <nav id="page-nav" class="clearfix unexpand">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
-  </nav>
+
+
+
+
+
 
 </div>
       <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
@@ -455,27 +275,7 @@ Poorly designed code ten</p>
 			
 		
 			
-				<li><a href="/tags/wsgi/" title="wsgi">wsgi<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/领域实体/" title="领域实体">领域实体<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/API/" title="API">API<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/thrift/" title="thrift">thrift<sup>1</sup></a></li>
 			
 		
 			
@@ -492,6 +292,16 @@ Poorly designed code ten</p>
 		
 			
 		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
 		</ul>
 </div>
 
@@ -499,7 +309,7 @@ Poorly designed code ten</p>
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">歸檔</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li></ul>
   </div>
 
 
@@ -507,7 +317,7 @@ Poorly designed code ten</p>
   <div class="tagcloudlist">
     <p class="asidetitle">標簽雲</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/wsgi/" style="font-size: 10px;">wsgi</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+       <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a>
     </div>
   </div>
 

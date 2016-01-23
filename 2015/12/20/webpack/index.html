@@ -14,12 +14,15 @@
     <meta name="description" content="背景
 
 
-前端资源构建过程中有一些特定的需求需要工具解决。
+前端资源构建过程中有一些特定的需求需要工具解决。Webpack 是目前比较流行的一款构建工具，但是它与 fis 等工具相比，更灵活也更难掌握。
+
+
+有必要对前端资源构建过程中遇到的场景和需求进行梳理，针对每个场景和需求提出明确的、可实施的解决方案，得出最佳实践并以文档的形式落地。
 
 
 
 
-需求
+场景/需求
 
 
 
@@ -27,12 +30,7 @@
 支持 ES6、JSX、LESS 等格式的源文件编译成浏览器识别的格式；
 
 
-支持静态文件压缩；
-
-
-支持静态文件名 hash 化，支持 hash 后的文件名及路径注入到后端模版文件中；
-
-此特性可以发布所有静态文件到一个统一的目录，由 nginx 直接接入，消除静态文件的版本概念，使得静态资源的上线更加方便、安全，无">
+支持">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于 Webpack 的前端资源构建方案">
 <meta property="og:url" content="http://lifei.github.io/2015/12/20/webpack/index.html">
@@ -40,12 +38,15 @@
 <meta property="og:description" content="背景
 
 
-前端资源构建过程中有一些特定的需求需要工具解决。
+前端资源构建过程中有一些特定的需求需要工具解决。Webpack 是目前比较流行的一款构建工具，但是它与 fis 等工具相比，更灵活也更难掌握。
+
+
+有必要对前端资源构建过程中遇到的场景和需求进行梳理，针对每个场景和需求提出明确的、可实施的解决方案，得出最佳实践并以文档的形式落地。
 
 
 
 
-需求
+场景/需求
 
 
 
@@ -53,25 +54,23 @@
 支持 ES6、JSX、LESS 等格式的源文件编译成浏览器识别的格式；
 
 
-支持静态文件压缩；
-
-
-支持静态文件名 hash 化，支持 hash 后的文件名及路径注入到后端模版文件中；
-
-此特性可以发布所有静态文件到一个统一的目录，由 nginx 直接接入，消除静态文件的版本概念，使得静态资源的上线更加方便、安全，无">
+支持">
 <meta property="og:image" content="http://lifei.github.io/images/webpack/ryf-source-map.png">
-<meta property="og:updated_time" content="2016-01-23T16:03:03.500Z">
+<meta property="og:updated_time" content="2016-01-23T16:39:11.850Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于 Webpack 的前端资源构建方案">
 <meta name="twitter:description" content="背景
 
 
-前端资源构建过程中有一些特定的需求需要工具解决。
+前端资源构建过程中有一些特定的需求需要工具解决。Webpack 是目前比较流行的一款构建工具，但是它与 fis 等工具相比，更灵活也更难掌握。
+
+
+有必要对前端资源构建过程中遇到的场景和需求进行梳理，针对每个场景和需求提出明确的、可实施的解决方案，得出最佳实践并以文档的形式落地。
 
 
 
 
-需求
+场景/需求
 
 
 
@@ -79,12 +78,7 @@
 支持 ES6、JSX、LESS 等格式的源文件编译成浏览器识别的格式；
 
 
-支持静态文件压缩；
-
-
-支持静态文件名 hash 化，支持 hash 后的文件名及路径注入到后端模版文件中；
-
-此特性可以发布所有静态文件到一个统一的目录，由 nginx 直接接入，消除静态文件的版本概念，使得静态资源的上线更加方便、安全，无">
+支持">
 
     
     <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
@@ -160,7 +154,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">3.1.</span> <span class="toc-text">先进的语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">3.2.</span> <span class="toc-text">混淆和压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__hash"><span class="toc-number">3.3.</span> <span class="toc-text">资源文件名 hash 化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___6"><span class="toc-number">3.4.</span> <span class="toc-text">配置发布后的目录和网址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_cdn"><span class="toc-number">3.5.</span> <span class="toc-text">CDN 多域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html"><span class="toc-number">3.6.</span> <span class="toc-text">将静态资源的目标网址注入到对应的 HTML 模版中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html_2"><span class="toc-number">3.7.</span> <span class="toc-text">不需要注入静态资源的 HTML 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">3.8.</span> <span class="toc-text">图片、字体等资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">3.9.</span> <span class="toc-text">将公共库合并到一个文件中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___9"><span class="toc-number">3.10.</span> <span class="toc-text">样式文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__code_import_code"><span class="toc-number">3.11.</span> <span class="toc-text">无法import的第三方库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_sourcemap"><span class="toc-number">3.12.</span> <span class="toc-text">SourceMap 支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___10"><span class="toc-number">3.13.</span> <span class="toc-text">热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___11"><span class="toc-number">3.14.</span> <span class="toc-text">构建环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___12"><span class="toc-number">4.</span> <span class="toc-text">工程目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___13"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___14"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___15"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___16"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___17"><span class="toc-number">6.</span> <span class="toc-text">参考文件</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">场景/需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">3.1.</span> <span class="toc-text">先进的语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">3.2.</span> <span class="toc-text">混淆和压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__hash"><span class="toc-number">3.3.</span> <span class="toc-text">资源文件名 hash 化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___6"><span class="toc-number">3.4.</span> <span class="toc-text">配置发布后的目录和网址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_cdn"><span class="toc-number">3.5.</span> <span class="toc-text">CDN 多域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html"><span class="toc-number">3.6.</span> <span class="toc-text">将静态资源的目标网址注入到对应的 HTML 模版中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html_2"><span class="toc-number">3.7.</span> <span class="toc-text">不需要注入静态资源的 HTML 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">3.8.</span> <span class="toc-text">图片、字体等资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">3.9.</span> <span class="toc-text">将公共库合并到一个文件中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___9"><span class="toc-number">3.10.</span> <span class="toc-text">样式文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__code_import_code"><span class="toc-number">3.11.</span> <span class="toc-text">无法import的第三方库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_sourcemap"><span class="toc-number">3.12.</span> <span class="toc-text">SourceMap 支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___10"><span class="toc-number">3.13.</span> <span class="toc-text">热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___11"><span class="toc-number">3.14.</span> <span class="toc-text">构建环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___12"><span class="toc-number">4.</span> <span class="toc-text">工程目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___13"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___14"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___15"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___16"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_faq"><span class="toc-number">6.</span> <span class="toc-text">FAQ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___17"><span class="toc-number">7.</span> <span class="toc-text">参考文件</span></a></li></ol>
 		
 		</div>
 		
@@ -168,12 +162,15 @@
 <h2 id="__">背景</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>前端资源构建过程中有一些特定的需求需要工具解决。</p>
+<p>前端资源构建过程中有一些特定的需求需要工具解决。Webpack 是目前比较流行的一款构建工具，但是它与 fis 等工具相比，更灵活也更难掌握。</p>
+</div>
+<div class="paragraph">
+<p>有必要对前端资源构建过程中遇到的场景和需求进行梳理，针对每个场景和需求提出明确的、可实施的解决方案，得出最佳实践并以文档的形式落地。</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="___2">需求</h2>
+<h2 id="___2">场景/需求</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -215,7 +212,7 @@
 <p>方便调试和开发，可见即可得；</p>
 </li>
 <li>
-<p>强大方便的 Source Map 支持，可以直接对源代码进行调试；</p>
+<p>强大方便的 SourceMap 支持，可以直接对源代码进行调试；</p>
 </li>
 </ul>
 </div>
@@ -1003,9 +1000,6 @@ Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配
 <h2 id="___12">工程目录结构</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>===</p>
-</div>
-<div class="paragraph">
 <p>关于工程目录结构一般有两种流派，一种是 Rails、Yii等基于 MVC 的 FullStack 框架，一种是 Django等 MVT框架。前者是先分层再按组件组织，后者是先按 apps 分，再分层。</p>
 </div>
 <div class="listingblock">
@@ -1142,6 +1136,18 @@ Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配
 </div>
 </div>
 <div class="sect1">
+<h2 id="_faq">FAQ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<div class="title">Q: 我在 Windows/Mac OS X 下通过 Docker 进行 Webpack 开发和构建，但是这两个系统下的 Docker 对 node 的 fsevent 支持不太理想，致使 <code>-w</code> 参数失效，请问要如何解决？</div>
+<p><strong>A:</strong> 这个问题是 VirtualBox 的 vboxsf 文件系统无法接收到宿主机上文件更改信号导致的，事实上，所有网络文件系统（NFS、MFS、GFS）都存在这个问题；另外有些编辑器在保存是会采用 rename 的方式，也会使 fsevent 处理逻辑产生混乱。</p>
+</div>
+<div class="paragraph">
+<p>解决这个问题其实很简单，只需要将 <code>-w</code> 参数调整为 <code>--watch-poll</code> 即可，为提高性能，可以尝试 <code>--watch-poll=1000</code>，即一秒钟扫描一次。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="___17">参考文件</h2>
 <div class="sectionbody">
 <div class="olist arabic">
@@ -1225,7 +1231,7 @@ Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">3.1.</span> <span class="toc-text">先进的语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">3.2.</span> <span class="toc-text">混淆和压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__hash"><span class="toc-number">3.3.</span> <span class="toc-text">资源文件名 hash 化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___6"><span class="toc-number">3.4.</span> <span class="toc-text">配置发布后的目录和网址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_cdn"><span class="toc-number">3.5.</span> <span class="toc-text">CDN 多域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html"><span class="toc-number">3.6.</span> <span class="toc-text">将静态资源的目标网址注入到对应的 HTML 模版中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html_2"><span class="toc-number">3.7.</span> <span class="toc-text">不需要注入静态资源的 HTML 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">3.8.</span> <span class="toc-text">图片、字体等资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">3.9.</span> <span class="toc-text">将公共库合并到一个文件中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___9"><span class="toc-number">3.10.</span> <span class="toc-text">样式文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__code_import_code"><span class="toc-number">3.11.</span> <span class="toc-text">无法import的第三方库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_sourcemap"><span class="toc-number">3.12.</span> <span class="toc-text">SourceMap 支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___10"><span class="toc-number">3.13.</span> <span class="toc-text">热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___11"><span class="toc-number">3.14.</span> <span class="toc-text">构建环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___12"><span class="toc-number">4.</span> <span class="toc-text">工程目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___13"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___14"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___15"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___16"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___17"><span class="toc-number">6.</span> <span class="toc-text">参考文件</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">场景/需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">3.1.</span> <span class="toc-text">先进的语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">3.2.</span> <span class="toc-text">混淆和压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__hash"><span class="toc-number">3.3.</span> <span class="toc-text">资源文件名 hash 化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___6"><span class="toc-number">3.4.</span> <span class="toc-text">配置发布后的目录和网址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_cdn"><span class="toc-number">3.5.</span> <span class="toc-text">CDN 多域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html"><span class="toc-number">3.6.</span> <span class="toc-text">将静态资源的目标网址注入到对应的 HTML 模版中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html_2"><span class="toc-number">3.7.</span> <span class="toc-text">不需要注入静态资源的 HTML 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">3.8.</span> <span class="toc-text">图片、字体等资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">3.9.</span> <span class="toc-text">将公共库合并到一个文件中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___9"><span class="toc-number">3.10.</span> <span class="toc-text">样式文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__code_import_code"><span class="toc-number">3.11.</span> <span class="toc-text">无法import的第三方库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_sourcemap"><span class="toc-number">3.12.</span> <span class="toc-text">SourceMap 支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___10"><span class="toc-number">3.13.</span> <span class="toc-text">热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___11"><span class="toc-number">3.14.</span> <span class="toc-text">构建环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___12"><span class="toc-number">4.</span> <span class="toc-text">工程目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___13"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___14"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___15"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___16"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_faq"><span class="toc-number">6.</span> <span class="toc-text">FAQ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___17"><span class="toc-number">7.</span> <span class="toc-text">参考文件</span></a></li></ol>
  
   </div>
 

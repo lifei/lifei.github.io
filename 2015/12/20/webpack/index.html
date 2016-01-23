@@ -59,7 +59,8 @@
 支持静态文件名 hash 化，支持 hash 后的文件名及路径注入到后端模版文件中；
 
 此特性可以发布所有静态文件到一个统一的目录，由 nginx 直接接入，消除静态文件的版本概念，使得静态资源的上线更加方便、安全，无">
-<meta property="og:updated_time" content="2016-01-21T17:19:55.354Z">
+<meta property="og:image" content="http://lifei.github.io/images/webpack/ryf-source-map.png">
+<meta property="og:updated_time" content="2016-01-23T14:58:55.987Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于 Webpack 的前端资源构建方案">
 <meta name="twitter:description" content="背景
@@ -159,7 +160,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___4"><span class="toc-number">4.</span> <span class="toc-text">工程结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___6"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__webpack_config_js"><span class="toc-number">6.</span> <span class="toc-text">附录：webpack.config.js 示例</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">3.1.</span> <span class="toc-text">先进的语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">3.2.</span> <span class="toc-text">混淆和压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__hash"><span class="toc-number">3.3.</span> <span class="toc-text">资源文件名 hash 化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___6"><span class="toc-number">3.4.</span> <span class="toc-text">配置发布后的目录和网址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_cdn"><span class="toc-number">3.5.</span> <span class="toc-text">CDN 多域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html"><span class="toc-number">3.6.</span> <span class="toc-text">将静态资源的目标网址注入到对应的 HTML 模版中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html_2"><span class="toc-number">3.7.</span> <span class="toc-text">不需要注入静态资源的 HTML 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">3.8.</span> <span class="toc-text">图片、字体等资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">3.9.</span> <span class="toc-text">将公共库合并到一个文件中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___9"><span class="toc-number">3.10.</span> <span class="toc-text">样式文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__code_import_code"><span class="toc-number">3.11.</span> <span class="toc-text">无法import的第三方库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_sourcemap"><span class="toc-number">3.12.</span> <span class="toc-text">SourceMap 支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___10"><span class="toc-number">3.13.</span> <span class="toc-text">热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___11"><span class="toc-number">3.14.</span> <span class="toc-text">构建环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___12"><span class="toc-number">4.</span> <span class="toc-text">工程目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___13"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___14"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___15"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___16"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li></ol>
 		
 		</div>
 		
@@ -232,6 +233,11 @@
 <div class="paragraph">
 <p>经调研，决定采用 webpack 作为前端构建工具。对于各种需求，解决方案如下：</p>
 </div>
+<div class="sect2">
+<h3 id="___4">先进的语言</h3>
+<div class="paragraph">
+<p>先进的语言对生产力有极大的提升，譬如 ES6、JSX、LESS 等，它们不仅提供了大量新特性以提供生产力，还可以使项目更加统一、规范。Webpack 对新语言这块可以采用 loader 来解决。</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -240,65 +246,833 @@
 <li>
 <p>采用 less-loader 解决 less 语言的编译问题；</p>
 </li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="title">loader 示例</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">loaders: [&#123;
+    test: <span class="regexp">/\.js$/</span>,
+    exclude: <span class="regexp">/node_modules/</span>,
+    loader: <span class="string">'babel?presets[]=es2015'</span>
+&#125;, &#123;
+    test: <span class="regexp">/\.jsx$/</span>,
+    exclude: <span class="regexp">/node_modules/</span>,
+    loader: <span class="string">'babel?presets[]=es2015&amp;presets[]=react'</span>
+&#125;, &#123;
+    test: <span class="regexp">/\.less$/</span>,
+    loader: ExtractTextPlugin.extract(<span class="string">'style-loader'</span>,
+        <span class="string">'css-loader!less-loader'</span>)
+&#125;]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___5">混淆和压缩</h3>
+<div class="paragraph">
+<p>静态文件压缩采用 webpack 提供的 UglifyJsPlugin 插件实现，具体代码如下：</p>
+</div>
+<div class="listingblock">
+<div class="title">UglifyJsPlugin 示例</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">plugins: [<span class="keyword">new</span> UglifyJsPlugin(&#123;
+    compress: &#123;
+        warnings: <span class="literal">false</span>
+    &#125;,
+    except: [<span class="string">'$super'</span>, <span class="string">'$'</span>, <span class="string">'exports'</span>, <span class="string">'require'</span>]
+&#125;)]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__hash">资源文件名 hash 化</h3>
+<div class="paragraph">
+<p>Webpack 中，<code>output.filename</code> 等配置项可以指定一个模版，其中有一项就是 hash，一般有两种：[chunkhash] 和 [hash]，可在单词后面增加 <code>:num</code> 表示取对应 hash 的多少位，如：[hash:8]，表示取 8 位 hash。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">output.filename = <span class="string">'static/js/[name].[chunkhash:8].min.js'</span>;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___6">配置发布后的目录和网址</h3>
+<div class="paragraph">
+<p>发布后的本地目录和目标网址均在 <code>output</code> 小节里配置，<code>path</code> 表示本地文件的目录，<code>publicPath</code> 表示目标的网址目录，可以是 CDN 的地址，也可以是相/绝对地址等。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">output: &#123;
+  path: <span class="string">'../koloda/'</span>,
+  publicPath: <span class="string">'/koloda/'</span>
+&#125;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cdn">CDN 多域名</h3>
+<div class="paragraph">
+<p>旧的浏览器有些技术上的限制，譬如同一个域名下最多会发起  2 个链接等，这个问题一方面可以通过合并 Javascript 文件的方式来解决，另一个解决的办法是采用多个域名。</p>
+</div>
+<div class="paragraph">
+<p>在<strong>“配置发布后的目录和网址”</strong>小节中说到配置发布后的目标网址使用<code>output.publicPath</code>来指定。另外 Webpack 的<code>output.publicPath</code>还可以是一个<code>function</code>，我们可以在<code>function</code>里面计算一下 hash，返回不同的域名。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="keyword">let</span> i = <span class="number">0</span>;
+output: &#123;
+  publicPath: () =&gt; ++i % <span class="number">5</span>
+&#125;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__html">将静态资源的目标网址注入到对应的 HTML 模版中</h3>
+<div class="paragraph">
+<p>注入功能可以采用第三方插件 HtmlWebpackPlugin 实现，这个插件可以根据指定的模版生成 HTML 文件，并将该文件依赖的 chunks 注入到 HTML 中，譬如：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="comment">/**
+ * 独立的页面
+ */</span>
+<span class="keyword">const</span> htmls = [&#123;
+  chunks: [<span class="string">'libs'</span>, <span class="string">'index'</span>],
+  template: <span class="string">'index.html'</span>
+&#125;];
+
+htmls.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">o</span>) </span>&#123;
+  <span class="keyword">const</span> template = o.template;
+  <span class="keyword">const</span> params = &#123;
+    chunks: o.chunks,
+    filename: <span class="string">'templates/'</span> + template,
+    template: <span class="string">'!raw!./'</span> + template,
+    inject: <span class="literal">true</span>,
+    minify: &#123;
+      removeComments: <span class="literal">true</span>
+    &#125;
+  &#125;;
+  plugins.push(<span class="keyword">new</span> HtmlWebpackPlugin(params));
+&#125;);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>当然这里头还有一些坑要踩的：</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>静态文件压缩采用 webpack 提供的 UglifyJsPlugin 插件实现；</p>
+<p>插件所采用的 Javascript 模版与 Jinja2 模版语法相互冲突的问题</p>
+<div class="paragraph">
+<p>HtmlWebpackPlugin 插件采用的模版引擎为 blueimp，其语法和 Python 常用的模版引擎 Jinja2 冲突，导致无法正常生成 Jinja2 模版的 HTML 文件。解决这个问题的办法是采用 HtmlWebpackPlugin 插件 2.0 版新增加的 loader 机制并配合 raw-loader 来解决，即不再采用默认的 blueimp 模版引擎来渲染，而是采用 raw-loader，保证文件的原汁原味，自然也就没有冲突了，如上面例子中的<code>template: '!raw!./' + template</code>。</p>
+</div>
 </li>
 <li>
-<p>采用环境变量 NODE_ENV 来区分生产环境和开发环境；</p>
+<p>插件注入的方式是替换<code>&lt;/head&gt;</code>和<code>&lt;/body&gt;</code>，如果 Jinja2 使用了模版集成特性，由于目标页面没有 <code>&lt;/head&gt;</code>和<code>&lt;/body&gt;</code> 标签，会导致无法注入。</p>
+<div class="paragraph">
+<p>对于 Jinja2 模版中使用 <code>extends</code> 模版集成特性且需要注入静态文件的情况，通过子模版里面显示的声明<code>&lt;/head&gt;</code>和<code>&lt;/body&gt;</code>来实现，例如：</p>
+</div>
+<div class="listingblock">
+<div class="title">父模版 base.html</div>
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html"><span class="doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+<span class="tag">&lt;<span class="title">head</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"utf-8"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"viewport"</span>
+        <span class="attribute">content</span>=<span class="value">"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"apple-mobile-web-app-capable"</span> <span class="attribute">content</span>=<span class="value">"yes"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"apple-mobile-web-app-status-bar-style"</span> <span class="attribute">content</span>=<span class="value">"white"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">title</span>&gt;</span><span class="comment">
+  基于 Webpack 的前端资源构建方案
+
+  </span>
+  <span class="comment">
+  <- 亮点在此="" <="" head="">
+<body>
+</body></-></span>
+<span class="comment">
+
+  <- 亮点在此="" <="" span="">
+<span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span></-></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">子模版</div>
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">&#123;\% extends 'common/base.html' %&#125;
+
+<span class="comment">
+  基于 Webpack 的前端资源构建方案
+</span>
+
+<span class="comment">
+  <- 亮点在此="" <="" span="">
+
+<span class="comment">
+  <- 亮点在此="" <="" span=""></-></span></-></span></code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="title">多余的标签</div>
+<div class="paragraph">
+<p>正常情况下，上述例子最后生成的 HTML 中会出现两个<code>&lt;/body&gt;</code>和<code>&lt;/head&gt;</code>标签。有两个办法可以解决这个问题：</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>开启 HtmlWebpackPlugin 插件的 <code>minify</code> 特性，可以去掉多余的（不匹配的）<code>&lt;/head&gt;</code>和<code>&lt;/body&gt;</code>；</p>
 </li>
 <li>
-<p>后端模版的支持</p>
+<p>改写父模版，将<code>&lt;/head&gt;</code>和<code>&lt;/body&gt;</code>嵌入到 <code>&lt;!--￼6-&#8594;</code>。</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="title">优雅的办法</div>
+<div class="paragraph">
+<p>HtmlWebpackPlugin 插件支持注入占位符。</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__html_2">不需要注入静态资源的 HTML 文件</h3>
+<div class="paragraph">
+<p>上面关于 Jinja2 模版继承的例子中，base.html 是不需要注入任何资源的，如果强制使用 HtmlWebpackPlugin 插件，会导致<code>&lt;/head&gt;</code>和<code>&lt;/body&gt;</code>错乱及静态资源错乱等问题。对于这种的文件，应该使用 Webpack 的 file-loader 将文件拷贝到对应的目录中。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">loaders: [&#123;
+    test: <span class="regexp">/\.(html|xml)$/</span>,
+    loader: <span class="string">'file?name=templates/[1]/[2]&amp;regExp=([^/]+)[/\\\\]templates[/\\\\](.+)$'</span>
+&#125;]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___7">图片、字体等资源</h3>
+<div class="paragraph">
+<p>和不需要注入资源的 HTML 文件一样，图片、字体等不需要编译、生成的资源直接采用 file-loader 拷贝至对应的输出目录即可。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">loaders: [&#123;
+    test: <span class="regexp">/\.(ttf|eot|svg|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/</span>,
+    loader: <span class="string">'file?name=static/font/[name].[ext]'</span>
+&#125;]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___8">将公共库合并到一个文件中</h3>
+<div class="paragraph">
+<p>Webpack 在构建的过程中，会将大量的公共库也打包输出到目标的 Javascript 文件中，这样做有几个坏处：</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>重复下载公共库资源</p>
+<div class="paragraph">
+<p>譬如有 A、B 两个页面，都依赖了 React 公共库，Webpack 默认会将 A 页面（Entry）的资源全部打包到 A.js 中，将 B 页面的资源打包到 B.js 中，A.js、B.js 里面都有 React 公共库的代码，导致公共库的重复下载。</p>
+</div>
+</li>
+<li>
+<p>对更新不友好</p>
+<div class="paragraph">
+<p>在日常工作中，公共库是基本不会被改动的，因此可以使公共库长期被客户端、浏览器缓存住。但如果它们和业务代码打包到一个 Javascript 文件中的话，就无法使用浏览器缓存这个特性了。无论是对生产环境的用户还是开发调试的工程师来说，都需要加载大量重复代码，而没有任何意义，是有弊无利的。</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>这个需要可以使用 Webpack 的一个插件来实现：CommonsChunkPlugin。它可以将公共的 chunks 提取出来，放到独立的文件中。步骤如下：</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>定义一个<code>entry</code>，起名<code>libs</code>，<code>entry</code>中指定公共库的名称。</p>
+</li>
+<li>
+<p><code>new</code>一个 CommonsChunkPlugin 对象，<code>name</code>设置为与<code>entry</code>对应，为<code>libs</code>。</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="keyword">const</span> entry = &#123;
+  libs: [
+    <span class="string">'react'</span>, <span class="string">'react-dom'</span>, <span class="string">'redux'</span>, <span class="string">'react-redux'</span>,
+    <span class="string">'redux-logger'</span>, <span class="string">'redux-thunk'</span>, <span class="string">'react-addons-perf'</span>,
+    <span class="string">'isomorphic-fetch'</span>, <span class="string">'babel-polyfill'</span>, <span class="string">'lodash'</span>
+  ]
+&#125;;
+<span class="keyword">const</span> plugins = [
+  <span class="keyword">new</span> CommonsChunkPlugin(&#123;
+    name: <span class="string">'libs'</span>,
+    filename: <span class="string">'static/js/libs.[hash:8].min.js'</span>
+  &#125;)
+];</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+这样就会将大量的公共组件库的代码构建到一个独立的文件<code>libs.[hash:8].min.js</code>中。这个文件一般是体积最大的一个文件，另外一旦生成几乎不会更改，如果配合 HTTP 协议的缓存机制，调试起来会非常爽，在生产环境下对用户也非常友好。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___9">样式文件</h3>
+<div class="paragraph">
+<p>Webpack 的理念是任何都是资源，包括样式文件。在这个理念下，Webpack 默认构建处理的目标文件中，样式文件是包含在 Javascript 中的。这样做对基于 Web 的客户端程序比较友好，但是对 WebApp 就不合适了，原因可参考<strong>“将公共库合并到一个文件中”</strong>这一节，很少会存在同时修改样式文件和 Javascript 代码的情况，有时候修改这两者的甚至不是同一个部门的人。</p>
+</div>
+<div class="paragraph">
+<p>于是，我们需要将样式文件提前到独立的 CSS 文件中，采用 ExtractTextPlugin 插件实现这个功能。分两个步骤：</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>调整样式文件的 loader，改为 ExtractTextPlugin 插件的方式。</p>
+</li>
+<li>
+<p>在 <code>plugins</code> 中增加一个 ExtractTextPlugin 对象，指定文件名。</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="keyword">const</span> loaders = [&#123;
+    test: <span class="regexp">/\.less$/</span>,
+    loader: ExtractTextPlugin.extract(<span class="string">'style-loader'</span>,
+    <span class="string">'css-loader!less-loader'</span>)
+&#125;, &#123;
+    test: <span class="regexp">/\.css$/</span>,
+    loader: ExtractTextPlugin.extract(<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>)
+&#125;];
+<span class="keyword">const</span> plugins = [<span class="keyword">new</span> ExtractTextPlugin(<span class="string">'css/[name]'</span>, <span class="string">'static/css/[name].[hash:8].min.css'</span>)];</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__code_import_code">无法<code>import</code>的第三方库</h3>
+<div class="paragraph">
+<p>有一个第三方库无法采用<code>import</code>的方式被引入，譬如：Framework7，对于这种情况，需要采用手工在 HTML 中将库引入，同时在<code>extenals</code>中注册为可<code>import</code>模块。</p>
+</div>
+<div class="listingblock">
+<div class="title">HTML 引入</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">&lt;!-- Framework7 --&gt;
+<span class="xml"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">language</span>=<span class="value">"javascript"</span> <span class="attribute">type</span>=<span class="value">"application/javascript"</span>
+  <span class="attribute">src</span>=<span class="value">"//framework7.taobao.org/dist/js/framework7.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+
+<span class="comment">&lt;!-- GA --&gt;</span>
+<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript">
+  (<span class="function"><span class="keyword">function</span>(<span class="params">i,s,o,g,r,a,m</span>)</span>&#123;i[<span class="string">'GoogleAnalyticsObject'</span>]=r;i[r]=i[r]||<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;
+        (i[r].q=i[r].q||[]).push(<span class="built_in">arguments</span>)&#125;,i[r].l=<span class="number">1</span>*<span class="keyword">new</span> <span class="built_in">Date</span>();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[<span class="number">0</span>];a.async=<span class="number">1</span>;a.src=g;m.parentNode.insertBefore(a,m)
+  &#125;)(<span class="built_in">window</span>,<span class="built_in">document</span>,<span class="string">'script'</span>,<span class="string">'//www.google-analytics.com/analytics.js'</span>,<span class="string">'ga'</span>);
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">webpack.config.js 中注册</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">externals: &#123;
+    ga: <span class="string">'window.ga'</span>,
+    dom7: <span class="string">'window.Dom7'</span>,
+    framework7: <span class="string">'window.Framework7'</span>
+&#125;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sourcemap">SourceMap 支持</h3>
+<div class="paragraph">
+<p>SourceMap 是开发调试过程中不可缺少的利器，Webpack 自带了 SourceMap 机制，通过<code>devtool</code>设置项来配置。Wepack 的 SourceMap 种类繁多，各个类型的 Source Map 在功能和性能上都有差异，甚至连 React 的创始人之一 Pete Hunt 都无法说清该使用何种 SourceMap。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/webpack/ryf-source-map.png" alt="阮一峰提到 React 的创始人之一 Pete Hunt 无法搞清楚该用何种 Source Map。">
+</div>
+</div>
+<div class="paragraph">
+<div class="title">7 种 Source Map：</div>
+<p>Webpack 文档关于 SourceMap 的说明可以参考链接： <a href=":https://webpack.github.io/docs/configuration.html#devtool">devtool 的说明</a>。</p>
+</div>
+<div class="paragraph">
+<p>下面简单列举一下这 7 种 SourceMap 的不同：</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>eval</code> 文档上解释的很明白，每个模块都封装到 <code>eval</code> 包裹起来，并在后面添加 <code>//# sourceURL</code>。</p>
+</li>
+<li>
+<p><code>source-map</code> 这是最原始的 SourceMap 实现方式，其实现是打包代码同时创建一个新的 sourcemap 文件， 并在打包文件的末尾添加 <code>//# sourceURL</code> 注释行告诉 JS 引擎文件在哪儿</p>
+</li>
+<li>
+<p><code>hidden-source-map</code> 文档上也说了，就是 SourceMap 但没注释，没注释怎么找文件呢？貌似只能靠后缀，譬如 <code>xxx/bundle.js</code> 文件，某些引擎会尝试去找 <code>xxx/bundle.js.map</code></p>
+</li>
+<li>
+<p><code>inline-source-map</code> 为每一个文件添加 SourceMap 的 DataUrl，注意这里的文件是打包前的每一个文件而不是最后打包出来的，同时这个 DataUrl 是包含一个文件完整 souremap 信息的 Base64 格式化后的字符串，而不是一个 url。</p>
+</li>
+<li>
+<p><code>eval-source-map</code> 这个就是把 <code>eval</code> 的 <code>sourceURL</code> 换成了完整 SourceMap 信息的 DataUrl</p>
+</li>
+<li>
+<p><code>cheap-source-map</code> 不包含列信息，不包含 loader 的 SourceMap，（譬如 babel 的 sourcemap）</p>
+</li>
+<li>
+<p><code>cheap-module-source-map</code> 不包含列信息，同时 loader 的 SourceMap 也被简化为只包含对应行的。最终的 SourceMap 只有一份，它是 Webpack 对 loader 生成的 SourceMap 进行简化，然后再次生成的。</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+webpack 不仅支持这 7 种，而且它们还是可以任意组合的，就如文档所说，你可以设置 SourceMap 选项为 <code>cheap-module-inline-source-map</code>。
+</td>
+</tr>
+</table>
+</div>
+<table class="tableblock frame-topbot grid-all spread">
+<caption class="title">Table 1. 各种 SourceMap 对比表</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>devtool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">构建速度</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">二次构建速度</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">生产环境</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">质量</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>eval</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">generated code</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cheap-eval-source-map</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">++</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">transformed code (lines only)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cheap-source-map</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">o</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">transformed code (lines only)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cheap-module-eval-source-map</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">o</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">++</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">original source (lines only)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>cheap-module-source-map</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">o</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">original source (lines only)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>eval-source-map</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">–</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">+</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">original source</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>source-map</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">–</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">–</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">original source</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">最佳实践</div>
+<div class="paragraph">
+<p><code>cheap-module-eval-source-map</code> 绝大多数情况下都会是最好的选择，这也是下版本 Webpack 的默认选项。</p>
+</div>
+<div class="paragraph">
+<p>相关解释：</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>大部分情况我们调试并不关心列信息，而且就算 SourceMap 没有列，有些浏览器引擎（例如 v8） 也会给出列信息，所以我们使用 cheap 模式可以大幅提高 souremap 生成的效率。</p>
+</li>
+<li>
+<p>使用 <code>eval</code> 方式可大幅提高持续构建效率，参考 Webapck devtool 文档 下方速度对比表格，这对经常需要边改边调的前端开发而言，非常重要！</p>
+</li>
+<li>
+<p>使用 module 可支持 babel 这种预编译工具（在 Webapck 里做为 loader 使用）。</p>
+</li>
+<li>
+<p><code>eval-source-map</code> 使用 DataUrl 本身包含完整 SourceMap 信息，并不需要像 sourceURL 那样，浏览器需要发送一个完整请求去获取 SourceMap 文件，这会略微提高点效率</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="title">BUG 一</div>
+<div class="paragraph">
+<p>当前版本（v1.1）下的 Webpack 不能正确的处理好 <code>eval-source-map</code> 方式的文件名，这种方式下，文件名并不会带有路径信息，譬如：有两个文件 <code>actions/user.js</code> 和 <code>models/user.js</code> 这两个文件的 SourceMap 文件名是一样的,都是 <code>user.js</code>，致使生成的 SourceMap 无法正常使用。</p>
+</div>
+<div class="paragraph">
+<p>我们通过 Hack 代码的方式来解决，修改源文件 <code>node_modules/webpack/lib/EvalSourceMapDevToolModuleTemplatePlugin.js</code> 的
+第 43 行，调整为：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="keyword">var</span> modules = sourceMap.sources.length === <span class="number">1</span> ? [<span class="built_in">module</span>]: sourceMap.sources.map(<span class="function"><span class="keyword">function</span>(<span class="params">source</span>) </span>&#123;
+    <span class="keyword">var</span> <span class="built_in">module</span> = self.compilation.findModule(source);
+    <span class="keyword">return</span> <span class="built_in">module</span> || source;
+&#125;);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>增加了 <code>sourceMap.sources.length === 1 ? [module]</code>，不让它使用后面那种方式来查找 <code>module</code>。</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="title">BUG 二</div>
+<div class="paragraph">
+<p>最新版的 Chrome Canary 浏览器（版本 49.0.2623.0 canary）不能识别默认生成的 SourceMap，是由于 SourceMap 的前缀字符引起的，至于为什么突然发生了这个问题，我没有时间去调研它的具体原因，有好奇心的朋友可以去读一下 Chrome 源码看看这几个版本做了哪些有关 SourceMap 的调整。</p>
+</div>
+<div class="paragraph">
+<p>解决这个问题的办法也很简单，只需要将 <code>devtool</code> 由 <code>eval-module-source-map</code> 调整为 <code>#eval-module-source-map</code> 即可。</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">更改 SourceMap 的文件名</div>
+<p>Webpack 的 <code>devtool</code> 提供了两个 <code>FilenameTemplate</code>（<code>devtoolModuleFilenameTemplate</code> 和 <code>devtoolFallbackModuleFilenameTemplate</code>） 来指定的 SourceMap 的文件名。</p>
+</div>
+<div class="listingblock">
+<div class="title">示例</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">output.devtoolModuleFilenameTemplate = (info) =&gt; &#123;
+    <span class="keyword">if</span> (info.absoluteResourcePath.charAt(<span class="number">0</span>) === <span class="string">'/'</span>) &#123;
+        <span class="keyword">return</span> <span class="string">'webpack://'</span> + info.absoluteResourcePath;
+    &#125;
+    <span class="keyword">return</span> <span class="string">'webpack:///'</span> + info.absoluteResourcePath;
+&#125;;
+output.devtoolFallbackModuleFilenameTemplate = (info) =&gt; &#123;
+    <span class="keyword">if</span> (info.absoluteResourcePath.charAt(<span class="number">0</span>) === <span class="string">'/'</span>) &#123;
+        <span class="keyword">return</span> <span class="string">'webpack://'</span> + info.absoluteResourcePath;
+    &#125;
+    <span class="keyword">return</span> <span class="string">'webpack:///'</span> + info.absoluteResourcePath;
+&#125;;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___10">热更新</h3>
+<div class="paragraph">
+<p>Webpack 提供了热更新的黑科技，广大粉丝争相试用，愿景挺美好，但是现实却比较残酷，因为我们大部分前端程序都是有状态的，比起 HTTP Request、Task 等 Request/Response 模型下的程序，前端程序很难实现完美的热更新。当然，对于样式文件来说，热更新确实是完美的。</p>
+</div>
+<div class="paragraph">
+<div class="title">步骤</div>
+<p>Webpack 的热更新是采用 HotModuleReplacementPlugin 插件实现的，还需要启动一个 DevServer</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>在 HTML 中引入或注入 DevServer 和 hot 的代码。</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>无需注入的模版可采用 file-loader 直接拷贝到目标目录下；</p>
+<p>如果 HTML 里面引入了公共库，则只需要在公共库里将 DevServer 和 hot 的代码加入即可。</p>
+<div class="listingblock">
+<div class="title">在公共库里引入热更新的代码</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="comment">// 在公共库里加入 DevServer 和 hot 的代码</span>
+entry.libs.push(<span class="string">`webpack-dev-server/client?<span class="subst">$&#123;devServerURL&#125;</span>`</span>);
+entry.libs.push(<span class="string">'webpack/hot/only-dev-server'</span>); <span class="comment">// "only" prevents reload on syntax errors</span></code></pre>
+</div>
+</div>
 </li>
 <li>
-<p>需要注入静态文件的模版使用 HtmlWebpackPlugin 插件来生成；</p>
+<p>如果个别 HTML 没有引入公共库，那么只能采用另外一种办法来实现</p>
+<div class="openblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>在 HtmlWebpackPlugin 插件中使用 2.0 版支持的 loader 机制并配合 raw-loader 来解决 HtmlWebpackPlugin所采用的 Javascript 模版与 Jinja2 模版语法相互冲突的问题；</p>
+<p>先在 <code>entry</code> 中新增一个 <code>entry</code>，起名为 <code>dev</code>，内容是 DevServer 和 hot 的依赖；</p>
 </li>
 <li>
-<p>对于 Jinja2 模版中使用 extends 模版集成特性且需要注入静态文件的情况，通过子模版里面显示的声明<code>&lt;/head&gt;</code>和<code>&lt;/body&gt;</code>来实现。同时开启 HtmlWebpackPlugin 插件的 minify 特性，可以去掉多余的<code>&lt;/head&gt;</code>和<code>&lt;/body&gt;</code>；</p>
+<p>在 HTML 页面的 <code>chunks</code> 里引入 <code>dev</code> 这个 <code>entry</code>。</p>
 </li>
 </ul>
 </div>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">采用<code>entry</code>引入代码</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="comment">// 在公共库里加入 DevServer 和 hot 的代码</span>
+entry.dev = [
+    <span class="string">`webpack-dev-server/client?<span class="subst">$&#123;devServerURL&#125;</span>`</span>,
+    <span class="string">'webpack/hot/only-dev-server'</span> <span class="comment">// "only" prevents reload on syntax errors</span>
+];
+
+htmls.forEach((html) =&gt; &#123;
+    html.chunks.push(<span class="string">'dev'</span>);
+&#125;);</code></pre>
+</div>
+</div>
 </li>
 </ol>
 </div>
 </li>
 <li>
-<p>字体、图片文件采用 file-loader 拷贝至目标路径，需要修改的开启 hash 化特性；</p>
+<p>在 <code>plugins</code> 里面加入相关的插件对象。</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">plugins.push(<span class="keyword">new</span> HotModuleReplacementPlugin());
+plugins.push(<span class="keyword">new</span> NoErrorsPlugin());</code></pre>
+</div>
+</div>
 </li>
 <li>
-<p>静态资源文件名 hash 化采用 webpack 提供的<code>[chunkhash]</code>或<code>[hash]</code>机制来实现，保留8位；</p>
+<p>修改注入到 HTML 文件里面的目标网址。</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">output.publicPath = <span class="string">`<span class="subst">$&#123;devServerURL&#125;</span>/static/`</span>;</code></pre>
+</div>
+</div>
 </li>
 <li>
-<p>使用 CommonsChunkPlugin 插件提取公共的 chunks 合并到一个文件中；</p>
-</li>
-<li>
-<p>使用 ExtractTextPlugin 插件将 chunks 提取成独立的文件；</p>
-</li>
-<li>
-<p>对一些不规范的第三方库，可以采用 Webpack 的 extenals 机制来引入；</p>
-</li>
-<li>
-<p>将公共的库文件都放到 libs.js 下，避免每次构建时都重新生成这个文件，导致 HTTP 协议的缓存机制失效，刷新页面时需要下载大量的重复的文件。</p>
-</li>
-<li>
-<p>开启 devtool，设置为 <code>#eval-module-source-map</code>，这种设置对开发和调试最友好；</p>
+<p>配置 DevServer</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">config.devServer = &#123;
+    historyApiFallback: <span class="literal">false</span>,
+    hot: <span class="literal">true</span>,
+    inline: <span class="literal">true</span>,
+    progress: <span class="literal">true</span>,
+    host: devServerHost,
+    port: devServerPort,
+    contentBase: <span class="string">'./src/'</span>
+&#125;;</code></pre>
+</div>
+</div>
 </li>
 </ol>
+</div>
+<div class="openblock">
+<div class="title">完整的代码</div><div class="content">
+<div class="listingblock">
+<div class="title"><code>webpack.config.js</code> 中配置 DevServer</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="keyword">if</span> (hot) &#123;
+    <span class="keyword">const</span> devServerHost = <span class="string">''</span>;
+    <span class="keyword">const</span> devServerPort = <span class="string">'5000'</span>;
+    <span class="keyword">const</span> devServerURL = <span class="string">`http://<span class="subst">$&#123;devServerHost&#125;</span>:<span class="subst">$&#123;devServerPort&#125;</span>`</span>;
+
+    <span class="comment">// 在公共库里加入 devServer 和 hot 的代码</span>
+    entry.libs.push(<span class="string">`webpack-dev-server/client?<span class="subst">$&#123;devServerURL&#125;</span>`</span>);
+    entry.libs.push(<span class="string">'webpack/hot/only-dev-server'</span>); <span class="comment">// "only" prevents reload on syntax errors</span>
+
+    plugins.push(<span class="keyword">new</span> HotModuleReplacementPlugin());
+    plugins.push(<span class="keyword">new</span> NoErrorsPlugin());
+    output.publicPath = <span class="string">`<span class="subst">$&#123;devServerURL&#125;</span>/static/`</span>;
+    config.devServer = &#123;
+        historyApiFallback: <span class="literal">false</span>,
+        hot: <span class="literal">true</span>,
+        inline: <span class="literal">true</span>,
+        progress: <span class="literal">true</span>,
+        host: devServerHost,
+        port: devServerPort,
+        contentBase: <span class="string">'./src/'</span>
+    &#125;;
+&#125;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="openblock">
+<div class="title">启动 DevServer</div><div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh">./node_modules/.bin/webpack-dev-server -w</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配合调试工具 Charles，可以解决一些譬如跨域的问题。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___11">构建环境</h3>
+<div class="paragraph">
+<p>开发环境和生产环境的构建区别还是蛮大的，需要针对各个环境做特定的配置。Webpack 的配置文件 <code>webpack.config.js</code> 实际上就是一个 Javascript 文件，因此很多关于环境的代码可以通过代码来区分。</p>
+</div>
+<div class="paragraph">
+<p>这里，我们采用环境变量 <code>NODE_ENV</code> 来区分生产环境和开发环境，<code>NODE_ENV=production</code> 为生产环境，否则为开发环境。</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="___4">工程结构</h2>
+<h2 id="___12">工程目录结构</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>前端工程的目录结构约定如下：</p>
+<p>===</p>
+</div>
+<div class="paragraph">
+<p>关于工程目录结构一般有两种流派，一种是 Rails、Yii等基于 MVC 的 FullStack 框架，一种是 Django等 MVT框架。前者是先分层再按组件组织，后者是先按 apps 分，再分层。</p>
+</div>
+<div class="listingblock">
+<div class="title">Rails、Yii等框架工程结构示例</div>
+<div class="content">
+<pre>/models
+    app1
+    app2
+/controllers
+    app1
+    app2
+/templates
+    app1
+    app2
+/static
+    app1
+    app2</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">django等框架工程结构示例</div>
+<div class="content">
+<pre>/app1
+    models.py
+    views.py
+    templates
+    static
+/app2
+    models.py
+    views.py
+    templates
+    static</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>事实上，对于上述工程目录结构来说，指的是目标文件的结构，即构建后的目录结构。
+因此，前端构建工具构建后的工程目录结构不可避免地会受到后端框架的影响，我们这儿暂时抛开两种方案的优劣，只讨论前端工程对开发部署的帮助。</p>
+</div>
+<div class="paragraph">
+<div class="title">理想的方式</div>
+<p>采用构建工具之后，生产环境已经不再依赖前端的源文件了，整个项目的部署流程已经发生了改变：源文件 &#8658; 构建资源 &#8658; 打包 &#8658; 发布部署。</p>
+</div>
+<div class="paragraph">
+<p>从各个流程的简化的角度出发来看，我们认为将整个前端的源代码单独放在一起会更有利于简化工作。</p>
+</div>
+<div class="olist arabic">
+<div class="title">优势</div>
+<ol class="arabic">
+<li>
+<p>可以为前端项目单独拆分出独立的 Git 库。</p>
+</li>
+<li>
+<p>非常方便的计算出前端的代码是否需要构建，如果源文件没有更改，就不需要再次构建和打包。</p>
+<div class="listingblock">
+<div class="content">
+<pre>git log -1 --pretty=%h origin/online -- front-end</pre>
+</div>
+</div>
+</li>
+<li>
+<p>更方便的打包，如果我们的输出文件都在一个独立的目录，打包起来会比从各个目录下摘录各个文件要更加简单、方便。</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">示例</div>
+<p>工程目录结构与项目所采用的应用架构模式有很大的关系，譬如采用 MVC、MVVM 的工程目录结构与采用 Redux 的肯定是不一样的。所以工程目录结构还是需要根据实际情况来决定，这里我们为了演示源文件与目标文件的对应关系，做一个示例：</p>
 </div>
 <div class="listingblock">
 <div class="title">源文件</div>
@@ -342,202 +1116,27 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="___5">对应关系</h3>
+<h3 id="___13">对应关系</h3>
 <div class="paragraph">
 <p><strong>模块/组件/类别 &#8658; 类别/模块/组件</strong></p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="title">讨论：前端文件统一放置在一个单独的目录或 git 库</div>
-<div class="paragraph">
-<p>静态文件单独放置在一个统一的目录或 git 库下，主要的出发点是：可以比较方便的获取到前端静态文件的版本号。</p>
-</div>
-<div class="paragraph">
-<p>执行命令:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>git log -1 --pretty=%h origin/online -- front-end</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>可以获取到前端目录最新的版本号，通过比对，可以获知本次提交有没有更新前端源文件，从而做到智能打包。</p>
-</div>
-</td>
-</tr>
-</table>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="___6">部署</h2>
+<h2 id="___14">部署</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="___7">静态资源</h3>
+<h3 id="___15">静态资源</h3>
 <div class="paragraph">
 <p>由于引入静态资源文件名 hash 化的特性，消除了静态资源的版本概念，
 静态资源可采用 nginx 直接接入的方式来部署，譬如直接接入 MFS、NFS、GFS 等公共存储的静态文件目录。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="___8">后端模版</h3>
+<h3 id="___16">后端模版</h3>
 <div class="paragraph">
-<p>构建后的后端模版目标文件是后端代码的一部分，必须要部署在各台后端机器的特定目录下；
-因此模版文件采用<strong>改进过的包更新方式</strong>来实现模版文件的部署。</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-包更新会新建一个主题来讨论。
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="__webpack_config_js">附录：webpack.config.js 示例</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="title">webpack.config.js</div>
-<div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="pi">'use strict'</span>;
-
-<span class="comment">/**
- * Webpack Entry
- */</span>
-<span class="keyword">let</span> entry = &#123;
-  <span class="string">'apps/list'</span>: [
-    <span class="string">'./apps/static/js/list.js'</span>
-  ],
-  <span class="string">'apps/detail'</span>: [
-    <span class="string">'./apps/static/js/detail.js'</span>
-  ],
-  <span class="string">'apps/manifest'</span>: [
-    <span class="string">'./apps/templates/manifest.xml'</span>
-  ],
-  <span class="string">'shares/app'</span>: [
-    <span class="string">'./shares/static/share.less'</span>
-  ],
-  <span class="string">'common'</span>: [
-    <span class="string">'jquery'</span>,
-    <span class="string">'./common/less/app.less'</span>
-  ],
-  <span class="string">'templates'</span>: [
-    <span class="string">'./common/templates/ga.html'</span>,
-    <span class="string">'./common/templates/base.html'</span>,
-    <span class="string">'./stats/templates/dragon_tiger_rank.html'</span>
-  ]
-&#125;;
-
-
-<span class="comment">/**
- * 独立的页面
- */</span>
-<span class="keyword">let</span> htmls = [&#123;
-  chunks: [<span class="string">'common'</span>, <span class="string">'apps/list'</span>],
-  template: <span class="string">'apps/templates/list.html'</span>
-&#125;, &#123;
-  chunks: [<span class="string">'common'</span>, <span class="string">'apps/detail'</span>],
-  template: <span class="string">'apps/templates/detail.html'</span>
-&#125;, &#123;
-  chunks: [<span class="string">'shares/app'</span>],
-  template: <span class="string">'shares/templates/app.html'</span>
-&#125;, &#123;
-  chunks: [<span class="string">'shares/app'</span>],
-  template: <span class="string">'shares/templates/error.html'</span>
-&#125;, &#123;
-  chunks: [<span class="string">'shares/app'</span>],
-  template: <span class="string">'shares/templates/outofdate.html'</span>
-&#125;, &#123;
-  chunks: [<span class="string">'shares/app'</span>],
-  template: <span class="string">'shares/templates/dingtalk.html'</span>
-&#125;];
-
-<span class="comment">// 以下代码所有工程保持一致</span>
-
-<span class="keyword">const</span> CommonsChunkPlugin = <span class="built_in">require</span>(<span class="string">'webpack/lib/optimize/CommonsChunkPlugin'</span>);
-<span class="keyword">const</span> RemoveEmptyChunksPlugin = <span class="built_in">require</span>(<span class="string">'webpack/lib/optimize/RemoveEmptyChunksPlugin'</span>);
-<span class="keyword">const</span> MergeDuplicateChunksPlugin = <span class="built_in">require</span>(<span class="string">'webpack/lib/optimize/MergeDuplicateChunksPlugin'</span>);
-<span class="keyword">const</span> RemoveParentModulesPlugin = <span class="built_in">require</span>(<span class="string">'webpack/lib/optimize/RemoveParentModulesPlugin'</span>);
-<span class="keyword">const</span> UglifyJsPlugin = <span class="built_in">require</span>(<span class="string">'webpack/lib/optimize/UglifyJsPlugin'</span>);
-<span class="keyword">const</span> ExtractTextPlugin = <span class="built_in">require</span>(<span class="string">'extract-text-webpack-plugin'</span>);
-<span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>);
-<span class="keyword">const</span> debug = process.env.NODE_ENV !== <span class="string">'production'</span>;
-<span class="keyword">const</span> COMMON_INIT = <span class="string">'static/js/init.js'</span>;
-
-<span class="keyword">let</span> plugins = [
-  <span class="keyword">new</span> CommonsChunkPlugin(&#123;
-    name: <span class="string">'common'</span>,
-    filename: COMMON_INIT
-  &#125;),
-  <span class="keyword">new</span> ExtractTextPlugin(<span class="string">'css/[name]'</span>, debug ? <span class="string">'static/css/[name].css'</span> : <span class="string">'static/css/[name].[hash:8].css'</span>)
-];
-
-<span class="keyword">if</span> (!debug) &#123;
-  plugins.push(<span class="keyword">new</span> UglifyJsPlugin(&#123;
-    compress: &#123;
-      warnings: <span class="literal">false</span>
-    &#125;,
-    except: [<span class="string">'$super'</span>, <span class="string">'$'</span>, <span class="string">'exports'</span>, <span class="string">'require'</span>]
-  &#125;));
-&#125;
-
-htmls.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">o</span>) </span>&#123;
-  <span class="keyword">let</span> template = o.template;
-  <span class="keyword">let</span> filename = template.replace(<span class="string">'/templates'</span>, <span class="string">''</span>);
-  <span class="keyword">let</span> params = &#123;
-    chunks: o.chunks,
-    filename: <span class="string">'templates/'</span> + filename,
-    template: <span class="string">'!raw!./'</span> + template,
-    inject: <span class="literal">true</span>,
-    minify: &#123;
-      removeComments: <span class="literal">true</span>
-    &#125;
-  &#125;;
-
-  plugins.push(<span class="keyword">new</span> HtmlWebpackPlugin(params));
-&#125;);
-
-<span class="built_in">module</span>.exports = &#123;
-  entry: entry,
-  output: &#123;
-    path: <span class="string">'../rutland/'</span>,
-    filename: debug ? <span class="string">'static/js/[name].js'</span> : <span class="string">'static/js/[name].[chunkhash:8].min.js'</span>,
-    publicPath: <span class="string">'/rutland/'</span>
-  &#125;,
-  <span class="built_in">module</span>: &#123;
-    loaders: [&#123;
-      test: <span class="regexp">/\.js[x]?$/</span>,
-      exclude: <span class="regexp">/node_modules/</span>,
-      loader: <span class="string">'babel?presets[]=es2015&amp;presets[]=react'</span>
-    &#125;, &#123;
-      test: <span class="regexp">/\.less$/</span>,
-      loader: ExtractTextPlugin.extract(<span class="string">'style-loader'</span>, <span class="string">'css-loader!less-loader'</span>)
-    &#125;, &#123;
-      test: <span class="regexp">/\.css$/</span>,
-      loader: ExtractTextPlugin.extract(<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>)
-    &#125;, &#123;
-      test: <span class="regexp">/\.(ttf|eot|svg|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/</span>,
-      loader: <span class="string">'file?name=static/font/[name].[ext]'</span>
-    &#125;, &#123;
-      test: <span class="regexp">/\.(html|xml)$/</span>,
-      loader: <span class="string">'file?name=templates/[1]/[2]&amp;regExp=([^/]+)[/\\\\]templates[/\\\\](.+)$'</span>
-    &#125;]
-  &#125;,
-  plugins: plugins
-&#125;;</code></pre>
+<p>构建后的后端模版目标文件本质上将算是后端代码的一部分，必须要部署在各台后端机器的特定目录下；因此模版文件采用<strong>改进过的包更新方式</strong>来实现模版文件的部署。</p>
 </div>
 </div>
 </div>
@@ -602,7 +1201,7 @@ htmls.forEach(<span class="function"><span class="keyword">function</span> (<spa
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___4"><span class="toc-number">4.</span> <span class="toc-text">工程结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___6"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__webpack_config_js"><span class="toc-number">6.</span> <span class="toc-text">附录：webpack.config.js 示例</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">3.1.</span> <span class="toc-text">先进的语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">3.2.</span> <span class="toc-text">混淆和压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__hash"><span class="toc-number">3.3.</span> <span class="toc-text">资源文件名 hash 化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___6"><span class="toc-number">3.4.</span> <span class="toc-text">配置发布后的目录和网址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_cdn"><span class="toc-number">3.5.</span> <span class="toc-text">CDN 多域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html"><span class="toc-number">3.6.</span> <span class="toc-text">将静态资源的目标网址注入到对应的 HTML 模版中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html_2"><span class="toc-number">3.7.</span> <span class="toc-text">不需要注入静态资源的 HTML 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">3.8.</span> <span class="toc-text">图片、字体等资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">3.9.</span> <span class="toc-text">将公共库合并到一个文件中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___9"><span class="toc-number">3.10.</span> <span class="toc-text">样式文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__code_import_code"><span class="toc-number">3.11.</span> <span class="toc-text">无法import的第三方库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_sourcemap"><span class="toc-number">3.12.</span> <span class="toc-text">SourceMap 支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___10"><span class="toc-number">3.13.</span> <span class="toc-text">热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___11"><span class="toc-number">3.14.</span> <span class="toc-text">构建环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___12"><span class="toc-number">4.</span> <span class="toc-text">工程目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___13"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___14"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___15"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___16"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li></ol>
  
   </div>
 

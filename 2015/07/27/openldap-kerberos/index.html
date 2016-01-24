@@ -27,7 +27,7 @@ LDAP 是轻量目录访问协议，英文全称是 Lightweight Directory Access 
 什么是 LDAP，它用来做什么？
 
 LDAP 是轻量目录访问协议，英文全称是 Lightweight Directory Access Protocol，一般都简称为 LDAP。它是基于 X.500 标准的，但是简单多了并且可以根据需要定制。与 X.500 不同，LDAP 支持 TCP/IP，这对访问 Internet 是必须的。LDAP 的核心规范在 RFC 中都有定义，所有与 LDA">
-<meta property="og:updated_time" content="2016-01-24T16:57:03.636Z">
+<meta property="og:updated_time" content="2016-01-24T17:13:56.314Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="打造统一的 Kerberos 和 OpenLDAP 服务">
 <meta name="twitter:description" content="背景
@@ -673,7 +673,7 @@ EOF</pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>从 github 上将 links:https://github.com/lifei/docker-kerberos[docker-kerberos] 克隆下来，执行构建命令 <code>docker build -t lifei/kerberos .</code>。</p>
+<p>从 github 上将 <a href="https://github.com/lifei/docker-kerberos" target="_blank" rel="external">docker-kerberos</a> 克隆下来，执行构建命令 <code>docker build -t lifei/kerberos .</code>。</p>
 </li>
 <li>
 <p>使用新构建的镜像来启动一个容器， <code>docker run --link openldap:openldap --name=kerberos -d lifei/kerberos</code>，就这样一个名为『kerberos』容器就启起来了，但是与上面的『openldap』容器不同，此时的 Kerberos 服务还未启动。</p>

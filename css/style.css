@@ -605,7 +605,7 @@ header nav ul li a:hover {
 }
 #main section.post {
   background: #fafafa;
-  margin-bottom: 0.125em;
+  margin-bottom: 2em;
 }
 #main section.post a {
   display: block;
@@ -631,6 +631,7 @@ header nav ul li a:hover {
 }
 #main section.post a p {
   color: #817c7c;
+  text-indent: 2em;
 }
 #main section.post a time {
   color: #817c7c;
@@ -2286,8 +2287,13 @@ article .article-content ol.loweralpha > li {
 article .article-content ul > li {
   list-style-type: square;
 }
-article .article-content td.icon :before {
-  content: "\f05a";
+article .article-content td.icon {
+  border-right: 1px #ccc dashed;
+}
+article .article-content td.icon div.title {
+  color: #fff;
+}
+article .article-content td.icon [class^="fa icon-"] {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   text-rendering: auto;
@@ -2296,8 +2302,26 @@ article .article-content td.icon :before {
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   cursor: default;
 }
-article .article-content td.icon div.title {
-  color: #fff;
+article .article-content td.icon .icon-note:before {
+  content: "\f05a";
+  color: #19407c;
+}
+article .article-content td.icon .icon-tip:before {
+  content: "\f0eb";
+  text-shadow: 1px 1px 2px rgba(155,155,0,0.8);
+  color: #111;
+}
+article .article-content td.icon .icon-warning:before {
+  content: "\f071";
+  color: #bf6900;
+}
+article .article-content .icon-caution:before {
+  content: "\f06d";
+  color: #bf3400;
+}
+article .article-content .icon-important:before {
+  content: "\f06a";
+  color: #bf0000;
 }
 .gallery {
   overflow: hidden;

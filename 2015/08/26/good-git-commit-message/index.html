@@ -1,6 +1,6 @@
 
  <!DOCTYPE HTML>
-<html lang="zh_CN">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   
@@ -11,45 +11,30 @@
     
 
     
-    <meta name="description" content="英文出处：http://dev.solita.fi/2013/07/04/whats-in-a-good-commit.html
+    <meta name="description" content="首先我们来听一个令人恶心的例子。
 
+你看到问题 F00-123被解决了。 这是关于一个你自己很熟悉的子系统的Bug，所以直觉告诉你造成这个Bug最可能的原因。 为了证实你的怀疑，你决定看看这个bug是怎么被解决的。
 
-首先我们来听一个令人恶心的例子。
-
-
-你看到问题 F00-123被解决了。
-这是关于一个你自己很熟悉的子系统的Bug，所以直觉告诉你造成这个Bug最可能的原因。
-为了证实你的怀疑，你决定看看这个bug是怎么被解决的。
-你花了很长时间搜索了整个版本历史，直到把这个bu">
+你花了很长时间搜索了整个版本历史，直到把这个bugfix的范围缩小到了4个连续的提交，它们分别的提交信息是： dao小调整(dao tweaks)、moar、Fixes， 还有删除一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一个优秀的提交应该包含什么?">
 <meta property="og:url" content="http://lifei.github.io/2015/08/26/good-git-commit-message/index.html">
 <meta property="og:site_name" content="飛哥の技术博客">
-<meta property="og:description" content="英文出处：http://dev.solita.fi/2013/07/04/whats-in-a-good-commit.html
+<meta property="og:description" content="首先我们来听一个令人恶心的例子。
 
+你看到问题 F00-123被解决了。 这是关于一个你自己很熟悉的子系统的Bug，所以直觉告诉你造成这个Bug最可能的原因。 为了证实你的怀疑，你决定看看这个bug是怎么被解决的。
 
-首先我们来听一个令人恶心的例子。
-
-
-你看到问题 F00-123被解决了。
-这是关于一个你自己很熟悉的子系统的Bug，所以直觉告诉你造成这个Bug最可能的原因。
-为了证实你的怀疑，你决定看看这个bug是怎么被解决的。
-你花了很长时间搜索了整个版本历史，直到把这个bu">
+你花了很长时间搜索了整个版本历史，直到把这个bugfix的范围缩小到了4个连续的提交，它们分别的提交信息是： dao小调整(dao tweaks)、moar、Fixes， 还有删除一">
 <meta property="og:image" content="http://lifei.github.io/images/good-git-commit-message/jackie.jpg">
 <meta property="og:image" content="http://lifei.github.io/images/good-git-commit-message/no.gif">
-<meta property="og:updated_time" content="2015-12-20T18:05:02.731Z">
+<meta property="og:updated_time" content="2016-01-24T19:23:16.764Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个优秀的提交应该包含什么?">
-<meta name="twitter:description" content="英文出处：http://dev.solita.fi/2013/07/04/whats-in-a-good-commit.html
+<meta name="twitter:description" content="首先我们来听一个令人恶心的例子。
 
+你看到问题 F00-123被解决了。 这是关于一个你自己很熟悉的子系统的Bug，所以直觉告诉你造成这个Bug最可能的原因。 为了证实你的怀疑，你决定看看这个bug是怎么被解决的。
 
-首先我们来听一个令人恶心的例子。
-
-
-你看到问题 F00-123被解决了。
-这是关于一个你自己很熟悉的子系统的Bug，所以直觉告诉你造成这个Bug最可能的原因。
-为了证实你的怀疑，你决定看看这个bug是怎么被解决的。
-你花了很长时间搜索了整个版本历史，直到把这个bu">
+你花了很长时间搜索了整个版本历史，直到把这个bugfix的范围缩小到了4个连续的提交，它们分别的提交信息是： dao小调整(dao tweaks)、moar、Fixes， 还有删除一">
 
     
     <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
@@ -77,7 +62,7 @@
 				<h1 class="site-name"><a href="/" title="飛哥の技术博客">飛哥の技术博客</a></h1>
 				<h2 class="blog-motto">关注业务开发</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -116,14 +101,14 @@
 		<a href="/about" title="李飛" target="_blank" itemprop="author">李飛</a>
 		
   <p class="article-time">
-    <time datetime="2015-08-26T11:58:47.000Z" itemprop="datePublished"> 發表於 2015-08-26</time>
+    <time datetime="2015-08-26T11:58:47.000Z" itemprop="datePublished"> 发表于 2015-08-26</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目錄</strong>
+			<strong class="toc-title">文章目录</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">每次提交只做一个修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">每次提交要包含完整修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">写好注释，说明你修改了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___4"><span class="toc-number">4.</span> <span class="toc-text">注释说明为什么做这个修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___5"><span class="toc-number">5.</span> <span class="toc-text">不要提交被注释掉的代码</span></a></li></ol>
 		
@@ -289,6 +274,11 @@ dao小调整(dao tweaks)、moar、Fixes， 还有删除一些调试信息(remove
 <div class="article-catetags">
 
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Git/">Git</a>
+  </div>
+
 </div>
 
 
@@ -334,22 +324,22 @@ dao小调整(dao tweaks)、moar、Fixes， 还有删除一些调试信息(remove
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目錄</strong>
+  <strong class="toc-title">文章目录</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">每次提交只做一个修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">每次提交要包含完整修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">写好注释，说明你修改了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___4"><span class="toc-number">4.</span> <span class="toc-text">注释说明为什么做这个修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___5"><span class="toc-number">5.</span> <span class="toc-text">不要提交被注释掉的代码</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分類</p>
+	<p class="asidetitle">分类</p>
 		<ul>
 		
 		  
@@ -362,15 +352,35 @@ dao小调整(dao tweaks)、moar、Fixes， 还有删除一些调试信息(remove
 
   
 <div class="tagslist">
-	<p class="asidetitle">標簽</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>1</sup></a></li>
+				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SASL/" title="SASL">SASL<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenLDAP/" title="OpenLDAP">OpenLDAP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
 			
 		
 			
@@ -378,7 +388,7 @@ dao小调整(dao tweaks)、moar、Fixes， 还有删除一些调试信息(remove
 			
 		
 			
-				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+				<li><a href="/tags/授权/" title="授权">授权<sup>1</sup></a></li>
 			
 		
 			
@@ -403,22 +413,22 @@ dao小调整(dao tweaks)、moar、Fixes， 还有删除一些调试信息(remove
 
   
   <div class="archiveslist">
-    <p class="asidetitle"><a href="/archives">歸檔</a></p>
+    <p class="asidetitle"><a href="/archives">归档</a></p>
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li></ul>
   </div>
 
 
   
   <div class="tagcloudlist">
-    <p class="asidetitle">標簽雲</p>
+    <p class="asidetitle">标签云</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a>
+       <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Kerberos/" style="font-size: 20px;">Kerberos</a> <a href="/tags/OpenLDAP/" style="font-size: 10px;">OpenLDAP</a> <a href="/tags/SASL/" style="font-size: 10px;">SASL</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/授权/" style="font-size: 10px;">授权</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a>
     </div>
   </div>
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -658,7 +668,7 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

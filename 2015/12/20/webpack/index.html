@@ -1,6 +1,6 @@
 
  <!DOCTYPE HTML>
-<html lang="zh_CN">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   
@@ -106,7 +106,7 @@
 				<h1 class="site-name"><a href="/" title="飛哥の技术博客">飛哥の技术博客</a></h1>
 				<h2 class="blog-motto">关注业务开发</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -145,14 +145,14 @@
 		<a href="/about" title="李飛" target="_blank" itemprop="author">李飛</a>
 		
   <p class="article-time">
-    <time datetime="2015-12-20T02:00:00.000Z" itemprop="datePublished"> 發表於 2015-12-20</time>
+    <time datetime="2015-12-20T02:00:00.000Z" itemprop="datePublished"> 发表于 2015-12-20</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目錄</strong>
+			<strong class="toc-title">文章目录</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">场景/需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">3.1.</span> <span class="toc-text">先进的语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">3.2.</span> <span class="toc-text">混淆和压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__hash"><span class="toc-number">3.3.</span> <span class="toc-text">资源文件名 hash 化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___6"><span class="toc-number">3.4.</span> <span class="toc-text">配置发布后的目录和网址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_cdn"><span class="toc-number">3.5.</span> <span class="toc-text">CDN 多域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html"><span class="toc-number">3.6.</span> <span class="toc-text">将静态资源的目标网址注入到对应的 HTML 模版中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html_2"><span class="toc-number">3.7.</span> <span class="toc-text">不需要注入静态资源的 HTML 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">3.8.</span> <span class="toc-text">图片、字体等资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">3.9.</span> <span class="toc-text">将公共库合并到一个文件中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___9"><span class="toc-number">3.10.</span> <span class="toc-text">样式文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__code_import_code"><span class="toc-number">3.11.</span> <span class="toc-text">无法import的第三方库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_sourcemap"><span class="toc-number">3.12.</span> <span class="toc-text">SourceMap 支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___10"><span class="toc-number">3.13.</span> <span class="toc-text">热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___11"><span class="toc-number">3.14.</span> <span class="toc-text">构建环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___12"><span class="toc-number">4.</span> <span class="toc-text">工程目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___13"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___14"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___15"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___16"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_faq"><span class="toc-number">6.</span> <span class="toc-text">FAQ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___17"><span class="toc-number">7.</span> <span class="toc-text">参考文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___18"><span class="toc-number">8.</span> <span class="toc-text">我们在招人</span></a></li></ol>
 		
@@ -1236,9 +1236,9 @@ Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配
  
 
 <div class="next">
-<a href="/2015/09/18/kerberos-ssh/"  title="SSH 使用 Kerberos 认证">
+<a href="/2015/09/18/kerberos-ssh/"  title="使用 Kerberos 作为 SSH 服务的认证协议">
  <strong>下一篇：</strong><br/> 
- <span>SSH 使用 Kerberos 认证
+ <span>使用 Kerberos 作为 SSH 服务的认证协议
 </span>
 </a>
 </div>
@@ -1252,22 +1252,22 @@ Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目錄</strong>
+  <strong class="toc-title">文章目录</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">场景/需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">3.1.</span> <span class="toc-text">先进的语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">3.2.</span> <span class="toc-text">混淆和压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__hash"><span class="toc-number">3.3.</span> <span class="toc-text">资源文件名 hash 化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___6"><span class="toc-number">3.4.</span> <span class="toc-text">配置发布后的目录和网址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_cdn"><span class="toc-number">3.5.</span> <span class="toc-text">CDN 多域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html"><span class="toc-number">3.6.</span> <span class="toc-text">将静态资源的目标网址注入到对应的 HTML 模版中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__html_2"><span class="toc-number">3.7.</span> <span class="toc-text">不需要注入静态资源的 HTML 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___7"><span class="toc-number">3.8.</span> <span class="toc-text">图片、字体等资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">3.9.</span> <span class="toc-text">将公共库合并到一个文件中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___9"><span class="toc-number">3.10.</span> <span class="toc-text">样式文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__code_import_code"><span class="toc-number">3.11.</span> <span class="toc-text">无法import的第三方库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_sourcemap"><span class="toc-number">3.12.</span> <span class="toc-text">SourceMap 支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___10"><span class="toc-number">3.13.</span> <span class="toc-text">热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___11"><span class="toc-number">3.14.</span> <span class="toc-text">构建环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___12"><span class="toc-number">4.</span> <span class="toc-text">工程目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___13"><span class="toc-number">4.1.</span> <span class="toc-text">对应关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___14"><span class="toc-number">5.</span> <span class="toc-text">部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___15"><span class="toc-number">5.1.</span> <span class="toc-text">静态资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___16"><span class="toc-number">5.2.</span> <span class="toc-text">后端模版</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_faq"><span class="toc-number">6.</span> <span class="toc-text">FAQ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___17"><span class="toc-number">7.</span> <span class="toc-text">参考文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___18"><span class="toc-number">8.</span> <span class="toc-text">我们在招人</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分類</p>
+	<p class="asidetitle">分类</p>
 		<ul>
 		
 		  
@@ -1280,15 +1280,35 @@ Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配
 
   
 <div class="tagslist">
-	<p class="asidetitle">標簽</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>1</sup></a></li>
+				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SASL/" title="SASL">SASL<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenLDAP/" title="OpenLDAP">OpenLDAP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
 			
 		
 			
@@ -1296,7 +1316,7 @@ Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配
 			
 		
 			
-				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+				<li><a href="/tags/授权/" title="授权">授权<sup>1</sup></a></li>
 			
 		
 			
@@ -1321,22 +1341,22 @@ Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配
 
   
   <div class="archiveslist">
-    <p class="asidetitle"><a href="/archives">歸檔</a></p>
+    <p class="asidetitle"><a href="/archives">归档</a></p>
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li></ul>
   </div>
 
 
   
   <div class="tagcloudlist">
-    <p class="asidetitle">標簽雲</p>
+    <p class="asidetitle">标签云</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a>
+       <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Kerberos/" style="font-size: 20px;">Kerberos</a> <a href="/tags/OpenLDAP/" style="font-size: 10px;">OpenLDAP</a> <a href="/tags/SASL/" style="font-size: 10px;">SASL</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/授权/" style="font-size: 10px;">授权</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a>
     </div>
   </div>
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -1576,7 +1596,7 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

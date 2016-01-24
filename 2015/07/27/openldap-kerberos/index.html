@@ -1,6 +1,6 @@
 
  <!DOCTYPE HTML>
-<html lang="zh_CN">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   
@@ -11,31 +11,22 @@
     
 
     
-    <meta name="description" content="背景
+    <meta name="description" content="LDAP 和 Kerberos 是分别是用户管理领域和认证授权领域的事实标准，大量的第三方软件支持 LDAP 和 Kerberos 协议，支持 LDAP 和 Kerberos 的系统将极大地方便与第三方系统集成。
 
-
-什么是 LDAP，它用来做什么？
-
-LDAP 是轻量目录访问协议，英文全称是 Lightweight Directory Access Protocol，一般都简称为 LDAP。它是基于 X.500 标准的，但是简单多了并且可以根据需要定制。与 X.500 不同，LDAP 支持 TCP/IP，这对访问 Internet 是必须的。LDAP 的核心规范在 RFC 中都有定义，所有与 LDA">
+本文解决了 LDAP 和 Kerberos 数据和认证的打通问题，使 LDAP 和 Kerberos 以一个统一的完整的服务对外提供服务。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="打造统一的 Kerberos 和 OpenLDAP 服务">
 <meta property="og:url" content="http://lifei.github.io/2015/07/27/openldap-kerberos/index.html">
 <meta property="og:site_name" content="飛哥の技术博客">
-<meta property="og:description" content="背景
+<meta property="og:description" content="LDAP 和 Kerberos 是分别是用户管理领域和认证授权领域的事实标准，大量的第三方软件支持 LDAP 和 Kerberos 协议，支持 LDAP 和 Kerberos 的系统将极大地方便与第三方系统集成。
 
-
-什么是 LDAP，它用来做什么？
-
-LDAP 是轻量目录访问协议，英文全称是 Lightweight Directory Access Protocol，一般都简称为 LDAP。它是基于 X.500 标准的，但是简单多了并且可以根据需要定制。与 X.500 不同，LDAP 支持 TCP/IP，这对访问 Internet 是必须的。LDAP 的核心规范在 RFC 中都有定义，所有与 LDA">
-<meta property="og:updated_time" content="2016-01-24T17:13:56.314Z">
+本文解决了 LDAP 和 Kerberos 数据和认证的打通问题，使 LDAP 和 Kerberos 以一个统一的完整的服务对外提供服务。">
+<meta property="og:updated_time" content="2016-01-24T19:10:44.201Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="打造统一的 Kerberos 和 OpenLDAP 服务">
-<meta name="twitter:description" content="背景
+<meta name="twitter:description" content="LDAP 和 Kerberos 是分别是用户管理领域和认证授权领域的事实标准，大量的第三方软件支持 LDAP 和 Kerberos 协议，支持 LDAP 和 Kerberos 的系统将极大地方便与第三方系统集成。
 
-
-什么是 LDAP，它用来做什么？
-
-LDAP 是轻量目录访问协议，英文全称是 Lightweight Directory Access Protocol，一般都简称为 LDAP。它是基于 X.500 标准的，但是简单多了并且可以根据需要定制。与 X.500 不同，LDAP 支持 TCP/IP，这对访问 Internet 是必须的。LDAP 的核心规范在 RFC 中都有定义，所有与 LDA">
+本文解决了 LDAP 和 Kerberos 数据和认证的打通问题，使 LDAP 和 Kerberos 以一个统一的完整的服务对外提供服务。">
 
     
     <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
@@ -63,7 +54,7 @@ LDAP 是轻量目录访问协议，英文全称是 Lightweight Directory Access 
 				<h1 class="site-name"><a href="/" title="飛哥の技术博客">飛哥の技术博客</a></h1>
 				<h2 class="blog-motto">关注业务开发</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -102,14 +93,14 @@ LDAP 是轻量目录访问协议，英文全称是 Lightweight Directory Access 
 		<a href="/about" title="李飛" target="_blank" itemprop="author">李飛</a>
 		
   <p class="article-time">
-    <time datetime="2015-07-27T13:33:22.000Z" itemprop="datePublished"> 發表於 2015-07-27</time>
+    <time datetime="2015-07-27T13:33:22.000Z" itemprop="datePublished"> 发表于 2015-07-27</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目錄</strong>
+			<strong class="toc-title">文章目录</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__ldap"><span class="toc-number">1.1.</span> <span class="toc-text">什么是 LDAP，它用来做什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__kerberos"><span class="toc-number">1.2.</span> <span class="toc-text">什么是 Kerberos，它用来做什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__sasl"><span class="toc-number">1.3.</span> <span class="toc-text">什么是 SASL？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">1.4.</span> <span class="toc-text">我们的目标是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_openldap"><span class="toc-number">2.</span> <span class="toc-text">OpenLDAP 服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__openldap"><span class="toc-number">2.1.</span> <span class="toc-text">安装 OpenLDAP 服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__openldap_2"><span class="toc-number">2.2.</span> <span class="toc-text">配置 OpenLDAP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_kerberos"><span class="toc-number">3.</span> <span class="toc-text">Kerberos 安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___3"><span class="toc-number">3.1.</span> <span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_saslauthd"><span class="toc-number">4.</span> <span class="toc-text">saslauthd</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">4.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__saslauthd"><span class="toc-number">4.2.</span> <span class="toc-text">配置 saslauthd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__openldap_kerberos"><span class="toc-number">4.3.</span> <span class="toc-text">配置 OpenLDAP 和 Kerberos</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_docker"><span class="toc-number">5.</span> <span class="toc-text">Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#_openldap_2"><span class="toc-number">5.1.</span> <span class="toc-text">OpenLDAP 篇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_kerberos_2"><span class="toc-number">5.2.</span> <span class="toc-text">Kerberos 篇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_openldap_kerberos"><span class="toc-number">5.3.</span> <span class="toc-text">OpenLDAP使用Kerberos作为验证方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___5"><span class="toc-number">6.</span> <span class="toc-text">参考资料：</span></a></li></ol>
 		
@@ -127,7 +118,7 @@ LDAP 是轻量目录访问协议，英文全称是 Lightweight Directory Access 
 <div class="sect2">
 <h3 id="__kerberos">什么是 Kerberos，它用来做什么？</h3>
 <div class="paragraph">
-<p>Kerberos 这一名词来源于希腊神话"三个头的狗--地狱之门守护者"系统设计上采用客户端/服务器结构与 DES 加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 replay 攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。</p>
+<p>Kerberos 这一名词来源于希腊神话『三个头的狗--地狱之门守护者』系统设计上采用客户端/服务器结构与 DES 加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 replay 攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。</p>
 </div>
 <div class="paragraph">
 <p>Kerberos 是一种网络认证协议，其设计目标是通过密钥系统为客户机/服务器应用程序提供强大的认证服务。该认证过程的实现不依赖于主机操作系统的认证，无需基于主机地址的信任，不要求网络上所有主机的物理安全，并假定网络上传送的数据包可以被任意地读取、修改和插入数据。在以上情况下， Kerberos 作为一种可信任的第三方认证服务，是通过传统的密码技术（如:共享密钥）执行认证服务的。</p>
@@ -772,6 +763,11 @@ ldapwhoami -x -D cn=smith,ou=people,<span class="variable">$DOMAIN_DN</span> -W<
 <div class="article-catetags">
 
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Docker/">Docker</a><a href="/tags/Kerberos/">Kerberos</a><a href="/tags/OpenLDAP/">OpenLDAP</a><a href="/tags/SASL/">SASL</a>
+  </div>
+
 </div>
 
 
@@ -817,22 +813,22 @@ ldapwhoami -x -D cn=smith,ou=people,<span class="variable">$DOMAIN_DN</span> -W<
 
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目錄</strong>
+  <strong class="toc-title">文章目录</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__ldap"><span class="toc-number">1.1.</span> <span class="toc-text">什么是 LDAP，它用来做什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__kerberos"><span class="toc-number">1.2.</span> <span class="toc-text">什么是 Kerberos，它用来做什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__sasl"><span class="toc-number">1.3.</span> <span class="toc-text">什么是 SASL？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">1.4.</span> <span class="toc-text">我们的目标是什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_openldap"><span class="toc-number">2.</span> <span class="toc-text">OpenLDAP 服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__openldap"><span class="toc-number">2.1.</span> <span class="toc-text">安装 OpenLDAP 服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__openldap_2"><span class="toc-number">2.2.</span> <span class="toc-text">配置 OpenLDAP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_kerberos"><span class="toc-number">3.</span> <span class="toc-text">Kerberos 安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___3"><span class="toc-number">3.1.</span> <span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_saslauthd"><span class="toc-number">4.</span> <span class="toc-text">saslauthd</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">4.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__saslauthd"><span class="toc-number">4.2.</span> <span class="toc-text">配置 saslauthd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__openldap_kerberos"><span class="toc-number">4.3.</span> <span class="toc-text">配置 OpenLDAP 和 Kerberos</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_docker"><span class="toc-number">5.</span> <span class="toc-text">Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#_openldap_2"><span class="toc-number">5.1.</span> <span class="toc-text">OpenLDAP 篇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_kerberos_2"><span class="toc-number">5.2.</span> <span class="toc-text">Kerberos 篇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_openldap_kerberos"><span class="toc-number">5.3.</span> <span class="toc-text">OpenLDAP使用Kerberos作为验证方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___5"><span class="toc-number">6.</span> <span class="toc-text">参考资料：</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分類</p>
+	<p class="asidetitle">分类</p>
 		<ul>
 		
 		  
@@ -845,15 +841,35 @@ ldapwhoami -x -D cn=smith,ou=people,<span class="variable">$DOMAIN_DN</span> -W<
 
   
 <div class="tagslist">
-	<p class="asidetitle">標簽</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>1</sup></a></li>
+				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SASL/" title="SASL">SASL<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/OpenLDAP/" title="OpenLDAP">OpenLDAP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
 			
 		
 			
@@ -861,7 +877,7 @@ ldapwhoami -x -D cn=smith,ou=people,<span class="variable">$DOMAIN_DN</span> -W<
 			
 		
 			
-				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+				<li><a href="/tags/授权/" title="授权">授权<sup>1</sup></a></li>
 			
 		
 			
@@ -886,22 +902,22 @@ ldapwhoami -x -D cn=smith,ou=people,<span class="variable">$DOMAIN_DN</span> -W<
 
   
   <div class="archiveslist">
-    <p class="asidetitle"><a href="/archives">歸檔</a></p>
+    <p class="asidetitle"><a href="/archives">归档</a></p>
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li></ul>
   </div>
 
 
   
   <div class="tagcloudlist">
-    <p class="asidetitle">標簽雲</p>
+    <p class="asidetitle">标签云</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/Kerberos/" style="font-size: 10px;">Kerberos</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a>
+       <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Kerberos/" style="font-size: 20px;">Kerberos</a> <a href="/tags/OpenLDAP/" style="font-size: 10px;">OpenLDAP</a> <a href="/tags/SASL/" style="font-size: 10px;">SASL</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/授权/" style="font-size: 10px;">授权</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a>
     </div>
   </div>
 
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -1141,7 +1157,7 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

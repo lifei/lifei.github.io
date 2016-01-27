@@ -1,23 +1,31 @@
-title: 面向领域实体及关系的API设计
+title: 面向领域实体及关系的范式 API 设计
 date: 2015-07-16 21:59:41
 id: entity-relationship-based-api-design
 tags:
 - 领域实体
 - API
+- 范式
 ---
 
-日常的业务开发过程中，很大一部分工作是就是各种API开发。不论是基于何种协议，何种序列化方法，(只读)API的主要开发过程可以简单总结为：
+= 面向领域实体及关系的范式 API 设计
 
-1. 处理参数，检查合法性。
-2. 根据参数获取相关数据。
-3. 加载需要的实体内容。
-4. 把加载的实体按照约定的格式打包、序列化、输出到API。
+== 背景
+
+很多年以前，大多数的 Web 开发是在开发网页应用，基本流程是解析参数、获取数据、渲染模版。市面上几乎每一款 Full Stack Web 框架都 MVC 架构，Controllers 将处理好的 Models 交给 Views 来渲染。进入移动时代后，随着网页应用转为 App，MVC 中的 V 不见了， 后端不再需要渲染模版了，UI 和交互全部都由 App 采用 Native 的方式来实现，而数据则通过 API 的方式从服务器传到客户端 App。Web 开发也慢慢地由网页应用开发转变为 API 开发。
+
+『罗马不是一天建成的』，API 的设计从一开始就受到了 MVC 架构的影响，很多 API 的设计都是参考了 MVC 中『Controllers 将处理好的 Models 交给 Views』的设计，只是不再是『Controllers 将处理好的 Models 交给 Views』，而是服务器通过 API 将数据传给 App。
+
+《<<X40,附录 A：订单列表页的例子>>》讲述了这样的一段演化经历。这种 API 设计非常常见，我们将之称为**『套模板 API 设计』**。一般的场景是服务端、客户端的研发同事照着 PM 给的页面原型图在一个僻静的会议室里一起设计 API。在这种 API 设计风格的基础上又演化出很多变种，加入了约定和要求，最有名的约定就是『嵌套外键关系』，譬如：link:https://github.com/interagent/http-api-design/blob/master/responses/nest-foreign-key-relations.md[HTTP API design guide extracted from work on the Heroku Platform API]
+。
+
+本文 
 
 ## 获取微博的例子
 
-举例来说，有一个API需要返回指定话题下的微博列表(`http://somedomain/tweets/?topic_id=10000001&offset=0&count=20`)，其返回格式定义如下：
+举例来说，有一个API需要返回指定话题下的微博列表（`http://api.com/tweets/?topic_id=10000001&offset=0&count=20`），其返回格式定义如下：
 
-```json
+[source, json]
+----
 {
     "error": 0,
     "data": {
@@ -57,18 +65,20 @@ tags:
         "has_more": true
     }
 }
-```
+----
 
 其中，
+
+.返回值含义
 * `error`是错误码，`0`表示无错误。
 * `data`表示数据域，所有的数据均在`data`数据域下：
-    * `tweets`表示微博的列表。
-    * `offset`为翻页标识。
-    * `count`表示每页多少条微博。
-    * `has_more`表示还可以继续翻页。
+** `tweets`表示微博的列表。
+** `offset`为翻页标识。
+** `count`表示每页多少条微博。
+** `has_more`表示还可以继续翻页。
 
-关系图
-
+.关系图
+----
 {% plantuml %}
 
 class User
@@ -95,10 +105,11 @@ Tweet o--> User : belongs to
 CommentList --> Comment: has many
 
 {% endplantuml %}
+----
 
-组件之间的关系
-
-```
+.展示关系示意
+[source, xml]
+----
 <TweetList tweets={tweets}>
     <Tweet tweet={tweet}>
         ...
@@ -111,7 +122,7 @@ CommentList --> Comment: has many
         </CommentList>
     </Tweet>
 </TweetList>
-```
+----
 
 优点：
 
@@ -191,7 +202,7 @@ def pack(tweets):
 这段代码本身其实没有什么问题，是一段非常标准的API实现代码。本文主要针对这个例子，讨论一下返回格式对API实现的影响，从而得出API格式的最佳实践。
 
 ### 问题一
-假设还有一个API，是返回某个用户的微博列表 (/tweets/?user_id=100000001)，我们得到的结果将会是：
+假设还有一个API，是返回某个用户的微博列表（/tweets/?user_id=100000001），我们得到的结果将会是：
 
 ```json
 {
@@ -365,3 +376,88 @@ def view(request):
 2. 领域实体之间的关系通过关系域表示，譬如：`belongs to`, `has many` => {"id": ["ids"]}等。
 3. API的定义与实体定义严格对应，在任何出现地方，故在API设计上，需要从实体作为出发点，把实体作为数据的组织单元。
 4. 这样的API设计可以维护前后端数据结构的统一。
+
+
+== 附录
+
+[[X40]]
+
+=== 附录 A：订单列表页的例子
+
+假设有个页面，它是一个订单（Order）列表页，内容如下：
+
+[source, html]
+----
+{{ title }}
+{% for order in orders %}
+{{ order.id }} {{ order.user.name }} {{ order.product.name }}
+{% endfor %}
+----
+
+在 MVC 架构中，Controllers 需要为 Views 准备的如下格式的数据：
+
+[source, python]
+----
+context = {
+    "title": "我的订单列表",
+    "orders": [{
+        "id": 100001,
+        "product": {
+            "id": 200001,
+            "name": "橘子",
+        },
+        "user": {
+            "id": 300001,
+            "name": "张三"
+        }
+    }]
+}
+
+return render_template("orders.html", **context)
+----
+
+现在，这个页面将由 Native App 来展示了，需要一个 API 来返回数据，我们该如何设计这个 API 呢？
+
+等等，虽然上段数据是 Python 格式的，但好像和 JSON 非常像，我觉着它完全可以作为 API 返回给客户端 App。
+
+[source, json]
+----
+{
+    "title": "我的订单列表",
+    "orders": [{
+        "id": 100001,
+        "product": {
+            "id": 200001,
+            "name": "橘子",
+        },
+        "user": {
+            "id": 300001,
+            "name": "张三"
+        }
+    }]
+}
+----
+
+Python 代码将调整为：
+
+[source, python]
+----
+context = {
+    "title": "我的订单列表",
+    "orders": [{
+        "id": 100001,
+        "product": {
+            "id": 200001,
+            "name": "橘子",
+        },
+        "user": {
+            "id": 300001,
+            "name": "张三"
+        }
+    }]
+}
+
+return jsonify(context)
+----
+
+哈哈，好像发现了个『窍门』，只需要将 `render_template` 给出 `jsonify` 就可以了。

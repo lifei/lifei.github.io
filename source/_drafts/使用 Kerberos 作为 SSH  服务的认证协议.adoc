@@ -1,0 +1,210 @@
+title: 使用 Kerberos 作为 SSH 服务的认证协议
+id: kerberos-ssh
+date: 2015-09-18 14:32:00
+tags:
+- Kerberos
+- SSH
+- 运维
+- 授权
+description:
+  我们常见的 SSH 认证方式有用户名密码认证，公钥/私钥认证等，这些认证比较适合个人使用，但如果管辖的机器过多，就会出现调整认证的不方便的情况。譬如：如果现在有 100 台服务器，由于业务需要（如：基于 ansible 的部署系统），这些机器需要做到对特定账号免登。假设我们采用公钥私钥的认证方式实现免登需求，需要在每台免登机器中都要放置一个公钥。突然有一天私钥泄漏了，必须要把这 100 台机器的认证都调整一遍，也就是说要把 100 台机器上的公钥都更换成新的公钥，肯定不是一件容易的事情。而假如我们采取了第三方集中认证授权的方式（如：Kerberos），那只需要在 Kerberos 服务端重置一下 KEY 即可。
+  
+  
+  本文阐述了一个采用 Kerberos 作为 SSH 集中授权认证的方案，兼顾方便和安全。
+---
+
+= 使用 Kerberos 作为 SSH 服务的认证协议
+
+== 背景
+
+=== 什么是 Kerberos？
+
+Kerberos 这一名词来源于希腊神话『三个头的狗--地狱之门守护者』系统设计上采用客户端/服务器结构与 DES 加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 replay 攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。
+
+Kerberos 是一种网络认证协议，其设计目标是通过密钥系统为客户机/服务器应用程序提供强大的认证服务。该认证过程的实现不依赖于主机操作系统的认证，无需基于主机地址的信任，不要求网络上所有主机的物理安全，并假定网络上传送的数据包可以被任意地读取、修改和插入数据。在以上情况下， Kerberos 作为一种可信任的第三方认证服务，是通过传统的密码技术（如：共享密钥）执行认证服务的。
+
+使用 Kerberos 时，一个客户端需要经过三个步骤来获取服务:
+
+1. 认证：客户端向认证服务器发送一条报文，并获取一个含时间戳的 Ticket-Granting Ticket（TGT）。
+2. 授权：客户端使用 TGT 向 Ticket-Granting Server（TGS）请求一个服务 Ticket。
+3. 服务请求：客户端向服务器出示服务 Ticket，以证实自己的合法性。该服务器提供客户端所需服务，在 Hadoop 应用中，服务器可以是 namenode 或 jobtracker。
+
+为此，Kerberos 需要『The Key Distribution Centers（KDC）』来进行认证。KDC 只有一个 Master，可以带多个 Slaves Slaves 机器仅进行普通验证。Master 上做的修改需要自动同步到 Slaves。
+
+另外，KDC 需要一个 admin 来进行日常的管理操作，即 kadmin。kadmin 可以通过远程或者本地方式登录。
+
+=== 面临的问题
+
+我们常见的 SSH 认证方式有用户名密码认证，公钥/私钥认证等，这些认证比较适合个人使用，但如果管辖的机器过多，就会出现调整认证的不方便的情况。譬如：如果现在有 100 台服务器，由于业务需要（如：基于 ansible 的部署系统），这些机器需要做到对特定账号免登。假设我们采用公钥私钥的认证方式实现免登需求，需要在每台免登机器中都要放置一个公钥。突然有一天私钥泄漏了，必须要把这 100 台机器的认证都调整一遍，也就是说要把 100 台机器上的公钥都更换成新的公钥，肯定不是一件容易的事情。而假如我们采取了第三方集中认证授权的方式（如：Kerberos），那只需要在 Kerberos 服务端重置一下 KEY 即可。
+
+== 目标
+
+. 实现各个服务器之间的免登；
+. 认证泄漏后，调整成本最小；
+
+== 方案架构
+
+根据实际情况和安全需要，本方案设计双层认证的机制：
+
+.双层认证方案
+. 开设 ansible 账号，为每台机器设置 ansible 账号的认证权限；
+. ansible 的认证仅在跳板机上进行；
+. 开设 communication 账号，为每台机器设置 communication 账号的认证权限；
+. communication 的认证会在每一台服务器上进行，由 ansible 进行。
+
+.安全措施
+. 如果 ansible 认证泄漏，仅需要在 Kerberos 服务器上重置 ansible 账号的 KEY，在跳板机重新对 ansible 账号进行认证即可。
+. 如果 communication 认证泄漏，需在 Kerberos 服务器上重置 communication 账号的 KEY，同时通过 ansible 账号对每台机器的 communication 账号进行认证。
+
+.架构图
+----
+{% plantuml %}
+node Jump as J
+node Kerberos as K
+node "Machine A" as A
+node "Machine B" as B
+node "Machine C" as C
+node "Machine D" as D
+
+J --> A : ansible
+J --> B
+J --> C
+J --> D
+
+A --> B : communication
+A --> C
+A --> D
+
+A <-> K
+
+
+{% endplantuml %}
+----
+
+== SSHD配置
+
+.sshd_config
+----
+ChallengeResponseAuthentication no
+
+KerberosAuthentication no
+KerberosOrLocalPasswd no
+KerberosTicketCleanup no
+
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials yes
+GSSAPIStrictAcceptorCheck no
+GSSAPIKeyExchange no
+
+UsePAM yes
+----
+
+.整体参考
+----
+Protocol 2
+SyslogFacility AUTHPRIV
+LogLevel INFO
+PermitRoot no
+PasswordAuthentication yes
+ChallengeResponseAuthentication no
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials yes
+UsePAM yes
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+X11Forwarding yes
+Subsystem       sftp    /usr/libexec/openssh/sftp-server
+----
+
+== ssh server/client上Kerberos配置
+
+=== krb5.conf
+
+.krb5.conf
+----
+[logging]
+ default = FILE:/var/log/krb5libs.log
+
+[libdefaults]
+ default_realm = 7V1.NET
+ dns_lookup_realm = false
+ dns_lookup_kdc = false
+ ticket_lifetime = 24h
+ renew_lifetime = 7d
+ forwardable = true
+
+[realms]
+ 7V1.NET = {
+  kdc = 172.17.0.35
+  admin_server = 172.17.0.35
+  default_domain = 7v1.net
+ }
+
+[domain_realm]
+ .7v1.net = 7V1.NET
+ 7v1.net = 7V1.NET
+----
+
+NOTE: 这里使用7v1.net作为例子。
+
+=== 添加principal
+
+在`Kerberos`中注册本机
+
+.server
+----
+kadmin -q "ank -randkey host/ssh.7v1.net"
+----
+
+.client
+----
+kadmin -q "ank -randkey host/client.7v1.net"
+----
+
+=== 导出principal key
+
+把本机的key的添加到keytab中
+
+.server
+----
+kadmin -q "ktadd host/ssh.7v1.net"
+----
+
+.client
+----
+kadmin -q "ank -randkey host/client.7v1.net"
+----
+
+=== 在服务端配置.k5login文件
+
+[title=.k5login]
+----
+username@7V1.NET
+----
+
+== Kerberos服务器配置调整
+
+由于`Kerberos`版本升级兼容问题footnoteref:[note2,http://web.mit.edu/kerberos/krb5-devel/doc/admin/troubleshoot.html]，
+krb5 1.7及以后版本禁用了`DES encryption key`，会导致错误
+`credential verification failed: KDC has no support for encryption type`，
+请参考下面解决
+
+....
+This most commonly happens when trying to use a principal with only DES keys, in a release (MIT krb5 1.7 or later) which disables DES by default. DES encryption is considered weak due to its inadequate key size. If you cannot migrate away from its use, you can re-enable DES by adding allow_weak_crypto = true to the [libdefaults] section of krb5.conf.
+....
+
+== Trouble shooting
+
+=== 『KDC has no support for encryption type』
+
+krb5 1.7及以后版本禁用了`DES encryption key`所致。
+
+=== 『Wrong principal in request/debug1: Got no client credentials』
+
+服务器没有配置 .k5login
+
+=== 『No key table entry found matching xxxxxx』
+
+服务端没有把导出key到keytab

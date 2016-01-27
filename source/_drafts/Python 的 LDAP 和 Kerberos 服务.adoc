@@ -1,0 +1,22 @@
+= LDAP 和 Kerberos 服务
+
+== 背景
+
+二者无法自动打通
+
+每一个 LDAP 的用户 DN 需要对应一个 Kerberos 认证 princial。
+
+== 依赖
+
+link:https://github.com/russjancewicz/python-kadmin[python-kadmin]
+
+.依赖
+[source, sh]
+----
+apt-get install python3-dev libkrb5-dev bison python3-setuptools
+----
+
+.安装
+----
+sudo python3 setup.py install
+----

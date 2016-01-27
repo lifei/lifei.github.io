@@ -6,6 +6,10 @@ tags:
 
 = 搭建 OpenVPN 服务器
 
+== 背景
+
+VPN 
+
 == 部署OpenVPN
 
 以`vpn.7v1.net`为例，参考地址`https://hub.docker.com/r/kylemanna/openvpn/`。

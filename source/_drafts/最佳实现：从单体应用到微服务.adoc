@@ -5,47 +5,49 @@ tags:
 - 微服务
 ---
 
-> During the last months many have claimed that a microservices architecture should always start with a monolith, among others Martin Fowler and Sam Newman, but Stefan Tilkov is convinced this is often wrong, building a well-structured monolith with cleanly separated modules that later may be moved out as microservices is in most cases extremely hard, if not impossible.
-
-http://martinfowler.com/bliki/MonolithFirst.html
-http://martinfowler.com/articles/dont-start-monolith.html
+____
+During the last months many have claimed that a microservices architecture should always start with a monolith footnote:[http://martinfowler.com/bliki/MonolithFirst.html], among others Martin Fowler and Sam Newman, but Stefan Tilkov is convinced this is often wrong, building a well-structured monolith with cleanly separated modules that later may be moved out as microservices is in most cases extremely hard, if not impossible. 
+* footnote:[http://martinfowler.com/articles/dont-start-monolith.html]
+____
 
 So what's the best practice for starting a new project?
 
-At the beginning, the app has very few users. It's too hard to make every interface using RPC.
-The overhead of RPC would be waste computer resources. Every RPC server would request the same resource in a transaction.
-Besides there's much work to do in a microservices architecture, such as auto-deployment, monitoring, name server, service discovery.
-A new company with one or two engineers has to put its main resource on product development.
-It's no time to do so much Ops work.
+At the beginning, the app has very few users. It's too hard to make every interface using RPC. The overhead of RPC would be waste computer resources. Every RPC server would request the same resource in a transaction. Besides there's much work to do in a microservices architecture, such as auto-deployment, monitoring, name server, service discovery. A new company with one or two engineers has to put its main resource on product development. It's no time to do so much Ops work.
 
-I think out a solution for this. Let's consider using thrift as microservices RPC framework.
-Here's an example service spec.
+I think out a solution for this. Let's consider using thrift as microservices RPC framework. Here's an example service spec.
 
-    struct User {
-        1: i64 id,
-        2: string name
-    }
+[source, thrift]
+----
+struct User {
+    1: i64 id,
+    2: string name
+}
 
-    service UserService {
-        User get(1: i64 id);
-    }
+service UserService {
+    User get(1: i64 id);
+}
+----
 
 Thrift program generate the following py code.
 
-    class Iface(object):
+.Python Code
+[source, thrift]
+----
+class Iface(object):
 
-        def get(id):
-            pass
+    def get(id):
+        pass
 
-    class Client(Iface):
+class Client(Iface):
 
-        def get(id):
-            xxxxxx
+    def get(id):
+        xxxxxx
 
-    class Processer(Iface):
+class Processer(Iface):
 
-        def get(id):
-            xxxxxx
+    def get(id):
+        xxxxxx
+----
 
 I implement a hanlder passing to `Processer`.
 

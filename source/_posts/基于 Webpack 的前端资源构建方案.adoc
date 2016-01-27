@@ -10,9 +10,11 @@ tags:
 
 == 背景
 
-前端资源构建过程中有一些特定的需求需要工具解决。
+前端资源构建过程中有一些特定的需求需要工具解决。Webpack 是目前比较流行的一款构建工具，但是它与 fis 等工具相比，更灵活也更难掌握。
 
-== 需求
+有必要对前端资源构建过程中遇到的场景和需求进行梳理，针对每个场景和需求提出明确的、可实施的解决方案，得出最佳实践并以文档的形式落地。
+
+== 场景/需求
 
 . 支持 ES6、JSX、LESS 等格式的源文件编译成浏览器识别的格式；
 . 支持静态文件压缩；
@@ -28,33 +30,561 @@ tags:
 . 对开发友好，方便调试；
 * 支持环境变量，区分开发环境和生产环境；
 * 方便调试和开发，可见即可得；
-* 强大方便的 Source Map 支持，可以直接对源代码进行调试；
+* 强大方便的 SourceMap 支持，可以直接对源代码进行调试；
 . 第三方库的支持，如：Framework7 不能采用 `import $$ from 'dom7';` 这种方式被引入；
 
 == 方案
 
 经调研，决定采用 webpack 作为前端构建工具。对于各种需求，解决方案如下：
 
+=== 先进的语言
+
+先进的语言对生产力有极大的提升，譬如 ES6、JSX、LESS 等，它们不仅提供了大量新特性以提供生产力，还可以使项目更加统一、规范。Webpack 对新语言这块可以采用 loader 来解决。
+
 . 采用 webpack 的 babel-loader 解决 ES6、JSX 等语言的编译问题；
 . 采用 less-loader 解决 less 语言的编译问题；
-. 静态文件压缩采用 webpack 提供的 UglifyJsPlugin 插件实现；
-. 采用环境变量 NODE_ENV 来区分生产环境和开发环境；
-. 后端模版的支持
-.. 无需注入的模版可采用 file-loader 直接拷贝到目标目录下；
-.. 需要注入静态文件的模版使用 HtmlWebpackPlugin 插件来生成；
-* 在 HtmlWebpackPlugin 插件中使用 2.0 版支持的 loader 机制并配合 raw-loader 来解决 HtmlWebpackPlugin所采用的 Javascript 模版与 Jinja2 模版语法相互冲突的问题；
-* 对于 Jinja2 模版中使用 extends 模版集成特性且需要注入静态文件的情况，通过子模版里面显示的声明`</head>`和`</body>`来实现。同时开启 HtmlWebpackPlugin 插件的 minify 特性，可以去掉多余的`</head>`和`</body>`；
-. 字体、图片文件采用 file-loader 拷贝至目标路径，需要修改的开启 hash 化特性；
-. 静态资源文件名 hash 化采用 webpack 提供的`[chunkhash]`或`[hash]`机制来实现，保留8位；
-. 使用 CommonsChunkPlugin 插件提取公共的 chunks 合并到一个文件中；
-. 使用 ExtractTextPlugin 插件将 chunks 提取成独立的文件；
-. 对一些不规范的第三方库，可以采用 Webpack 的 extenals 机制来引入；
-. 将公共的库文件都放到 libs.js 下，避免每次构建时都重新生成这个文件，导致 HTTP 协议的缓存机制失效，刷新页面时需要下载大量的重复的文件。
-. 开启 devtool，设置为 `#eval-module-source-map`，这种设置对开发和调试最友好；
 
-== 工程结构
+.loader 示例
+[source, javascript]
+----
+loaders: [{
+    test: /\.js$/,
+    exclude: /node_modules/,
+    loader: 'babel?presets[]=es2015'
+}, {
+    test: /\.jsx$/,
+    exclude: /node_modules/,
+    loader: 'babel?presets[]=es2015&presets[]=react'
+}, {
+    test: /\.less$/,
+    loader: ExtractTextPlugin.extract('style-loader',
+        'css-loader!less-loader')
+}]
+----
 
-前端工程的目录结构约定如下：
+=== 混淆和压缩
+
+静态文件压缩采用 webpack 提供的 UglifyJsPlugin 插件实现，具体代码如下：
+
+.UglifyJsPlugin 示例
+[source, javascript]
+----
+plugins: [new UglifyJsPlugin({
+    compress: {
+        warnings: false
+    },
+    except: ['$super', '$', 'exports', 'require']
+})]
+----
+
+=== 资源文件名 hash 化
+
+Webpack 中，`output.filename` 等配置项可以指定一个模版，其中有一项就是 hash，一般有两种：[chunkhash] 和 [hash]，可在单词后面增加 `:num` 表示取对应 hash 的多少位，如：[hash:8]，表示取 8 位 hash。
+
+[source, javascript]
+----
+output.filename = 'static/js/[name].[chunkhash:8].min.js';
+----
+
+=== 配置发布后的目录和网址
+
+发布后的本地目录和目标网址均在 `output` 小节里配置，`path` 表示本地文件的目录，`publicPath` 表示目标的网址目录，可以是 CDN 的地址，也可以是相/绝对地址等。
+
+[source, javascript]
+----
+output: {
+  path: '../koloda/',
+  publicPath: '/koloda/'
+}
+----
+
+=== CDN 多域名
+
+旧的浏览器有些技术上的限制，譬如同一个域名下最多会发起  2 个链接等，这个问题一方面可以通过合并 Javascript 文件的方式来解决，另一个解决的办法是采用多个域名。
+
+在*“配置发布后的目录和网址”*小节中说到配置发布后的目标网址使用`output.publicPath`来指定。另外 Webpack 的`output.publicPath`还可以是一个`function`，我们可以在`function`里面计算一下 hash，返回不同的域名。
+
+[source, javascript]
+----
+let i = 0;
+output: {
+  publicPath: () => ++i % 5
+}
+----
+
+=== 将静态资源的目标网址注入到对应的 HTML 模版中
+
+注入功能可以采用第三方插件 HtmlWebpackPlugin 实现，这个插件可以根据指定的模版生成 HTML 文件，并将该文件依赖的 chunks 注入到 HTML 中，譬如：
+
+[source, javascript]
+----
+/**
+ * 独立的页面
+ */
+const htmls = [{
+  chunks: ['libs', 'index'],
+  template: 'index.html'
+}];
+
+htmls.forEach(function (o) {
+  const template = o.template;
+  const params = {
+    chunks: o.chunks,
+    filename: 'templates/' + template,
+    template: '!raw!./' + template,
+    inject: true,
+    minify: {
+      removeComments: true
+    }
+  };
+  plugins.push(new HtmlWebpackPlugin(params));
+});
+----
+
+当然这里头还有一些坑要踩的：
+
+. 插件所采用的 Javascript 模版与 Jinja2 模版语法相互冲突的问题
++
+HtmlWebpackPlugin 插件采用的模版引擎为 blueimp，其语法和 Python 常用的模版引擎 Jinja2 冲突，导致无法正常生成 Jinja2 模版的 HTML 文件。解决这个问题的办法是采用 HtmlWebpackPlugin 插件 2.0 版新增加的 loader 机制并配合 raw-loader 来解决，即不再采用默认的 blueimp 模版引擎来渲染，而是采用 raw-loader，保证文件的原汁原味，自然也就没有冲突了，如上面例子中的`template: '!raw!./' + template`。
+. 插件注入的方式是替换`</head>`和`</body>`，如果 Jinja2 使用了模版集成特性，由于目标页面没有 `</head>`和`</body>` 标签，会导致无法注入。
++
+对于 Jinja2 模版中使用 `extends` 模版集成特性且需要注入静态文件的情况，通过子模版里面显示的声明`</head>`和`</body>`来实现，例如：
++
+.父模版 base.html
+[source, html]
+----
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="white">
+  <title>{% raw %}{% block title %}{% endblock %}{% endraw %}</title>
+  {% raw %}{% block common_head %}{% endblock %}
+  {% block head %}{% endblock %}{% endraw %}
+</head>
+<body>
+{% raw %}{% block content %}{% endblock %}
+{% block common_footer %}{% endblock %}
+{% block footer %}{% endblock %}{% endraw %}
+</body>
+</html>
+
+----
++
+.子模版 
+[source, html]
+----
+{% raw %}
+{% extends 'common/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block head %}{% endraw %}
+</head>  <- 亮点在此
+{% raw %}{% endblock %}
+
+{% block footer %}{% endraw %}
+</body>  <- 亮点在此
+{% raw %}{% endblock %}{% endraw %}
+----
++
+.多余的标签
+[NOTE]
+--
+正常情况下，上述例子最后生成的 HTML 中会出现两个`</body>`和`</head>`标签。有两个办法可以解决这个问题：
+
+. 开启 HtmlWebpackPlugin 插件的 `minify` 特性，可以去掉多余的（不匹配的）`</head>`和`</body>`；
+. 改写父模版，将`</head>`和`</body>`嵌入到 `{ % block footer %}{ % endblock %}`中，如：`{ % block footer %}</body>{ % endblock %}`。
+--
++
+.优雅的办法
+[NOTE]
+--
+HtmlWebpackPlugin 插件支持（目前还不支持）注入占位符的设置，如：`inject: '<!-- here -\->'`。
+--
+
+=== 不需要注入静态资源的 HTML 文件
+
+上面关于 Jinja2 模版继承的例子中，base.html 是不需要注入任何资源的，如果强制使用 HtmlWebpackPlugin 插件，会导致`</head>`和`</body>`错乱及静态资源错乱等问题。对于这种的文件，应该使用 Webpack 的 file-loader 将文件拷贝到对应的目录中。
+
+[source, javascript]
+----
+loaders: [{
+    test: /\.(html|xml)$/,
+    loader: 'file?name=templates/[1]/[2]&regExp=([^/]+)[/\\\\]templates[/\\\\](.+)$'
+}]
+----
+
+=== 图片、字体等资源
+
+和不需要注入资源的 HTML 文件一样，图片、字体等不需要编译、生成的资源直接采用 file-loader 拷贝至对应的输出目录即可。
+
+[source, javascript]
+----
+loaders: [{
+    test: /\.(ttf|eot|svg|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+    loader: 'file?name=static/font/[name].[ext]'
+}]
+----
+
+=== 将公共库合并到一个文件中
+
+Webpack 在构建的过程中，会将大量的公共库也打包输出到目标的 Javascript 文件中，这样做有几个坏处：
+
+. 重复下载公共库资源
++
+譬如有 A、B 两个页面，都依赖了 React 公共库，Webpack 默认会将 A 页面（Entry）的资源全部打包到 A.js 中，将 B 页面的资源打包到 B.js 中，A.js、B.js 里面都有 React 公共库的代码，导致公共库的重复下载。
+. 对更新不友好
++
+在日常工作中，公共库是基本不会被改动的，因此可以使公共库长期被客户端、浏览器缓存住。但如果它们和业务代码打包到一个 Javascript 文件中的话，就无法使用浏览器缓存这个特性了。无论是对生产环境的用户还是开发调试的工程师来说，都需要加载大量重复代码，而没有任何意义，是有弊无利的。
+
+这个需要可以使用 Webpack 的一个插件来实现：CommonsChunkPlugin。它可以将公共的 chunks 提取出来，放到独立的文件中。步骤如下：
+
+. 定义一个`entry`，起名`libs`，`entry`中指定公共库的名称。
+. `new`一个 CommonsChunkPlugin 对象，`name`设置为与`entry`对应，为`libs`。
+
+[source, javascript]
+----
+const entry = {
+  libs: [
+    'react', 'react-dom', 'redux', 'react-redux',
+    'redux-logger', 'redux-thunk', 'react-addons-perf',
+    'isomorphic-fetch', 'babel-polyfill', 'lodash'
+  ]
+};
+const plugins = [
+  new CommonsChunkPlugin({
+    name: 'libs',
+    filename: 'static/js/libs.[hash:8].min.js'
+  })
+];
+----
+
+[NOTE]
+这样就会将大量的公共组件库的代码构建到一个独立的文件`libs.[hash:8].min.js`中。这个文件一般是体积最大的一个文件，另外一旦生成几乎不会更改，如果配合 HTTP 协议的缓存机制，调试起来会非常爽，在生产环境下对用户也非常友好。
+
+=== 样式文件
+
+Webpack 的理念是任何都是资源，包括样式文件。在这个理念下，Webpack 默认把样式文件也构建在目标 Javascript 文件里。这样做对基于 Web 的客户端程序比较友好，但是对 WebApp 就不合适了，部分原因可参考*“将公共库合并到一个文件中”*这一节，很少会存在同时修改样式文件和 Javascript 代码的情况，有时候修改这两者的甚至不是同一个部门的人。
+
+于是，我们需要将样式文件提前到独立的 CSS 文件中，采用 ExtractTextPlugin 插件实现这个功能。分两个步骤：
+
+. 调整样式文件的 loader，改为 ExtractTextPlugin 插件的方式。
+. 在 `plugins` 中增加一个 ExtractTextPlugin 对象，指定文件名。
+
+[source, javascript]
+----
+const loaders = [{
+    test: /\.less$/,
+    loader: ExtractTextPlugin.extract('style-loader',
+    'css-loader!less-loader')
+}, {
+    test: /\.css$/,
+    loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+}];
+const plugins = [new ExtractTextPlugin('css/[name]', 'static/css/[name].[hash:8].min.css')];
+----
+
+=== 无法`import`的第三方库
+
+有一个第三方库无法采用`import`的方式被引入，譬如：Framework7，对于这种情况，需要采用手工在 HTML 中将库引入，同时在`extenals`中注册为可`import`模块。
+
+.HTML 引入
+[source, javascript]
+----
+<!-- Framework7 -->
+<script language="javascript" type="application/javascript"
+  src="//framework7.taobao.org/dist/js/framework7.js"></script>
+  
+<!-- GA -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+</script>
+----
+
+.webpack.config.js 中注册
+[source, javascript]
+----
+externals: {
+    ga: 'window.ga',
+    dom7: 'window.Dom7',
+    framework7: 'window.Framework7'
+}
+----
+
+=== SourceMap 支持
+
+SourceMap 是开发调试过程中不可缺少的利器，Webpack 自带了 SourceMap 机制，通过`devtool`设置项来配置。Wepack 的 SourceMap 种类繁多，各个类型的 Source Map 在功能和性能上都有差异，甚至连 React 的创始人之一 Pete Hunt 都无法说清该使用何种 SourceMap。
+
+image::/images/webpack/ryf-source-map.png[阮一峰提到 React 的创始人之一 Pete Hunt 无法搞清楚该用何种 Source Map。]
+
+.7 种 Source Map：
+
+Webpack 文档关于 SourceMap 的说明可以参考链接： link::https://webpack.github.io/docs/configuration.html#devtool[devtool 的说明]。
+
+下面简单列举一下这 7 种 SourceMap 的不同：    
+
+. `eval` 文档上解释的很明白，每个模块都封装到 `eval` 包裹起来，并在后面添加 `//# sourceURL`。
+. `source-map` 这是最原始的 SourceMap 实现方式，其实现是打包代码同时创建一个新的 sourcemap 文件， 并在打包文件的末尾添加 `//# sourceURL` 注释行告诉 JS 引擎文件在哪儿
+. `hidden-source-map` 文档上也说了，就是 SourceMap 但没注释，没注释怎么找文件呢？貌似只能靠后缀，譬如 `xxx/bundle.js` 文件，某些引擎会尝试去找 `xxx/bundle.js.map`
+. `inline-source-map` 为每一个文件添加 SourceMap 的 DataUrl，注意这里的文件是打包前的每一个文件而不是最后打包出来的，同时这个 DataUrl 是包含一个文件完整 souremap 信息的 Base64 格式化后的字符串，而不是一个 url。
+. `eval-source-map` 这个就是把 `eval` 的 `sourceURL` 换成了完整 SourceMap 信息的 DataUrl
+. `cheap-source-map` 不包含列信息，不包含 loader 的 SourceMap，（譬如 babel 的 sourcemap）
+. `cheap-module-source-map` 不包含列信息，同时 loader 的 SourceMap 也被简化为只包含对应行的。最终的 SourceMap 只有一份，它是 Webpack 对 loader 生成的 SourceMap 进行简化，然后再次生成的。
+
+[TIP]
+webpack 不仅支持这 7 种，而且它们还是可以任意组合的，就如文档所说，你可以设置 SourceMap 选项为 `cheap-module-inline-source-map`。
+
+.各种 SourceMap 对比表
+[cols="5",frame="topbot"]
+|===
+| `devtool`	| 构建速度	| 二次构建速度	| 生产环境	| 质量
+| `eval`	| +++	| +++	| no	| generated code
+| `cheap-eval-source-map`	| +	| ++	| no	| transformed code (lines only)
+| `cheap-source-map`	| +	| o	| yes	| transformed code (lines only)
+| `cheap-module-eval-source-map`	| o	| ++	| no	| original source (lines only)
+| `cheap-module-source-map`	| o	| -	| yes	| original source (lines only)
+| `eval-source-map`	| –	| +	| no	| original source
+| `source-map`	| –	| –	| yes	| original source
+|===
+
+.最佳实践
+[TIP]
+--
+`cheap-module-eval-source-map` 绝大多数情况下都会是最好的选择，这也是下版本 Webpack 的默认选项。
+
+相关解释：
+
+. 大部分情况我们调试并不关心列信息，而且就算 SourceMap 没有列，有些浏览器引擎（例如 v8） 也会给出列信息，所以我们使用 cheap 模式可以大幅提高 souremap 生成的效率。
+. 使用 `eval` 方式可大幅提高持续构建效率，参考 Webapck devtool 文档 下方速度对比表格，这对经常需要边改边调的前端开发而言，非常重要！
+. 使用 module 可支持 babel 这种预编译工具（在 Webapck 里做为 loader 使用）。
+. `eval-source-map` 使用 DataUrl 本身包含完整 SourceMap 信息，并不需要像 sourceURL 那样，浏览器需要发送一个完整请求去获取 SourceMap 文件，这会略微提高点效率
+--
+
+.BUG 一
+[WARNING]
+--
+当前版本（v1.1）下的 Webpack 不能正确的处理好 `eval-source-map` 方式的文件名，这种方式下，文件名并不会带有路径信息，譬如：有两个文件 `actions/user.js` 和 `models/user.js` 这两个文件的 SourceMap 文件名是一样的,都是 `user.js`，致使生成的 SourceMap 无法正常使用。
+
+我们通过 Hack 代码的方式来解决，修改源文件 `node_modules/webpack/lib/EvalSourceMapDevToolModuleTemplatePlugin.js` 的
+第 43 行，调整为：
+
+[source, javascript]
+----
+var modules = sourceMap.sources.length === 1 ? [module]: sourceMap.sources.map(function(source) {
+    var module = self.compilation.findModule(source);
+    return module || source;
+});
+----
+
+增加了 `sourceMap.sources.length === 1 ? [module]`，不让它使用后面那种方式来查找 `module`。
+--
+
+.BUG 二
+[WARNING]
+--
+最新版的 Chrome Canary 浏览器（版本 49.0.2623.0 canary）不能识别默认生成的 SourceMap，是由于 SourceMap 的前缀字符引起的，至于为什么突然发生了这个问题，我没有时间去调研它的具体原因，有好奇心的朋友可以去读一下 Chrome 源码看看这几个版本做了哪些有关 SourceMap 的调整。
+
+解决这个问题的办法也很简单，只需要将 `devtool` 由 `eval-module-source-map` 调整为 `#eval-module-source-map` 即可。
+--
+
+.更改 SourceMap 的文件名
+
+Webpack 的 `devtool` 提供了两个 `FilenameTemplate`（`devtoolModuleFilenameTemplate` 和 `devtoolFallbackModuleFilenameTemplate`） 来指定的 SourceMap 的文件名。
+
+.示例
+[source, javascript]
+----
+output.devtoolModuleFilenameTemplate = (info) => {
+    if (info.absoluteResourcePath.charAt(0) === '/') {
+        return 'webpack://' + info.absoluteResourcePath;
+    }
+    return 'webpack:///' + info.absoluteResourcePath;
+};
+output.devtoolFallbackModuleFilenameTemplate = (info) => {
+    if (info.absoluteResourcePath.charAt(0) === '/') {
+        return 'webpack://' + info.absoluteResourcePath;
+    }
+    return 'webpack:///' + info.absoluteResourcePath;
+};
+----
+
+=== 热更新
+
+Webpack 提供了热更新的黑科技，广大粉丝争相试用，愿景挺美好，但是现实却比较残酷，因为我们大部分前端程序都是有状态的，比起 HTTP Request、Task 等 Request/Response 模型下的程序，前端程序很难实现完美的热更新。当然，对于样式文件来说，热更新确实是完美的。
+
+.步骤
+
+Webpack 的热更新是采用 HotModuleReplacementPlugin 插件实现的，还需要启动一个 DevServer
+
+. 在 HTML 中引入或注入 DevServer 和 hot 的代码。
+.. 如果 HTML 里面引入了公共库，则只需要在公共库里将 DevServer 和 hot 的代码加入即可。
++
+.在公共库里引入热更新的代码
+[source, javascript]
+----
+// 在公共库里加入 DevServer 和 hot 的代码
+entry.libs.push(`webpack-dev-server/client?${devServerURL}`);
+entry.libs.push('webpack/hot/only-dev-server'); // "only" prevents reload on syntax errors
+----
+.. 如果个别 HTML 没有引入公共库，那么只能采用另外一种办法来实现
++
+--
+* 先在 `entry` 中新增一个 `entry`，起名为 `dev`，内容是 DevServer 和 hot 的依赖；
+* 在 HTML 页面的 `chunks` 里引入 `dev` 这个 `entry`。
+--
++
+.采用`entry`引入代码
+[source, javascript]
+----
+// 在公共库里加入 DevServer 和 hot 的代码
+entry.dev = [
+    `webpack-dev-server/client?${devServerURL}`,
+    'webpack/hot/only-dev-server' // "only" prevents reload on syntax errors
+];
+
+htmls.forEach((html) => {
+    html.chunks.push('dev');
+});
+----
+. 在 `plugins` 里面加入相关的插件对象。
++
+[source, javascript]
+----
+plugins.push(new HotModuleReplacementPlugin());
+plugins.push(new NoErrorsPlugin());
+----
+. 修改注入到 HTML 文件里面的目标网址。
++
+[source, javascript]
+----
+output.publicPath = `${devServerURL}/static/`;
+----
+. 配置 DevServer
++
+[source, javascript]
+----
+config.devServer = {
+    historyApiFallback: false,
+    hot: true,
+    inline: true,
+    progress: true,
+    host: devServerHost,
+    port: devServerPort,
+    contentBase: './src/'
+};
+----
+
+.完整的代码
+--
+.`webpack.config.js` 中配置 DevServer
+[source, javascript]
+----
+if (hot) {
+    const devServerHost = '';
+    const devServerPort = '5000';
+    const devServerURL = `http://${devServerHost}:${devServerPort}`;
+    
+    // 在公共库里加入 devServer 和 hot 的代码
+    entry.libs.push(`webpack-dev-server/client?${devServerURL}`);
+    entry.libs.push('webpack/hot/only-dev-server'); // "only" prevents reload on syntax errors
+
+    plugins.push(new HotModuleReplacementPlugin());
+    plugins.push(new NoErrorsPlugin());
+    output.publicPath = `${devServerURL}/static/`;
+    config.devServer = {
+        historyApiFallback: false,
+        hot: true,
+        inline: true,
+        progress: true,
+        host: devServerHost,
+        port: devServerPort,
+        contentBase: './src/'
+    };
+}
+----
+--
+
+.启动 DevServer
+--
+[source, sh]
+----
+./node_modules/.bin/webpack-dev-server -w
+----
+--
+
+[TIP]
+Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配合调试工具 Charles，可以解决一些譬如跨域的问题。
+
+=== 构建环境
+
+开发环境和生产环境的构建区别还是蛮大的，需要针对各个环境做特定的配置。Webpack 的配置文件 `webpack.config.js` 实际上就是一个 Javascript 文件，因此很多关于环境的代码可以通过代码来区分。
+
+这里，我们采用环境变量 `NODE_ENV` 来区分生产环境和开发环境，`NODE_ENV=production` 为生产环境，否则为开发环境。
+
+== 工程目录结构
+
+关于工程目录结构一般有两种流派，一种是 Rails、Yii等基于 MVC 的 FullStack 框架，一种是 Django等 MVT框架。前者是先分层再按组件组织，后者是先按 apps 分，再分层。
+
+.Rails、Yii等框架工程结构示例
+----
+/models
+    app1
+    app2
+/controllers
+    app1
+    app2
+/templates
+    app1
+    app2
+/static
+    app1
+    app2
+----
+
+.django等框架工程结构示例
+----
+/app1
+    models.py
+    views.py
+    templates
+    static
+/app2
+    models.py
+    views.py
+    templates
+    static 
+----
+
+事实上，对于上述工程目录结构来说，指的是目标文件的结构，即构建后的目录结构。
+因此，前端构建工具构建后的工程目录结构不可避免地会受到后端框架的影响，我们这儿暂时抛开两种方案的优劣，只讨论前端工程对开发部署的帮助。
+
+.理想的方式
+采用构建工具之后，生产环境已经不再依赖前端的源文件了，整个项目的部署流程已经发生了改变：源文件 => 构建资源 => 打包 => 发布部署。
+
+从各个流程的简化的角度出发来看，我们认为将整个前端的源代码单独放在一起会更有利于简化工作。
+
+.优势
+. 可以为前端项目单独拆分出独立的 Git 库。
+. 非常方便的计算出前端的代码是否需要构建，如果源文件没有更改，就不需要再次构建和打包。
++
+----
+git log -1 --pretty=%h origin/online -- front-end
+----
+. 更方便的打包，如果我们的输出文件都在一个独立的目录，打包起来会比从各个目录下摘录各个文件要更加简单、方便。
+
+.示例
+
+工程目录结构与项目所采用的应用架构模式有很大的关系，譬如采用 MVC、MVVM 的工程目录结构与采用 Redux 的肯定是不一样的。所以工程目录结构还是需要根据实际情况来决定，这里我们为了演示源文件与目标文件的对应关系，做一个示例：
 
 .源文件
 ----
@@ -99,19 +629,6 @@ tags:
 
 *模块/组件/类别 => 类别/模块/组件*
 
-[NOTE]
-.讨论：前端文件统一放置在一个单独的目录或 git 库
-====
-静态文件单独放置在一个统一的目录或 git 库下，主要的出发点是：可以比较方便的获取到前端静态文件的版本号。
-
-执行命令:
-----
-git log -1 --pretty=%h origin/online -- front-end
-----
-
-可以获取到前端目录最新的版本号，通过比对，可以获知本次提交有没有更新前端源文件，从而做到智能打包。
-====
-
 == 部署
 
 === 静态资源
@@ -121,141 +638,35 @@ git log -1 --pretty=%h origin/online -- front-end
 
 === 后端模版
 
-构建后的后端模版目标文件是后端代码的一部分，必须要部署在各台后端机器的特定目录下；
-因此模版文件采用*改进过的包更新方式*来实现模版文件的部署。
+构建后的后端模版目标文件本质上将算是后端代码的一部分，必须要部署在各台后端机器的特定目录下；因此模版文件采用*改进过的包更新方式*来实现模版文件的部署。
 
-NOTE: 包更新会新建一个主题来讨论。
+== FAQ
 
+.Q: 我在 Windows/Mac OS X 下通过 Docker 进行 Webpack 开发和构建，但是这两个系统下的 Docker 对 node 的 fsevent 支持不太理想，致使 `-w` 参数失效，请问要如何解决？
 
-== 附录：webpack.config.js 示例
+*A:* 这个问题是 VirtualBox 的 vboxsf 文件系统无法接收到宿主机上文件更改信号导致的，事实上，所有网络文件系统（NFS、MFS、GFS）都存在这个问题；另外有些编辑器在保存是会采用 rename 的方式，也会使 fsevent 处理逻辑产生混乱。
 
-.webpack.config.js
-[source, javascript]
-----
-'use strict';
-
-/**
- * Webpack Entry
- */
-let entry = {
-  'apps/list': [
-    './apps/static/js/list.js'
-  ],
-  'apps/detail': [
-    './apps/static/js/detail.js'
-  ],
-  'apps/manifest': [
-    './apps/templates/manifest.xml'
-  ],
-  'shares/app': [
-    './shares/static/share.less'
-  ],
-  'common': [
-    'jquery',
-    './common/less/app.less'
-  ],
-  'templates': [
-    './common/templates/ga.html',
-    './common/templates/base.html',
-    './stats/templates/dragon_tiger_rank.html'
-  ]
-};
+解决这个问题其实很简单，只需要将 `-w` 参数调整为 `--watch-poll` 即可，为提高性能，可以尝试 `--watch-poll=1000`，即一秒钟扫描一次。
 
 
-/**
- * 独立的页面
- */
-let htmls = [{
-  chunks: ['common', 'apps/list'],
-  template: 'apps/templates/list.html'
-}, {
-  chunks: ['common', 'apps/detail'],
-  template: 'apps/templates/detail.html'
-}, {
-  chunks: ['shares/app'],
-  template: 'shares/templates/app.html'
-}, {
-  chunks: ['shares/app'],
-  template: 'shares/templates/error.html'
-}, {
-  chunks: ['shares/app'],
-  template: 'shares/templates/outofdate.html'
-}, {
-  chunks: ['shares/app'],
-  template: 'shares/templates/dingtalk.html'
-}];
+== 参考文件
 
-// 以下代码所有工程保持一致
+. link::https://webpack.github.io/[Webpack官网]
+. link::https://webpack.github.io/docs/[THE WEBPACK DOCUMENTATION]
+. link::http://segmentfault.com/a/1190000004280859[webpack sourcemap 选项多种模式的一些解释]
+. link::https://github.com/ruanyf/webpack-demos[阮一峰的 Webpack Demos]
+. link::http://segmentfault.com/a/1190000002551952[Webpack 入门指迷]
 
-const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
-const RemoveEmptyChunksPlugin = require('webpack/lib/optimize/RemoveEmptyChunksPlugin');
-const MergeDuplicateChunksPlugin = require('webpack/lib/optimize/MergeDuplicateChunksPlugin');
-const RemoveParentModulesPlugin = require('webpack/lib/optimize/RemoveParentModulesPlugin');
-const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const debug = process.env.NODE_ENV !== 'production';
-const COMMON_INIT = 'static/js/init.js';
+== 我们在招人
 
-let plugins = [
-  new CommonsChunkPlugin({
-    name: 'common',
-    filename: COMMON_INIT
-  }),
-  new ExtractTextPlugin('css/[name]', debug ? 'static/css/[name].css' : 'static/css/[name].[hash:8].css')
-];
+我们是谁？我们开发了国内领先的新闻客户端，一款基于数据挖掘的推荐引擎产品，它为用户推荐有价值的、个性化的信息，提供连接人与信息的新型服务，是国内移动互联网领域成长最快的产品服务之一。
 
-if (!debug) {
-  plugins.push(new UglifyJsPlugin({
-    compress: {
-      warnings: false
-    },
-    except: ['$super', '$', 'exports', 'require']
-  }));
-}
+我们招聘 Python 工程师、全栈工程师、前端工程师，推荐有奖，自荐或推荐请将简历发送到 `atob("bGlmZWkudmlwQG91dGxvb2suY29t")`。
 
-htmls.forEach(function (o) {
-  let template = o.template;
-  let filename = template.replace('/templates', '');
-  let params = {
-    chunks: o.chunks,
-    filename: 'templates/' + filename,
-    template: '!raw!./' + template,
-    inject: true,
-    minify: {
-      removeComments: true
-    }
-  };
-
-  plugins.push(new HtmlWebpackPlugin(params));
-});
-
-module.exports = {
-  entry: entry,
-  output: {
-    path: '../rutland/',
-    filename: debug ? 'static/js/[name].js' : 'static/js/[name].[chunkhash:8].min.js',
-    publicPath: '/rutland/'
-  },
-  module: {
-    loaders: [{
-      test: /\.js[x]?$/,
-      exclude: /node_modules/,
-      loader: 'babel?presets[]=es2015&presets[]=react'
-    }, {
-      test: /\.less$/,
-      loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
-    }, {
-      test: /\.css$/,
-      loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
-    }, {
-      test: /\.(ttf|eot|svg|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      loader: 'file?name=static/font/[name].[ext]'
-    }, {
-      test: /\.(html|xml)$/,
-      loader: 'file?name=templates/[1]/[2]&regExp=([^/]+)[/\\\\]templates[/\\\\](.+)$'
-    }]
-  },
-  plugins: plugins
-};
-----
+.Python、全栈工程师
+. 掌握关系型数据库（MySQL）的用法，表结构设计，SQL语句使用达到高级水平。
+. 掌握常见业务需求所需要的数据结构，熟悉它们的优缺点。
+. 掌握常见开源组件的使用场景，并可阐述原因，指出方案的优缺点。
+. 熟悉 HTTP 协议，掌握协议中状态码的含义、缓存相关的协议等。
+. 熟悉常见的 Web 安全挑战，掌握防御措施。
+. 熟悉各种调优方案，包括业务上和性能上，如缓存等。

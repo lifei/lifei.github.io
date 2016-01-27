@@ -109,39 +109,6 @@
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2015/09/18/kerberos-ssh/" title="使用 Kerberos 作为 SSH 服务的认证协议" itemprop="url">
-  
-    <h1 itemprop="name">使用 Kerberos 作为 SSH 服务的认证协议</h1>
-    <time datetime="2015-09-18T06:32:00.000Z" itemprop="datePublished"> 发表于 2015-09-18 By 李飛</time>
-    
-      
-        <p itemprop="description" ><p>我们常见的 SSH 认证方式有用户名密码认证，公钥/私钥认证等，这些认证比较适合个人使用，但如果管辖的机器过多，就会出现调整认证的不方便的情况。譬如：如果现在有 100 台服务器，由于业务需要（如：基于 ansible 的部署系统），这些机器需要做到对特定账号免登。假设我们采用公钥私钥的认证方式实现免登需求，需要在每台免登机器中都要放置一个公钥。突然有一天私钥泄漏了，必须要把这 100 台机器的认证都调整一遍，也就是说要把 100 台机器上的公钥都更换成新的公钥，肯定不是一件容易的事情。而假如我们采取了第三方集中认证授权的方式（如：Kerberos），那只需要在 Kerberos 服务端重置一下 KEY 即可。</p>
-<p>本文阐述了一个采用 Kerberos 作为 SSH 集中授权认证的方案，兼顾方便和安全。</p>
-</p>
-      
-    
-    
-      <div style="margin-top: 10px; line-height: 32px;">
-        标签：
-      
-        Kerberos&nbsp;&nbsp;&nbsp;
-      
-        SSH&nbsp;&nbsp;&nbsp;
-      
-        授权&nbsp;&nbsp;&nbsp;
-      
-        运维&nbsp;&nbsp;&nbsp;
-      
-    </div>
-    
-  </a>
-</section>
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
     <a href="/2015/08/27/programming-proverbs/" title="每个程序员都应该熟知的编程格言" itemprop="url">
   
     <h1 itemprop="name">每个程序员都应该熟知的编程格言</h1>
@@ -238,39 +205,6 @@ Poorly designed code ten</p>
   
 <section class="post" itemscope itemprop="blogitem">
   
-    <a href="/2015/07/27/openldap-kerberos/" title="打造统一的 Kerberos 和 OpenLDAP 服务" itemprop="url">
-  
-    <h1 itemprop="name">打造统一的 Kerberos 和 OpenLDAP 服务</h1>
-    <time datetime="2015-07-27T13:33:22.000Z" itemprop="datePublished"> 发表于 2015-07-27 By 李飛</time>
-    
-      
-        <p itemprop="description" ><p>LDAP 和 Kerberos 是分别是用户管理领域和认证授权领域的事实标准，大量的第三方软件支持 LDAP 和 Kerberos 协议，支持 LDAP 和 Kerberos 的系统将极大地方便与第三方系统集成。</p>
-<p>本文解决了 LDAP 和 Kerberos 数据和认证的打通问题，使 LDAP 和 Kerberos 以一个统一的完整的服务对外提供服务。</p>
-</p>
-      
-    
-    
-      <div style="margin-top: 10px; line-height: 32px;">
-        标签：
-      
-        Docker&nbsp;&nbsp;&nbsp;
-      
-        Kerberos&nbsp;&nbsp;&nbsp;
-      
-        OpenLDAP&nbsp;&nbsp;&nbsp;
-      
-        SASL&nbsp;&nbsp;&nbsp;
-      
-    </div>
-    
-  </a>
-</section>
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
     <a href="/2015/07/26/jenkins-gerrit-verified/" title="使用 Jenkins 实现为 Gerrit 的 Patchset 自动 Verified 机制" itemprop="url">
   
     <h1 itemprop="name">使用 Jenkins 实现为 Gerrit 的 Patchset 自动 Verified 机制</h1>
@@ -314,7 +248,7 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Kerberos/" title="Kerberos">Kerberos<sup>2</sup></a></li>
+				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
 			
 		
 			
@@ -322,31 +256,23 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种</p>
 			
 		
 			
-				<li><a href="/tags/SASL/" title="SASL">SASL<sup>1</sup></a></li>
+		
 			
 		
 			
-				<li><a href="/tags/Docker/" title="Docker">Docker<sup>1</sup></a></li>
+		
 			
 		
 			
-				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>1</sup></a></li>
+		
 			
 		
 			
-				<li><a href="/tags/SSH/" title="SSH">SSH<sup>1</sup></a></li>
+		
 			
 		
 			
-				<li><a href="/tags/运维/" title="运维">运维<sup>1</sup></a></li>
-			
 		
-			
-				<li><a href="/tags/授权/" title="授权">授权<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/OpenLDAP/" title="OpenLDAP">OpenLDAP<sup>1</sup></a></li>
 			
 		
 			
@@ -372,7 +298,7 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种</p>
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">归档</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li></ul>
   </div>
 
 
@@ -380,7 +306,7 @@ Jenkins 是自动化测试、CI 领域的事实标准，各种</p>
   <div class="tagcloudlist">
     <p class="asidetitle">标签云</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Kerberos/" style="font-size: 20px;">Kerberos</a> <a href="/tags/OpenLDAP/" style="font-size: 10px;">OpenLDAP</a> <a href="/tags/SASL/" style="font-size: 10px;">SASL</a> <a href="/tags/SSH/" style="font-size: 10px;">SSH</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/授权/" style="font-size: 10px;">授权</a> <a href="/tags/运维/" style="font-size: 10px;">运维</a>
+       <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a>
     </div>
   </div>
 

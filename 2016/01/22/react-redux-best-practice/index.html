@@ -20,13 +20,13 @@
 
 
 
-Figure 1. Github 上 React 项目取得的成绩
+Figure 1. 截止到2016年1月22日，Github 上 React 项目取得的成绩。
 
 
-Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由 Flux 演变而来，但受 El">
+Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由">
 <meta property="og:type" content="article">
 <meta property="og:title" content="『React+Redux』项目最佳实践">
-<meta property="og:url" content="http://lifei.github.io/2016/01/22/windows-10-dpi/index.html">
+<meta property="og:url" content="http://lifei.github.io/2016/01/22/react-redux-best-practice/index.html">
 <meta property="og:site_name" content="飛哥の技术博客">
 <meta property="og:description" content="React 和 Redux
 
@@ -37,14 +37,14 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 
 
 
-Figure 1. Github 上 React 项目取得的成绩
+Figure 1. 截止到2016年1月22日，Github 上 React 项目取得的成绩。
 
 
-Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由 Flux 演变而来，但受 El">
+Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由">
 <meta property="og:image" content="http://lifei.github.io/images/react-redux-best-practice/react-stars.png">
 <meta property="og:image" content="http://lifei.github.io/images/react-redux-best-practice/redux-stars.png">
 <meta property="og:image" content="http://lifei.github.io/images/react-redux-best-practice/redux-example.png">
-<meta property="og:updated_time" content="2016-02-01T07:42:58.973Z">
+<meta property="og:updated_time" content="2016-02-04T13:21:17.091Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="『React+Redux』项目最佳实践">
 <meta name="twitter:description" content="React 和 Redux
@@ -56,10 +56,10 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 
 
 
-Figure 1. Github 上 React 项目取得的成绩
+Figure 1. 截止到2016年1月22日，Github 上 React 项目取得的成绩。
 
 
-Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由 Flux 演变而来，但受 El">
+Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由">
 
     
     <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
@@ -119,7 +119,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/01/22/windows-10-dpi/" title="『React+Redux』项目最佳实践" itemprop="url">『React+Redux』项目最佳实践</a>
+      <a href="/2016/01/22/react-redux-best-practice/" title="『React+Redux』项目最佳实践" itemprop="url">『React+Redux』项目最佳实践</a>
   </h1>
   <p class="article-author">By
        
@@ -149,7 +149,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <div class="content">
 <img src="/images/react-redux-best-practice/react-stars.png" alt="Github 上 React 项目取得的成绩">
 </div>
-<div class="title">Figure 1. Github 上 React 项目取得的成绩</div>
+<div class="title">Figure 1. 截止到2016年1月22日，Github 上 React 项目取得的成绩。</div>
 </div>
 <div class="paragraph">
 <p>Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由 Flux 演变而来，但受 Elm 的启发，避开了 Flux 的复杂性。Redux 也是一个『火爆』的项目，Github 成绩也相当不错。</p>
@@ -158,7 +158,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <div class="content">
 <img src="/images/react-redux-best-practice/redux-stars.png" alt="Github 上 Redux 项目取得的成绩">
 </div>
-<div class="title">Figure 2. Github 上 Redux 项目取得的成绩</div>
+<div class="title">Figure 2. 截止到2016年1月22日，Github 上 Redux 项目取得的成绩。</div>
 </div>
 </div>
 </div>
@@ -476,7 +476,7 @@ store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
 <div class="sect2">
 <h3 id="_store_state">Store 和 State</h3>
 <div class="paragraph">
-<p>一般情况下，一个 Redux 程序只有一个 store。store 的更新会触发与其关联的 container 更新，继而更新 container 中的组件。</p>
+<p>一个 Redux 程序只有一个 store。store 的更新会触发与其关联的 container 更新，继而更新 container 中的组件。</p>
 </div>
 <div class="sect3">
 <h4 id="__store">创建 store</h4>
@@ -568,7 +568,7 @@ store.dispatch(&#123;
 <div class="sect3">
 <h4 id="__immutable_js_state">使用 immutable-js 作为 state 的数据结构</h4>
 <div class="paragraph">
-<p>由于『<strong>永远不要修改 state对象</strong>』的要求，state 的格式尽可能使用 Immutable 的实现。</p>
+<p>由于『<strong>永远不要修改 state对象</strong>』的要求，state 的格式尽可能使用 <strong>immutable</strong> 的实现。</p>
 </div>
 <div class="paragraph">
 <p>immutable-js 是 Facebook 开源的一款 immutable 数据结构的实现，它提供了诸如 List、Map、Set等等多种 immutable 容器。</p>
@@ -956,7 +956,7 @@ Redux Thunk middleware allows you to write action creators that return a functio
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://lifei.github.io/2016/01/22/windows-10-dpi/" data-title="『React+Redux』项目最佳实践 | 飛哥の技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://lifei.github.io/2016/01/22/react-redux-best-practice/" data-title="『React+Redux』项目最佳实践 | 飛哥の技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -982,7 +982,7 @@ Redux Thunk middleware allows you to write action creators that return a functio
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/01/22/windows-10-dpi/" data-title="『React+Redux』项目最佳实践" data-url="http://lifei.github.io/2016/01/22/windows-10-dpi/"></div>
+	<div class="ds-thread" data-thread-key="2016/01/22/react-redux-best-practice/" data-title="『React+Redux』项目最佳实践" data-url="http://lifei.github.io/2016/01/22/react-redux-best-practice/"></div>
 </section>
 
 

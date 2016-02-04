@@ -56,7 +56,7 @@
 
 支持">
 <meta property="og:image" content="http://lifei.github.io/images/webpack/ryf-source-map.png">
-<meta property="og:updated_time" content="2016-01-23T17:15:00.821Z">
+<meta property="og:updated_time" content="2016-02-04T13:08:02.504Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于 Webpack 的前端资源构建方案">
 <meta name="twitter:description" content="背景
@@ -289,6 +289,16 @@
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-javascript" data-lang="javascript">output.filename = <span class="string">'static/js/[name].[chunkhash:8].min.js'</span>;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Webpack 提供了多种 `hash` 方式，如：`[hash]`、`[chunkhash]`，每一种 hash 都有其独特的含义。根据需求，我们推荐使用 chunkhash 作为『long term cache』选择的 hash 方式。</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Webapck 提供的 hash 函数会将大量环境相关的因素也作为 hash 的内容，会导致不同时间不同机器上的 hash 结果都不一样。这儿我们推荐使用『webpack-md5-hash』提供的 hash 方法作为用到 hash 函数。</pre>
 </div>
 </div>
 </div>
@@ -542,6 +552,95 @@ htmls.forEach(<span class="function"><span class="keyword">function</span> (<spa
 </td>
 <td class="content">
 这样就会将大量的公共组件库的代码构建到一个独立的文件<code>libs.[hash:8].min.js</code>中。这个文件一般是体积最大的一个文件，另外一旦生成几乎不会更改，如果配合 HTTP 协议的缓存机制，调试起来会非常爽，在生产环境下对用户也非常友好。
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="title">文件名 hash 化 对 CommonsChunkPlugin 插件的影响</div>
+<div class="paragraph">
+<p>原生的 CommonsChunkPlugin 插件生成的代码会含有通过 <code>chunksMap</code> 异步加载 chunk 的代码，导致若启用了文件名 hash 化，生成的 libs.js 的内容也会改变。</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">使用 chunk-manifest-webpack-plugin 解决 hash 化带来的问题</div>
+<div class="paragraph">
+<p>解决这个问题的办法有几种，譬如官方文档上推荐使用 chunk-manifest-webpack-plugin 插件。<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup></p>
+</div>
+<div class="olist arabic">
+<div class="title">使用方法</div>
+<ol class="arabic">
+<li>
+<p>通过 npm 安装 chunk-manifest-webpack-plugin，执行命令：<code>npm install chunk-manifest-webpack-plugin</code>。</p>
+</li>
+<li>
+<p>在 Webpack 配置文件 <code>webpack.config.js</code> 的 <code>plugins</code> 小节中 <code>new</code> 一个 <code>ChunkManifestPlugin</code> 对象。</p>
+<div class="listingblock">
+<div class="content">
+<pre>var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
+
+module.exports = &#123;
+  // your config values here
+  plugins: [
+    new ChunkManifestPlugin(&#123;
+      filename: "manifest.json",
+      manifestVariable: "webpackManifest"
+    &#125;)
+  ]
+&#125;;</pre>
+</div>
+</div>
+</li>
+<li>
+<p>构建完毕后会生成一个 json 文件 <code>manifest.json</code>，里面含有 chunkId 与 构建目标路径的对应关系。</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">chunk-manifest-webpack-plugin 插件并不完美</div>
+<div class="paragraph">
+<p>虽然使用 chunk-manifest-webpack-plugin 插件后，构建后的公共库 libs.js 不再随着其他资源的变化而变化，但是由于没有合适的手段，需要手动将 <code>manifest.json</code> 引入到代码中。特别是当你使用了 HtmlWebpackPlugin 插件，你会发现它对 <code>manifest.json</code> 文件无效，它根本不会被注入到 HTML 文件中。</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/vlkosinov" target="_blank" rel="external">vlkosinov</a> 提供了一个解决这个问题的思路<sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnote_2" title="View footnote.">2</a>]</sup>，他利用 CommonsChunkPlugin 插件会将第一个 chunk 标记为 <a href="https://webpack.github.io/docs/code-splitting.html#entry-chunk" target="_blank" rel="external">Entry-chunk</a> 的实现，通过向 <code>plugins</code> 中再次增加一个 CommonsChunkPlugin 对象，实现将 Entry-chunk 和其他代码分离。</p>
+</div>
+<div class="listingblock">
+<div class="title">示例代码</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">plugins: [
+    <span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;name: <span class="string">'vendor'</span>&#125;),
+    <span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;name: <span class="string">'meta'</span>, chunks: [<span class="string">'vendor'</span>]&#125;)
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>这个解决方案与 chunk-manifest-webpack-plugin 插件的思路是一样的，都是将 meta 和代码分离，但是一个将 meta 抽出来放到单独的 <code>manifest.json</code> 文件中，一个是放到单独的 js chunk 里，显然后者更贴合 Webapck 的机制，也可以被其他插件，如：HtmlWebpackPlugin 插件使用。</p>
+</div>
 </td>
 </tr>
 </table>
@@ -1203,6 +1302,15 @@ Webpack 的 DevServer 还提供了大量的其他特性，譬如 Proxy 等，配
 </li>
 </ol>
 </div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnote_1">
+<a href="#_footnoteref_1">1</a>. <a href="https://webpack.github.io/docs/list-of-plugins.html#2-explicit-vendor-chunk" class="bare" target="_blank" rel="external">https://webpack.github.io/docs/list-of-plugins.html#2-explicit-vendor-chunk</a>
+</div>
+<div class="footnote" id="_footnote_2">
+<a href="#_footnoteref_2">2</a>. <a href="https://github.com/webpack/webpack/issues/1315" class="bare" target="_blank" rel="external">https://github.com/webpack/webpack/issues/1315</a>
 </div>
 </div>  
 	</div>

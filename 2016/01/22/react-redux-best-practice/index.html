@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>『React+Redux』项目最佳实践 | 飛哥の技术博客</title>
+    <title>React、Redux 项目工程架构实战 | 飛哥の技术博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="李飛">
@@ -20,12 +20,12 @@
 
 
 
-Figure 1. 截止到2016年1月22日，Github 上 React 项目取得的成绩。
+Figure 1. Github 上 React 项目取得的成绩
 
 
-Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由">
+Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由 Flux 演变而来，但受 El">
 <meta property="og:type" content="article">
-<meta property="og:title" content="『React+Redux』项目最佳实践">
+<meta property="og:title" content="React、Redux 项目工程架构实战">
 <meta property="og:url" content="http://lifei.github.io/2016/01/22/react-redux-best-practice/index.html">
 <meta property="og:site_name" content="飛哥の技术博客">
 <meta property="og:description" content="React 和 Redux
@@ -37,16 +37,16 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 
 
 
-Figure 1. 截止到2016年1月22日，Github 上 React 项目取得的成绩。
+Figure 1. Github 上 React 项目取得的成绩
 
 
-Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由">
+Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由 Flux 演变而来，但受 El">
 <meta property="og:image" content="http://lifei.github.io/images/react-redux-best-practice/react-stars.png">
 <meta property="og:image" content="http://lifei.github.io/images/react-redux-best-practice/redux-stars.png">
 <meta property="og:image" content="http://lifei.github.io/images/react-redux-best-practice/redux-example.png">
-<meta property="og:updated_time" content="2016-02-04T13:21:17.091Z">
+<meta property="og:updated_time" content="2016-02-04T14:49:35.576Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="『React+Redux』项目最佳实践">
+<meta name="twitter:title" content="React、Redux 项目工程架构实战">
 <meta name="twitter:description" content="React 和 Redux
 
 
@@ -56,10 +56,10 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 
 
 
-Figure 1. 截止到2016年1月22日，Github 上 React 项目取得的成绩。
+Figure 1. Github 上 React 项目取得的成绩
 
 
-Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由">
+Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由 Flux 演变而来，但受 El">
 
     
     <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
@@ -119,14 +119,14 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/01/22/react-redux-best-practice/" title="『React+Redux』项目最佳实践" itemprop="url">『React+Redux』项目最佳实践</a>
+      <a href="/2016/01/22/react-redux-best-practice/" title="React、Redux 项目工程架构实战" itemprop="url">React、Redux 项目工程架构实战</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="李飛" target="_blank" itemprop="author">李飛</a>
 		
   <p class="article-time">
-    <time datetime="2016-01-22T09:29:44.000Z" itemprop="datePublished"> 发表于 2016-01-22</time>
+    <time datetime="2016-01-22T09:00:00.000Z" itemprop="datePublished"> 发表于 2016-01-22</time>
     
   </p>
 </header>
@@ -135,7 +135,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_react_redux"><span class="toc-number">1.</span> <span class="toc-text">React 和 Redux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">2.</span> <span class="toc-text">通用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__es2015"><span class="toc-number">2.1.</span> <span class="toc-text">使用 ES2015</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__fetch_api"><span class="toc-number">2.2.</span> <span class="toc-text">使用 Fetch API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__webpack"><span class="toc-number">2.3.</span> <span class="toc-text">使用 Webpack 构建项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__redux"><span class="toc-number">3.</span> <span class="toc-text">使用 Redux</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__sup_class_footnote_a_id_footnoteref_1_class_footnote_href_footnote_1_title_view_footnote_1_a_sup"><span class="toc-number">3.1.</span> <span class="toc-text">要点 [1]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">3.2.</span> <span class="toc-text">代码组织和工程结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_store_state"><span class="toc-number">3.3.</span> <span class="toc-text">Store 和 State</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__store"><span class="toc-number">3.3.1.</span> <span class="toc-text">创建 store</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__immutable_js_state"><span class="toc-number">3.3.2.</span> <span class="toc-text">使用 immutable-js 作为 state 的数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__state"><span class="toc-number">3.3.3.</span> <span class="toc-text">设计 State 结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_reducers"><span class="toc-number">3.4.</span> <span class="toc-text">reducers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#___3"><span class="toc-number">3.4.1.</span> <span class="toc-text">统一管理实体及它们的关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__combinereducers"><span class="toc-number">3.4.2.</span> <span class="toc-text">使用 combineReducers</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__redux_thunk"><span class="toc-number">3.5.</span> <span class="toc-text">使用 redux-thunk</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__redux_thunk_2"><span class="toc-number">3.5.1.</span> <span class="toc-text">什么是 redux-thunk？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___4"><span class="toc-number">3.5.2.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_container"><span class="toc-number">3.6.</span> <span class="toc-text">Container</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__props"><span class="toc-number">3.6.1.</span> <span class="toc-text">注入的 props 采用非范式化的内嵌式结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__props_immutable_js"><span class="toc-number">3.6.2.</span> <span class="toc-text">注入的 props 采用 immutable-js 数据结构及容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__dispatch_action_container_props"><span class="toc-number">3.6.3.</span> <span class="toc-text">所有的 dispatch action 均由 container 注入 props 方式实现</span></a></li></ol></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_react_redux"><span class="toc-number">1.</span> <span class="toc-text">React 和 Redux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">2.</span> <span class="toc-text">通用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__es2015"><span class="toc-number">2.1.</span> <span class="toc-text">使用 ES2015</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__fetch_api"><span class="toc-number">2.2.</span> <span class="toc-text">使用 Fetch API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__webpack"><span class="toc-number">2.3.</span> <span class="toc-text">使用 Webpack 构建项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__redux"><span class="toc-number">3.</span> <span class="toc-text">使用 Redux</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">3.1.</span> <span class="toc-text">要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___3"><span class="toc-number">3.2.</span> <span class="toc-text">代码组织和工程结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_store_state"><span class="toc-number">3.3.</span> <span class="toc-text">Store 和 State</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__store"><span class="toc-number">3.3.1.</span> <span class="toc-text">创建 store</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__immutable_js_state"><span class="toc-number">3.3.2.</span> <span class="toc-text">使用 immutable-js 作为 state 的数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__state"><span class="toc-number">3.3.3.</span> <span class="toc-text">设计 State 结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_reducers"><span class="toc-number">3.4.</span> <span class="toc-text">reducers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#___4"><span class="toc-number">3.4.1.</span> <span class="toc-text">统一管理实体及它们的关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__code_combinereducers_code"><span class="toc-number">3.4.2.</span> <span class="toc-text">使用 combineReducers</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__redux_thunk"><span class="toc-number">3.5.</span> <span class="toc-text">使用 redux-thunk</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__redux_thunk_2"><span class="toc-number">3.5.1.</span> <span class="toc-text">什么是 redux-thunk？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___5"><span class="toc-number">3.5.2.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_container"><span class="toc-number">3.6.</span> <span class="toc-text">Container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props"><span class="toc-number">3.7.</span> <span class="toc-text">注入的 props 采用非范式化的内嵌式结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props_immutable_js"><span class="toc-number">3.8.</span> <span class="toc-text">注入的 props 采用 immutable-js 数据结构及容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__dispatch_action_container_props"><span class="toc-number">3.9.</span> <span class="toc-text">所有的 dispatch action 均由 container 注入 props 方式实现</span></a></li></ol></li></ol>
 		
 		</div>
 		
@@ -147,18 +147,18 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/react-redux-best-practice/react-stars.png" alt="Github 上 React 项目取得的成绩">
+<img src="/images/react-redux-best-practice/react-stars.png" alt="截止到2016年1月22日，Github 上 React 项目取得的成绩。">
 </div>
-<div class="title">Figure 1. 截止到2016年1月22日，Github 上 React 项目取得的成绩。</div>
+<div class="title">Figure 1. Github 上 React 项目取得的成绩</div>
 </div>
 <div class="paragraph">
 <p>Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由 Flux 演变而来，但受 Elm 的启发，避开了 Flux 的复杂性。Redux 也是一个『火爆』的项目，Github 成绩也相当不错。</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/react-redux-best-practice/redux-stars.png" alt="Github 上 Redux 项目取得的成绩">
+<img src="/images/react-redux-best-practice/redux-stars.png" alt="截止到2016年1月22日，Github 上 Redux 项目取得的成绩。">
 </div>
-<div class="title">Figure 2. 截止到2016年1月22日，Github 上 Redux 项目取得的成绩。</div>
+<div class="title">Figure 2. Github 上 Redux 项目取得的成绩</div>
 </div>
 </div>
 </div>
@@ -191,15 +191,15 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <p>maps，sets 和 symbols</p>
 </li>
 <li>
-<p>&#8230;&#8203;</p>
+<p>……</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>项目中使用 ES2015 的新语言特性可以使开发效率更高，写出的代码更好维护。譬如：低版本 Javascript 本身的 <code>prototype</code> 原型继承，之前几乎每个人都有自己实现一套 OO 模拟，现在有原生的 <code>class extends</code> 语法，从语言层面进行统一；函数的参数结构和默认值，避免了手动的默认值分配和参数为 0 的坑；箭头函数避免了 <code>this</code> 上下文的坑；块级的 <code>let/const</code> 避免了 <code>var</code> hoisting 的坑；templateString 避免繁琐的手动字符串拼接；更好的 Unicode 支持；ES2015 模块<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup>；还有 <code>async</code>、<code>await</code> 对于异步流程处理本质上的改善<sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnote_2" title="View footnote.">2</a>]</sup>。</p>
+<p>项目中使用 ES2015 的新语言特性可以使开发效率更高，写出的代码更好维护。譬如：低版本 Javascript 本身的 <code>prototype</code> 原型继承，之前几乎每个人都有自己实现一套 OO 模拟，现在有原生的 <code>class extends</code> 语法，从语言层面进行统一；函数的参数结构和默认值，避免了手动的默认值分配和参数为 0 的坑；箭头函数避免了 <code>this</code> 上下文的坑；块级的 let/const 避免了『<code>var</code> hoisting』 的坑；『模板字符串』避免繁琐的手动字符串拼接；更好的 Unicode 支持；ES2015 模块<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup>；还有 <code>async</code>、<code>await</code> 对于异步流程处理本质上的改善<sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnote_2" title="View footnote.">2</a>]</sup>。</p>
 </div>
 <div class="paragraph">
-<p>ES2015 是一个已经正式发布的标准，并不是半成品或者玩具。有了 ES2015，什么 CoffeeScript、TypeScript 等基本上可以拜拜了。node 从 v4 版本起支持大部分的 ES2015 新语法<sup class="footnote">[<a id="_footnoteref_3" class="footnote" href="#_footnote_3" title="View footnote.">3</a>]</sup>，现代的浏览器（如Chrome）也支持大部分语法，不兼容的浏览器可以使用 Babel 预处理器将代码编译成 ES5（具体做法可参考：《<a href="http://lifei.github.io/2015/12/20/webpack/">基于 Webpack 的前端资源构建方案</a>》）。</p>
+<p>ES2015 是一个已经正式发布的标准，并不是半成品或者玩具。有了 ES2015，什么 CoffeeScript、TypeScript 等基本上可以拜拜了。node 从 v4 版本起支持大部分的 ES2015 新语法<sup class="footnote">[<a id="_footnoteref_3" class="footnote" href="#_footnote_3" title="View footnote.">3</a>]</sup>，现代的浏览器（如 Chrome）也支持大部分语法，不兼容的浏览器可以使用 Babel 预处理器将代码编译成 ES5（具体做法可参考：《<a href="http://lifei.github.io/2015/12/20/webpack/">基于 Webpack 的前端资源构建方案</a>》）。</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -223,7 +223,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <li>
 <p>新的异步模式</p>
 <div class="paragraph">
-<p>在过去，一般有两种方式来管理异步流：callback 回调和 streams 流；而现在请使用 <code>generator</code>、<code>promise</code>、<code>await/async</code> <sup class="footnote">[<a id="_footnoteref_4" class="footnote" href="#_footnote_4" title="View footnote.">4</a>]</sup>。</p>
+<p>在过去，一般有两种方式来管理异步流：callback 回调和 streams 流；而现在请使用 <code>generator</code>、<code>promise</code>、`await/async`<sup class="footnote">[<a id="_footnoteref_4" class="footnote" href="#_footnote_4" title="View footnote.">4</a>]</sup>。</p>
 </div>
 </li>
 </ol>
@@ -242,7 +242,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <p>新的 Fetch API <sup class="footnote">[<a id="_footnoteref_5" class="footnote" href="#_footnote_5" title="View footnote.">5</a>]</sup> 打算修正上面提到的那些缺陷。 它向 JS 中引入和 HTTP 协议中同样的原语。具体而言，它引入一个实用的函数 <code>fetch()</code> 用来简洁捕捉从网络上检索一个资源的意图。</p>
 </div>
 <div class="paragraph">
-<p>Fetch 规范<sup class="footnote">[<a id="_footnoteref_6" class="footnote" href="#_footnote_6" title="View footnote.">6</a>]</sup>的 API 明确了用户代理获取资源的语义。<sup class="footnote">[<a id="_footnoteref_7" class="footnote" href="#_footnote_7" title="View footnote.">7</a>]</sup></p>
+<p>Fetch 规范 <sup class="footnote">[<a id="_footnoteref_6" class="footnote" href="#_footnote_6" title="View footnote.">6</a>]</sup> 的 API 明确了用户代理获取资源的语义。<sup class="footnote">[<a id="_footnoteref_7" class="footnote" href="#_footnote_7" title="View footnote.">7</a>]</sup></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -251,7 +251,9 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-在 Github 上，有基于低版本浏览器的兼容实现。
+<div class="paragraph">
+<p>在 Github 上，有基于低版本浏览器的兼容实现。<sup class="footnote">[<a id="_footnoteref_8" class="footnote" href="#_footnote_8" title="View footnote.">8</a>]</sup></p>
+</div>
 </td>
 </tr>
 </table>
@@ -259,7 +261,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <div class="listingblock">
 <div class="title">简单的fetching示例</div>
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js">fetch(<span class="string">"/data.json"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">fetch(<span class="string">"/data.json"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;
   <span class="comment">// res instanceof Response == true.</span>
   <span class="keyword">if</span> (res.ok) &#123;
     res.json().then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;
@@ -273,8 +275,17 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 &#125;);</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>抛弃 jQuery 的 <code>$.ajax</code> 吧！</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+抛弃 jQuery 的 $.ajax 吧！
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -301,9 +312,9 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <h2 id="__redux">使用 Redux</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="__sup_class_footnote_a_id_footnoteref_1_class_footnote_href_footnote_1_title_view_footnote_1_a_sup">要点 <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup></h3>
+<h3 id="___2">要点</h3>
 <div class="paragraph">
-<p>Redux 框架的要点归纳为三点：</p>
+<p>Redux 框架的要点归纳为三点：<sup class="footnote">[<a id="_footnoteref_9" class="footnote" href="#_footnote_9" title="View footnote.">9</a>]</sup></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -319,8 +330,9 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 </ol>
 </div>
 <div class="listingblock">
+<div class="title">Redux 代码示例</div>
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;
 
 <span class="comment">/**
  * 这是一个 reducer，形式为 `(state, action) =&gt; state` 的纯函数。
@@ -365,7 +377,7 @@ store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
 </div>
 </div>
 <div class="sect2">
-<h3 id="___2">代码组织和工程结构</h3>
+<h3 id="___3">代码组织和工程结构</h3>
 <div class="paragraph">
 <p>Redux 官方库给了一些示例，从这些示例中我们可以总结出 Redux 的代码组织方式及工程目录结构。</p>
 </div>
@@ -376,7 +388,7 @@ store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
 <div class="title">Figure 3. Redux 的官方库示例的目录结构</div>
 </div>
 <div class="paragraph">
-<p>我们总结出一套代码组织方式及工程目录结构，如下：</p>
+<p>基于官方的几个 Redux 示例，我们总结出一套代码组织方式及工程目录结构，如下：</p>
 </div>
 <div class="listingblock">
 <div class="title">Redux 代码组织方式及工程目录结构</div>
@@ -402,7 +414,7 @@ store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
 <p>Redux 项目采用了类似 RoR 项目的组织形式，先按照模块的作用进行分层，再按照模块的功能划分。写代码的时候，需要先对当前模块的作用做出判断，譬如是 action 还是 container，将代码文件放到对应的目录中。然后再根据模块所属的子系统或组件对文件进行命名，譬如：user.js 或 share.js 等。</p>
 </div>
 <div class="paragraph">
-<p>这样组织的一个优点是各个层的作用比较明确，方便处理依赖关系。因为 Redux 是一个类 FLUX 框架，其数据流是单向的，所谓数据流的流动，其实就是指数据在各个层中的流动，简单说来是 action &#8658; reducer &#8658; store &#8658; container &#8658; component &#8658; DOM 这么一个过程（而触发 action 的过程是 DOM &#8658; component &#8658; container &#8658; action）。各个层直接的依赖关系也基本是这样的，这样就明确的代码的依赖，减少耦合，降低了复杂度。</p>
+<p>这样组织的一个优点是各个层的作用比较明确，方便处理依赖关系。因为 Redux 是一个类 FLUX 框架，其数据流是单向的，所谓数据流的流动，其实就是指数据在各个层中的流动，简单说来是 action ⇒ reducer ⇒ store ⇒ container ⇒ component ⇒ DOM 这么一个过程（而触发 action 的过程是 DOM ⇒ component ⇒ container ⇒ action）。各个层直接的依赖关系也基本是这样的，这样就明确的代码的依赖，减少耦合，降低了复杂度。</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -442,11 +454,7 @@ store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
 </div>
 </div>
 <div class="paragraph">
-<p>放眼望去，满眼的 <code>user</code>，特别是当各个目录还有其他子系统或组件的代码时，找起代码来会更加不方便。另外，这样的组件的内聚性也比较差，需要靠自制力来把控。</p>
-</div>
-</td>
-</tr>
-</table>
+<p>放眼望去，满眼的 user 文件，特别是当各个目录还有其他子系统或组件的代码时，找起代码来会更加不方便。另外，这样的组件的内聚性也比较差，需要靠自制力来把控。</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -472,6 +480,10 @@ store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
 </tr>
 </table>
 </div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_store_state">Store 和 State</h3>
@@ -481,16 +493,15 @@ store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
 <div class="sect3">
 <h4 id="__store">创建 store</h4>
 <div class="paragraph">
-<p>store 是通过 API <code>createStore(reducer, [initialState])</code> 创建的。官方给出的说明是<sup class="footnote">[<a id="_footnoteref_8" class="footnote" href="#_footnote_8" title="View footnote.">8</a>]</sup>：</p>
+<p>store 是通过 API <code>createStore(reducer, [initialState])</code> 创建的。官方给出的说明是 <sup class="footnote">[<a id="_footnoteref_10" class="footnote" href="#_footnote_10" title="View footnote.">10</a>]</sup>：</p>
 </div>
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
 <p>创建一个 Redux store 来以存放应用中所有的 state。 应用中应有且仅有一个 store。</p>
 </div>
-<div class="openblock">
-<div class="title">参数</div><div class="content">
 <div class="ulist">
+<div class="title">参数</div>
 <ul>
 <li>
 <p>reducer（Function）: 接收两个参数，分别是当前的 state 树和要处理的 action，返回新的 state 树。</p>
@@ -507,7 +518,7 @@ store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
 <div class="listingblock">
 <div class="title">示例</div>
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;
 
 <span class="function"><span class="keyword">function</span> <span class="title">todos</span>(<span class="params">state = [], action</span>) </span>&#123;
   <span class="keyword">switch</span> (action.type) &#123;
@@ -529,8 +540,6 @@ store.dispatch(&#123;
 <span class="comment">// ['Use Redux', 'Read the docs']</span></code></pre>
 </div>
 </div>
-</div>
-</div>
 </blockquote>
 </div>
 <div class="admonitionblock warning">
@@ -540,7 +549,7 @@ store.dispatch(&#123;
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-<div class="title">小贴士</div>
+<div class="title">注意</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -549,7 +558,7 @@ store.dispatch(&#123;
 <li>
 <p>state 的格式尽量使用 Immutable 这类的实现。</p>
 <div class="paragraph">
-<p>如果 state 是普通对象，<strong>永远不要修改它！</strong>比如，reducer 里不要使用 <code>Object.assign(state, newData)</code>，应该使用 <code>Object.assign(&#123;&#125;, state, newData)</code>。这样才不会覆盖旧的 state。也可以使用 Babel 阶段 1 中的 ES7 对象的 spread 操作特性中的 <code>return &#123; &#8230;&#8203;state, &#8230;&#8203;newData &#125;</code>。</p>
+<p>如果 state 是普通对象，永远不要修改它！比如，reducer 里不要使用 <code>Object.assign(state, newData)</code>，应该使用 <code>Object.assign(&#123;&#125;, state, newData)</code>。这样才不会覆盖旧的 state。也可以使用 Babel 阶段 1 中的 ES7 对象的 spread 操作特性中的 <code>return &#123; …​state, …​newData &#125;</code>。</p>
 </div>
 </li>
 <li>
@@ -568,7 +577,7 @@ store.dispatch(&#123;
 <div class="sect3">
 <h4 id="__immutable_js_state">使用 immutable-js 作为 state 的数据结构</h4>
 <div class="paragraph">
-<p>由于『<strong>永远不要修改 state对象</strong>』的要求，state 的格式尽可能使用 <strong>immutable</strong> 的实现。</p>
+<p>由于『<strong>永远不要修改 state对象</strong>』的要求，state 的格式尽可能使用『<strong>Immutable 的实现</strong>』。</p>
 </div>
 <div class="paragraph">
 <p>immutable-js 是 Facebook 开源的一款 immutable 数据结构的实现，它提供了诸如 List、Map、Set等等多种 immutable 容器。</p>
@@ -594,7 +603,7 @@ store.dispatch(&#123;
 <td class="content">
 <div class="title">尽可能地把 state 范式化</div>
 <div class="paragraph">
-<p>开发复杂的应用时，不可避免会有一些数据相互引用。建议你尽可能地把 state 范式化，不存在嵌套。把所有数据放到一个对象里，每个数据以 ID 为主键，不同数据相互引用时通过 ID 来查找。把应用的 state 想像成数据库。这种方法在 normalizr 文档里有详细阐述。</p>
+<p>开发复杂的应用时，不可避免会有一些数据相互引用。建议你尽可能地把 state 范式化，不存在嵌套。把所有数据放到一个对象里，每个数据以 ID 为主键，不同数据相互引用时通过 ID 来查找。把应用的 state 想像成数据库。</p>
 </div>
 </td>
 </tr>
@@ -609,7 +618,7 @@ store.dispatch(&#123;
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>(previousState, action) =&gt; newState</pre>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">(previousState, action) =&gt; newState</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -624,7 +633,7 @@ store.dispatch(&#123;
 <p>执行有副作用的操作，如 API 请求和路由跳转；</p>
 </li>
 <li>
-<p>调用非纯函数，如 Date.now() 或 Math.random()。</p>
+<p>调用非纯函数，如 <code>Date.now()</code> 或 <code>Math.random()</code>。</p>
 </li>
 </ol>
 </div>
@@ -643,7 +652,7 @@ store.dispatch(&#123;
 </table>
 </div>
 <div class="sect3">
-<h4 id="___3">统一管理实体及它们的关系</h4>
+<h4 id="___4">统一管理实体及它们的关系</h4>
 <div class="paragraph">
 <p>在 state 中专门开辟一块空间存储实体及它们的关系，并尽可能的统一地管理它们，不仅仅是客户端，还包括服务端 API。</p>
 </div>
@@ -727,26 +736,17 @@ store.dispatch(&#123;
 </div>
 </div>
 <div class="sect3">
-<h4 id="__combinereducers">使用 combineReducers</h4>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-随着应用变得复杂，需要对 reducer 函数进行拆分，拆分后的每一块独立负责管理 state 的一部分。
-</td>
-</tr>
-</table>
-</div>
+<h4 id="__code_combinereducers_code">使用 <code>combineReducers</code></h4>
 <div class="paragraph">
-<p><code>combineReducers</code> 是 Redux 的一个辅助函数，它的作用是把一个由多个不同 reducer 函数作为 value 的 object，合并成一个最终的 reducer 函数，然后就可以对这个 reducer 调用 <code>createStore</code>。</p>
+<p>随着应用变得复杂，需要对 reducer 函数进行拆分，拆分后的每一块独立负责管理 state 的一部分。
+<code>combineReducers</code> 是 Redux 的一个辅助函数，它的作用是把一个由多个不同 reducer 函数作为 value 的 object，合并成一个最终的 reducer 函数，然后就可以对这个 reducer 调用 <code>createStore</code>。</p>
 </div>
-<div class="exampleblock">
+<div class="quoteblock">
+<blockquote>
+<div class="listingblock">
 <div class="content">
-<div class="paragraph">
-<p><code>combineReducers(reducers)</code></p>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">combineReducers(reducers)</code></pre>
+</div>
 </div>
 <div class="ulist">
 <div class="title">参数</div>
@@ -754,21 +754,23 @@ store.dispatch(&#123;
 <li>
 <p>reducers（Object）: 一个对象，它的值（value） 对应不同的 reducer 函数，这些 reducer 函数后面会被合并成一个。</p>
 <div class="paragraph">
-<p>在 <code>reducers/index.js</code> 里收集所有的 reducer 函数并使用 <code>combineReducers()</code> 来对外输出一个 reducer。</p>
+<p>在 reducers/index.js 里收集所有的 reducer 函数并使用 combineReducers() 来对外输出一个 reducer。</p>
 </div>
 </li>
 </ul>
 </div>
-<div class="paragraph">
+<div class="ulist">
 <div class="title">返回值</div>
+<ul>
+<li>
 <p>(Function): 一个调用 reducers 对象里所有 reducer 的 reducer，并且构造一个与 reducers 对象结构相同的 state 对象。</p>
-</div>
-</div>
+</li>
+</ul>
 </div>
 <div class="listingblock">
-<div class="title">示例：『使用 <code>combineReducers</code>』</div>
+<div class="title">示例：『使用 combineReducers』</div>
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js"><span class="comment">// reducers/index.js</span>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="comment">// reducers/index.js</span>
 <span class="keyword">import</span> users <span class="keyword">from</span> <span class="string">'./users'</span>;
 <span class="keyword">import</span> comments <span class="keyword">from</span> <span class="string">'./comments'</span>;
 <span class="keyword">import</span> products <span class="keyword">from</span> <span class="string">'./products'</span>;
@@ -787,33 +789,38 @@ store.dispatch(&#123;
 <span class="keyword">const</span> store = createStore(rootReducer);</code></pre>
 </div>
 </div>
+</blockquote>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="__redux_thunk">使用 redux-thunk</h3>
 <div class="sect3">
 <h4 id="__redux_thunk_2">什么是 redux-thunk？</h4>
-<div class="listingblock">
-<div class="title">来自官网的介绍<sup class="footnote">[<a id="_footnoteref_9" class="footnote" href="#_footnote_9" title="View footnote.">9</a>]</sup></div>
-<div class="content">
-<pre>A thunk is a function that wraps an expression to delay its evaluation.
-
-Redux Thunk middleware allows you to write action creators that return a function instead of an action. The thunk can be used to delay the dispatch of an action, or to dispatch only if a certain condition is met. The inner function receives the store methods dispatch and getState() as parameters.</pre>
+<div class="quoteblock">
+<div class="title">来自官网的介绍 <sup class="footnote">[<a id="_footnoteref_11" class="footnote" href="#_footnote_11" title="View footnote.">11</a>]</sup></div>
+<blockquote>
+<div class="paragraph">
+<p>A thunk is a function that wraps an expression to delay its evaluation.</p>
 </div>
+<div class="paragraph">
+<p>Redux Thunk middleware allows you to write action creators that return a function instead of an action. The thunk can be used to delay the dispatch of an action, or to dispatch only if a certain condition is met. The inner function receives the store methods dispatch and getState() as parameters.</p>
+</div>
+</blockquote>
 </div>
 <div class="paragraph">
 <p>当 Redux 程序需要执行一些异步的 action 时，譬如：执行 API 请求获取数据等，就需要 redux-thunk middleware。</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="___4">使用</h4>
+<h4 id="___5">使用</h4>
 <div class="paragraph">
 <p>几乎所有的程序都需要执行异步的 action，所以这基本上是一个必备的组件。redux-thunk 是一个 middleware，启用它的方式就是在生成 store 的时候注册 middleware。</p>
 </div>
 <div class="listingblock">
 <div class="title">示例：『通过 redux-thunk middleware 生成 store』</div>
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js"><span class="keyword">const</span> createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="keyword">const</span> createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 <span class="keyword">const</span> store = createStoreWithMiddleware(rootReducer);</code></pre>
 </div>
 </div>
@@ -823,7 +830,7 @@ Redux Thunk middleware allows you to write action creators that return a functio
 <div class="listingblock">
 <div class="title">示例：『dispatch 异步的 action：删除商品的评论』</div>
 <div class="content">
-<pre class="highlight"><code class="language-js" data-lang="js"><span class="comment">// actions</span>
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="comment">// actions</span>
 <span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">deleteComment</span>(<span class="params">commentId, productId</span>) </span>&#123;
     <span class="keyword">if</span> (productId) &#123;
         <span class="keyword">return</span> &#123;
@@ -863,7 +870,7 @@ Redux Thunk middleware allows you to write action creators that return a functio
 </div>
 </div>
 <div class="paragraph">
-<p>删除评论时，需要更新 state 的两处地方：<code>comments</code> 和 <code>productCommentRefs</code>。而更新 <code>productCommentRefs</code> 的时候需要指定商品的 productId。若没有指定，dispatch action 的时候要有商品的 productId。若没有指定 productId，则尝试从 state 中取出 productId。</p>
+<p>删除评论时，需要更新 state 的两处地方：<code>comments</code> 和 <code>productCommentRefs</code>。而更新 <code>productCommentRefs</code> 的时候需要指定商品的 <code>productId</code>。若没有指定，<code>dispatch()</code> action 的时候要有商品的 <code>productId</code>。若没有指定 <code>productId</code>，则尝试从 <code>state</code> 中取出 <code>productId</code>。</p>
 </div>
 </div>
 </div>
@@ -892,26 +899,23 @@ Redux Thunk middleware allows you to write action creators that return a functio
 <span class="keyword">export</span> <span class="keyword">default</span> connect(select)(App);</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="__props">注入的 props 采用非范式化的内嵌式结构</h4>
+</div>
+<div class="sect2">
+<h3 id="__props">注入的 props 采用非范式化的内嵌式结构</h3>
 
 </div>
-<div class="sect3">
-<h4 id="__props_immutable_js">注入的 props 采用 immutable-js 数据结构及容器</h4>
+<div class="sect2">
+<h3 id="__props_immutable_js">注入的 props 采用 immutable-js 数据结构及容器</h3>
 
 </div>
-<div class="sect3">
-<h4 id="__dispatch_action_container_props">所有的 dispatch action 均由 container 注入 props 方式实现</h4>
+<div class="sect2">
+<h3 id="__dispatch_action_container_props">所有的 dispatch action 均由 container 注入 props 方式实现</h3>
 
-</div>
 </div>
 </div>
 </div>
 <div id="footnotes">
 <hr>
-<div class="footnote" id="_footnote_1">
-<a href="#_footnoteref_1">1</a>. <a href="http://camsong.github.io/redux-in-chinese/" class="bare" target="_blank" rel="external">http://camsong.github.io/redux-in-chinese/</a>
-</div>
 <div class="footnote" id="_footnote_1">
 <a href="#_footnoteref_1">1</a>. <a href="http://benjamn.github.io/empirenode-2015/" class="bare" target="_blank" rel="external">http://benjamn.github.io/empirenode-2015/</a>
 </div>
@@ -934,10 +938,16 @@ Redux Thunk middleware allows you to write action creators that return a functio
 <a href="#_footnoteref_7">7</a>. <a href="https://hacks.mozilla.org/2015/03/this-api-is-so-fetching/" class="bare" target="_blank" rel="external">https://hacks.mozilla.org/2015/03/this-api-is-so-fetching/</a>
 </div>
 <div class="footnote" id="_footnote_8">
-<a href="#_footnoteref_8">8</a>. <a href="http://camsong.github.io/redux-in-chinese/docs/api/createStore.html" class="bare" target="_blank" rel="external">http://camsong.github.io/redux-in-chinese/docs/api/createStore.html</a>
+<a href="#_footnoteref_8">8</a>. <a href="https://github.com/github/fetch" class="bare" target="_blank" rel="external">https://github.com/github/fetch</a>
 </div>
 <div class="footnote" id="_footnote_9">
-<a href="#_footnoteref_9">9</a>. <a href="https://github.com/gaearon/redux-thunk" class="bare" target="_blank" rel="external">https://github.com/gaearon/redux-thunk</a>
+<a href="#_footnoteref_9">9</a>. <a href="http://camsong.github.io/redux-in-chinese/" class="bare" target="_blank" rel="external">http://camsong.github.io/redux-in-chinese/</a>
+</div>
+<div class="footnote" id="_footnote_10">
+<a href="#_footnoteref_10">10</a>. <a href="http://camsong.github.io/redux-in-chinese/docs/api/createStore.html" class="bare" target="_blank" rel="external">http://camsong.github.io/redux-in-chinese/docs/api/createStore.html</a>
+</div>
+<div class="footnote" id="_footnote_11">
+<a href="#_footnoteref_11">11</a>. <a href="https://github.com/gaearon/redux-thunk" class="bare" target="_blank" rel="external">https://github.com/gaearon/redux-thunk</a>
 </div>
 </div>  
 	</div>
@@ -947,7 +957,7 @@ Redux Thunk middleware allows you to write action creators that return a functio
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/ESLint/">ESLint</a><a href="/tags/React/">React</a><a href="/tags/Redux/">Redux</a><a href="/tags/Webpack/">Webpack</a><a href="/tags/immutable-js/">immutable-js</a>
+  <span></span> <a href="/tags/ES2015/">ES2015</a><a href="/tags/ES6/">ES6</a><a href="/tags/ESLint/">ESLint</a><a href="/tags/React/">React</a><a href="/tags/Redux/">Redux</a><a href="/tags/Webpack/">Webpack</a><a href="/tags/immutable-js/">immutable-js</a>
   </div>
 
 </div>
@@ -956,7 +966,7 @@ Redux Thunk middleware allows you to write action creators that return a functio
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://lifei.github.io/2016/01/22/react-redux-best-practice/" data-title="『React+Redux』项目最佳实践 | 飛哥の技术博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://lifei.github.io/2016/01/22/react-redux-best-practice/" data-title="React、Redux 项目工程架构实战 | 飛哥の技术博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -982,7 +992,7 @@ Redux Thunk middleware allows you to write action creators that return a functio
 
 	
 <section id="comments" class="comment">
-	<div class="ds-thread" data-thread-key="2016/01/22/react-redux-best-practice/" data-title="『React+Redux』项目最佳实践" data-url="http://lifei.github.io/2016/01/22/react-redux-best-practice/"></div>
+	<div class="ds-thread" data-thread-key="2016/01/22/react-redux-best-practice/" data-title="React、Redux 项目工程架构实战" data-url="http://lifei.github.io/2016/01/22/react-redux-best-practice/"></div>
 </section>
 
 
@@ -992,7 +1002,7 @@ Redux Thunk middleware allows you to write action creators that return a functio
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_react_redux"><span class="toc-number">1.</span> <span class="toc-text">React 和 Redux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">2.</span> <span class="toc-text">通用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__es2015"><span class="toc-number">2.1.</span> <span class="toc-text">使用 ES2015</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__fetch_api"><span class="toc-number">2.2.</span> <span class="toc-text">使用 Fetch API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__webpack"><span class="toc-number">2.3.</span> <span class="toc-text">使用 Webpack 构建项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__redux"><span class="toc-number">3.</span> <span class="toc-text">使用 Redux</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__sup_class_footnote_a_id_footnoteref_1_class_footnote_href_footnote_1_title_view_footnote_1_a_sup"><span class="toc-number">3.1.</span> <span class="toc-text">要点 [1]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">3.2.</span> <span class="toc-text">代码组织和工程结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_store_state"><span class="toc-number">3.3.</span> <span class="toc-text">Store 和 State</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__store"><span class="toc-number">3.3.1.</span> <span class="toc-text">创建 store</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__immutable_js_state"><span class="toc-number">3.3.2.</span> <span class="toc-text">使用 immutable-js 作为 state 的数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__state"><span class="toc-number">3.3.3.</span> <span class="toc-text">设计 State 结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_reducers"><span class="toc-number">3.4.</span> <span class="toc-text">reducers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#___3"><span class="toc-number">3.4.1.</span> <span class="toc-text">统一管理实体及它们的关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__combinereducers"><span class="toc-number">3.4.2.</span> <span class="toc-text">使用 combineReducers</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__redux_thunk"><span class="toc-number">3.5.</span> <span class="toc-text">使用 redux-thunk</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__redux_thunk_2"><span class="toc-number">3.5.1.</span> <span class="toc-text">什么是 redux-thunk？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___4"><span class="toc-number">3.5.2.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_container"><span class="toc-number">3.6.</span> <span class="toc-text">Container</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__props"><span class="toc-number">3.6.1.</span> <span class="toc-text">注入的 props 采用非范式化的内嵌式结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__props_immutable_js"><span class="toc-number">3.6.2.</span> <span class="toc-text">注入的 props 采用 immutable-js 数据结构及容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__dispatch_action_container_props"><span class="toc-number">3.6.3.</span> <span class="toc-text">所有的 dispatch action 均由 container 注入 props 方式实现</span></a></li></ol></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_react_redux"><span class="toc-number">1.</span> <span class="toc-text">React 和 Redux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">2.</span> <span class="toc-text">通用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__es2015"><span class="toc-number">2.1.</span> <span class="toc-text">使用 ES2015</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__fetch_api"><span class="toc-number">2.2.</span> <span class="toc-text">使用 Fetch API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__webpack"><span class="toc-number">2.3.</span> <span class="toc-text">使用 Webpack 构建项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__redux"><span class="toc-number">3.</span> <span class="toc-text">使用 Redux</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">3.1.</span> <span class="toc-text">要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___3"><span class="toc-number">3.2.</span> <span class="toc-text">代码组织和工程结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_store_state"><span class="toc-number">3.3.</span> <span class="toc-text">Store 和 State</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__store"><span class="toc-number">3.3.1.</span> <span class="toc-text">创建 store</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__immutable_js_state"><span class="toc-number">3.3.2.</span> <span class="toc-text">使用 immutable-js 作为 state 的数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__state"><span class="toc-number">3.3.3.</span> <span class="toc-text">设计 State 结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_reducers"><span class="toc-number">3.4.</span> <span class="toc-text">reducers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#___4"><span class="toc-number">3.4.1.</span> <span class="toc-text">统一管理实体及它们的关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__code_combinereducers_code"><span class="toc-number">3.4.2.</span> <span class="toc-text">使用 combineReducers</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__redux_thunk"><span class="toc-number">3.5.</span> <span class="toc-text">使用 redux-thunk</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__redux_thunk_2"><span class="toc-number">3.5.1.</span> <span class="toc-text">什么是 redux-thunk？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___5"><span class="toc-number">3.5.2.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_container"><span class="toc-number">3.6.</span> <span class="toc-text">Container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props"><span class="toc-number">3.7.</span> <span class="toc-text">注入的 props 采用非范式化的内嵌式结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props_immutable_js"><span class="toc-number">3.8.</span> <span class="toc-text">注入的 props 采用 immutable-js 数据结构及容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__dispatch_action_container_props"><span class="toc-number">3.9.</span> <span class="toc-text">所有的 dispatch action 均由 container 注入 props 方式实现</span></a></li></ol></li></ol>
  
   </div>
 
@@ -1023,7 +1033,7 @@ Redux Thunk middleware allows you to write action creators that return a functio
 			
 		
 			
-				<li><a href="/tags/ESLint/" title="ESLint">ESLint<sup>1</sup></a></li>
+				<li><a href="/tags/ES2015/" title="ES2015">ES2015<sup>1</sup></a></li>
 			
 		
 			
@@ -1051,7 +1061,11 @@ Redux Thunk middleware allows you to write action creators that return a functio
 			
 		
 			
+				<li><a href="/tags/ESLint/" title="ESLint">ESLint<sup>1</sup></a></li>
+			
 		
+			
+				<li><a href="/tags/ES6/" title="ES6">ES6<sup>1</sup></a></li>
 			
 		
 			
@@ -1089,7 +1103,7 @@ Redux Thunk middleware allows you to write action creators that return a functio
   <div class="tagcloudlist">
     <p class="asidetitle">标签云</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/DPI/" style="font-size: 10px;">DPI</a> <a href="/tags/ESLint/" style="font-size: 10px;">ESLint</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Webpack/" style="font-size: 20px;">Webpack</a> <a href="/tags/Windows-10/" style="font-size: 10px;">Windows 10</a> <a href="/tags/immutable-js/" style="font-size: 10px;">immutable-js</a>
+       <a href="/tags/DPI/" style="font-size: 10px;">DPI</a> <a href="/tags/ES2015/" style="font-size: 10px;">ES2015</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/ESLint/" style="font-size: 10px;">ESLint</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Webpack/" style="font-size: 20px;">Webpack</a> <a href="/tags/Windows-10/" style="font-size: 10px;">Windows 10</a> <a href="/tags/immutable-js/" style="font-size: 10px;">immutable-js</a>
     </div>
   </div>
 

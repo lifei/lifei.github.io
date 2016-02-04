@@ -56,7 +56,7 @@
 
 支持">
 <meta property="og:image" content="http://lifei.github.io/images/webpack/ryf-source-map.png">
-<meta property="og:updated_time" content="2016-02-04T13:09:35.793Z">
+<meta property="og:updated_time" content="2016-02-04T13:12:44.013Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于 Webpack 的前端资源构建方案">
 <meta name="twitter:description" content="背景
@@ -291,15 +291,33 @@
 <pre class="highlight"><code class="language-javascript" data-lang="javascript">output.filename = <span class="string">'static/js/[name].[chunkhash:8].min.js'</span>;</code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>Webpack 提供了多种 `hash` 方式，如：`[hash]`、`[chunkhash]`，每一种 hash 都有其独特的含义。根据需求，我们推荐使用 chunkhash 作为『long term cache』选择的 hash 方式。</pre>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Webpack 提供了多种 <code>hash</code> 方式，如：<code>[hash]</code>、<code>[chunkhash]</code>，每一种 hash 都有其独特的含义。根据需求，我们推荐使用 chunkhash 作为『long term cache』选择的 hash 方式。</p>
 </div>
+</td>
+</tr>
+</table>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>Webapck 提供的 hash 函数会将大量环境相关的因素也作为 hash 的内容，会导致不同时间不同机器上的 hash 结果都不一样。这儿我们推荐使用『webpack-md5-hash』提供的 hash 方法作为用到 hash 函数。</pre>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Webapck 提供的 hash 函数会将大量环境相关的因素也作为 hash 的内容，会导致不同时间不同机器上的 hash 结果都不一样。这儿我们推荐使用『webpack-md5-hash』提供的 hash 方法作为用到 hash 函数。</p>
 </div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">

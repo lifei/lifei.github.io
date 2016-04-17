@@ -1,0 +1,535 @@
+id: react-redux-best-practice
+title: React、Redux 项目工程架构实战
+date: 2016-01-22 17:00:00
+tags:
+- ES6
+- ES2015
+- ESLint
+- React
+- Redux
+- Webpack
+- immutable-js
+---
+
+= React、Redux 项目工程架构实战
+
+== React 和 Redux
+
+什么？你没听过 React？你是火星来的么？React 是 Facebook 推出的一个用来构建用户界面的 JavaScript 库。来感受一下 React 的火爆吧。
+
+image::/images/react-redux-best-practice/react-stars.png[截止到2016年1月22日，Github 上 React 项目取得的成绩。, title="Github 上 React 项目取得的成绩"]
+
+Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux 由 Flux 演变而来，但受 Elm 的启发，避开了 Flux 的复杂性。Redux 也是一个『火爆』的项目，Github 成绩也相当不错。
+
+image::/images/react-redux-best-practice/redux-stars.png[截止到2016年1月22日，Github 上 Redux 项目取得的成绩。, title="Github 上 Redux 项目取得的成绩"]
+
+== 通用
+
+=== 使用 ES2015
+
+ES2015 在语言层面引入大量的新特性，使 Javascript 终于有了脱胎换骨的感觉。
+
+. 箭头函数
+. 模板字符串
+. rest 参数，扩展运算符（spread）,函数默认值
+. 变量的解构赋值
+. generator 和 promises
+. maps，sets 和 symbols
+. ……
+
+项目中使用 ES2015 的新语言特性可以使开发效率更高，写出的代码更好维护。譬如：低版本 Javascript 本身的 `prototype` 原型继承，之前几乎每个人都有自己实现一套 OO 模拟，现在有原生的 `class extends` 语法，从语言层面进行统一；函数的参数结构和默认值，避免了手动的默认值分配和参数为 0 的坑；箭头函数避免了 `this` 上下文的坑；块级的 let/const 避免了『`var` hoisting』 的坑；『模板字符串』避免繁琐的手动字符串拼接；更好的 Unicode 支持；ES2015 模块footnote:[http://benjamn.github.io/empirenode-2015/]；还有 `async`、`await` 对于异步流程处理本质上的改善footnote:[http://weibo.com/p/1001603934708609234550]。
+
+ES2015 是一个已经正式发布的标准，并不是半成品或者玩具。有了 ES2015，什么 CoffeeScript、TypeScript 等基本上可以拜拜了。node 从 v4 版本起支持大部分的 ES2015 新语法footnote:[https://nodejs.org/en/docs/es6/]，现代的浏览器（如 Chrome）也支持大部分语法，不兼容的浏览器可以使用 Babel 预处理器将代码编译成 ES5（具体做法可参考：《link:http://lifei.github.io/2015/12/20/webpack/[基于 Webpack 的前端资源构建方案]》）。
+
+.更高的要求
+[NOTE]
+====
+使用 ES2015 另外一个层面是要抛弃或替换现有的一些做法：
+
+. 异步函数的回调惯例
++
+在过去，异步函数支持回调惯例是导出 error-first callback 的接口形式，而现在请使用 Promise。
+. 新的异步模式
++
+在过去，一般有两种方式来管理异步流：callback 回调和 streams 流；而现在请使用 `generator`、`promise`、`await/async`footnote:[https://blog.risingstack.com/asynchronous-javascript/]。
+====
+
+=== 使用 Fetch API
+
+JavaScript 通过 XMLHttpRequest（XHR）来执行异步请求，这个方式已经存在了很长一段时间。虽说它很有用，但它不是最佳API。它在设计上不符合职责分离原则，将输入、输出和用事件来跟踪的状态混杂在一个对象里。而且，基于事件的模型与最近 JavaScript 流行的 Promise 以及基于生成器的异步编程模型不太搭。
+
+新的 Fetch API footnote:[https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API] 打算修正上面提到的那些缺陷。 它向 JS 中引入和 HTTP 协议中同样的原语。具体而言，它引入一个实用的函数 `fetch()` 用来简洁捕捉从网络上检索一个资源的意图。
+
+Fetch 规范 footnote:[https://fetch.spec.whatwg.org/] 的 API 明确了用户代理获取资源的语义。footnote:[https://hacks.mozilla.org/2015/03/this-api-is-so-fetching/]
+
+[TIP]
+====
+在 Github 上，有基于低版本浏览器的兼容实现。footnote:[https://github.com/github/fetch]
+====
+
+.简单的fetching示例
+[source, javascript]
+----
+fetch("/data.json").then(function(res) {
+  // res instanceof Response == true.
+  if (res.ok) {
+    res.json().then(function(data) {
+      console.log(data.entries);
+    });
+  } else {
+    console.log("Looks like the response wasn't perfect, got status", res.status);
+  }
+}, function(e) {
+  console.log("Fetch failed!", e);
+});
+----
+
+NOTE: 抛弃 jQuery 的 $.ajax 吧！
+
+=== 使用 Webpack 构建项目
+
+Webpack 是德国开发者 Tobias Koppers 开发的模块加载器，是一款开源的模块化构建工具。
+
+模块化的重要性想必不必多言了，解决模块问题的开源方案也非常多，如：RequireJS，SeaJS，Webpack，Browserify，SystemJS。node 的 npm 已经成了基于模块规范的包管理方案的事实标准，RequireJS，SeaJS 等会渐渐地退出历史舞台。Webpack 支持多种包管理方案，方便兼容各种开源项目及迁移旧代码，可谓是新旧通吃。
+
+Webpack带来的一种新的前端打包思路：不仅仅是 JavaScript，而是将 HTML、CSS 和其他静态资源统统作为『模块』来看待。因为在实际开发中，不仅仅是 JavaScript 的模块之间存在依赖关系，HTML、CSS 和其他静态文件之间也会有依赖关系。实际开发中，开发环境和生产环境中这些静态资源之间的相对路径关系经常是不一样的，这就导致我们以往在开发环境到生产环境的上线过程中有很多繁琐的步骤，比如改写静态资源引用的 URL（版本戳，静态资源域名/CDN），图片优化，根据文件大小做成内联、模块的切分和按需加载等等。
+
+Webpack 提供了更好的开发体验，『热重载』特性，在修改代码后不重载页面的情况下替换单一模块，对开发体验带来质的提升。举例来说，你在修改一个打开应用后需要 N 次操作才能看到的组件，如果你改一次就要重复这些操作，那样效率实在太低。
+
+更详细的 Webpack 的构建方案请参考：《link:http://lifei.github.io/2015/12/20/webpack/[基于 Webpack 的前端资源构建方案]》。
+
+== 使用 Redux
+
+=== 要点
+Redux 框架的要点归纳为三点：footnote:[http://camsong.github.io/redux-in-chinese/]
+
+. 应用中所有的 state 都以一个对象树的形式储存在一个单一的 store 中。
+. 惟一改变 state 的办法是触发 action，一个描述发生什么的对象。
+. 为了描述 action 如何改变 state 树，你需要编写 reducers。
+
+.Redux 代码示例
+[source, javascript]
+----
+import { createStore } from 'redux';
+
+/**
+ * 这是一个 reducer，形式为 `(state, action) => state` 的纯函数。
+ * 描述了 action 如何把 state 转变成下一个 state。
+ *
+ * state 的形式取决于你，可以是基本类型、数组、对象、
+ * 甚至是 Immutable.js 生成的数据结构。惟一的要点是
+ * 当 state 变化时需要返回全新的对象，而不是修改传入的参数。
+ *
+ * 下面例子使用 `switch` 语句和字符串来做判断，但你可以写帮助类（helper）
+ * 根据不同的约定（如方法映射）来判断，只要适用你的项目即可。
+ */
+function counter(state = 0, action) {
+  switch (action.type) {
+  case 'INCREMENT':
+    return state + 1;
+  case 'DECREMENT':
+    return state - 1;
+  default:
+    return state;
+  }
+}
+
+// 创建 Redux store 来存放应用的状态。
+// API 是 { subscribe, dispatch, getState }。
+let store = createStore(counter);
+
+// 可以手动订阅更新，也可以事件绑定到视图层。
+store.subscribe(() =>
+  console.log(store.getState())
+);
+
+// 改变内部 state 惟一方法是 dispatch 一个 action。
+// action 可以被序列化，用日记记录和储存下来，后期还可以以回放的方式执行
+store.dispatch({ type: 'INCREMENT' });
+// 1
+store.dispatch({ type: 'INCREMENT' });
+// 2
+store.dispatch({ type: 'DECREMENT' });
+// 1
+----
+
+=== 代码组织和工程结构
+
+Redux 官方库给了一些示例，从这些示例中我们可以总结出 Redux 的代码组织方式及工程目录结构。
+
+image::/images/react-redux-best-practice/redux-example.png[Redux 的官方库示例的目录结构, title="Redux 的官方库示例的目录结构"]
+
+基于官方的几个 Redux 示例，我们总结出一套代码组织方式及工程目录结构，如下：
+
+.Redux 代码组织方式及工程目录结构
+----
+/root
+    /actions
+    /apis
+    /components
+    /constants
+    /containers
+    /middlewares
+    /models
+    /reducers
+    /store
+    /tests
+    webpack.config.js
+    package.json
+    .babelrc
+    .eslintrc
+----
+
+Redux 项目采用了类似 RoR 项目的组织形式，先按照模块的作用进行分层，再按照模块的功能划分。写代码的时候，需要先对当前模块的作用做出判断，譬如是 action 还是 container，将代码文件放到对应的目录中。然后再根据模块所属的子系统或组件对文件进行命名，譬如：user.js 或 share.js 等。
+
+这样组织的一个优点是各个层的作用比较明确，方便处理依赖关系。因为 Redux 是一个类 FLUX 框架，其数据流是单向的，所谓数据流的流动，其实就是指数据在各个层中的流动，简单说来是 action ⇒ reducer ⇒ store ⇒ container ⇒ component ⇒ DOM 这么一个过程（而触发 action 的过程是 DOM ⇒ component ⇒ container ⇒ action）。各个层直接的依赖关系也基本是这样的，这样就明确的代码的依赖，减少耦合，降低了复杂度。
+
+.劣势
+[NOTE]
+====
+它的缺点也很明显，就是淡化了『子系统/组件』，一方面会导致子系统或组件代码组织分散，不内聚，另一方面也会产生子系统或组件边界模糊的问题，导致子系统或组件的相互依赖，产生耦合。譬如，一个用户子系统的文件分布可能是：
+
+----
+/root
+    /actions
+        users.js
+        user.js
+    /apis
+        users.js
+        user.js
+    /components
+        Users.jsx   <- 用户列表页
+        User.jsx    <- 用户详情页
+    /containers
+        Users.js
+    /models
+        User.js
+    /reducers
+        users.js
+        user.js
+    /store
+        store.js
+    /tests
+        users.js
+        user.js
+----
+
+放眼望去，满眼的 user 文件，特别是当各个目录还有其他子系统或组件的代码时，找起代码来会更加不方便。另外，这样的组件的内聚性也比较差，需要靠自制力来把控。
+
+TIP: 所谓『鱼与熊掌不可兼得』，综合来看，还是先分层对项目更好一些。
+
+NOTE: 以下将一一讲解各个层应该如何操作。
+====
+
+=== Store 和 State
+
+一个 Redux 程序只有一个 store。store 的更新会触发与其关联的 container 更新，继而更新 container 中的组件。
+
+==== 创建 store
+
+store 是通过 API `createStore(reducer, [initialState])` 创建的。官方给出的说明是 footnote:[http://camsong.github.io/redux-in-chinese/docs/api/createStore.html]：
+
+____
+创建一个 Redux store 来以存放应用中所有的 state。 应用中应有且仅有一个 store。
+
+.参数
+* reducer（Function）: 接收两个参数，分别是当前的 state 树和要处理的 action，返回新的 state 树。
+* [initialState] (any): 初始时的 state。 在同构应用中，你可以决定是否把服务端传来的 state 水合（hydrate）后传给它，或者从之前保存的用户会话中恢复一个传给它。如果你使用 combineReducers 创建 reducer，它必须是一个普通对象，与传入的 keys 保持同样的结构。否则，你可以自由传入任何 reducer 可理解的内容。
+
+.返回值
+Store: 保存了应用所有 state 的对象。改变 state 的惟一方法是 dispatch action。你也可以 subscribe 监听 state 的变化，然后更新 UI。
+
+.示例
+[source, javascript]
+----
+import { createStore } from 'redux';
+
+function todos(state = [], action) {
+  switch (action.type) {
+  case 'ADD_TODO':
+    return state.concat([action.text]);
+  default:
+    return state;
+  }
+}
+
+let store = createStore(todos, ['Use Redux']);
+
+store.dispatch({
+  type: 'ADD_TODO',
+  text: 'Read the docs'
+});
+
+console.log(store.getState());
+// ['Use Redux', 'Read the docs']
+----
+____
+
+.注意
+[WARNING]
+====
+. 应用中不要创建多个 store！相反，使用 combineReducers 来把多个 reducer 创建成一个根 reducer。
+. state 的格式尽量使用 Immutable 这类的实现。
++
+如果 state 是普通对象，永远不要修改它！比如，reducer 里不要使用 `Object.assign(state, newData)`，应该使用 `Object.assign({}, state, newData)`。这样才不会覆盖旧的 state。也可以使用 Babel 阶段 1 中的 ES7 对象的 spread 操作特性中的 `return { …​state, …​newData }`。
+. 对于服务端运行的同构应用，为每一个请求创建一个 store 实例，以此让 store 相隔离。dispatch 一系列请求数据的 action 到 store 实例上，等待请求完成后再在服务端渲染应用。
+. 当 store 创建后，Redux 会 dispatch 一个 action 到 reducer 上，来用初始的 state 来填充 store。你不需要处理这个 action。但要记住，如果第一个参数也就是传入的 state 如果是 undefined 的话，reducer 应该返回初始的 state 值。
+====
+
+==== 使用 immutable-js 作为 state 的数据结构
+
+由于『**永远不要修改 state对象**』的要求，state 的格式尽可能使用『**Immutable 的实现**』。
+
+immutable-js 是 Facebook 开源的一款 immutable 数据结构的实现，它提供了诸如 List、Map、Set等等多种 immutable 容器。
+
+由于 immutable 提供的数据结构是不允许修改的，因此使用 immutable 容器可以轻松做到『**永远不要修改 state对象**』的要求，防止误修改 state 对象引起的 BUG。
+
+此外，immutable-js 还提供了大量的 immutable 方法，如 `updateIn`、`setIn`等，这些方法使更新容器内的对象变得非常方便。
+
+==== 设计 State 结构
+
+在 Redux 应用中，所有的 state 都被保存在一个单一对象中。这个对象就是整个应用的状态，包括但不限于：实体、实体之间的关系、锁、UI 相关的 state 等。提前设计 state 的结构非常重要。
+
+.尽可能地把 state 范式化
+[TIP]
+====
+开发复杂的应用时，不可避免会有一些数据相互引用。建议你尽可能地把 state 范式化，不存在嵌套。把所有数据放到一个对象里，每个数据以 ID 为主键，不同数据相互引用时通过 ID 来查找。把应用的 state 想像成数据库。
+====
+
+=== reducers
+
+reducer 就是一个函数，接收旧的 state 和 action，返回新的 state。
+
+[source, javascript]
+----
+(previousState, action) => newState
+----
+
+之所以称作 reducer 是因为和 `Array.prototype.reduce(reducer, ?initialValue)` 格式很像。保持 reducer 纯净非常重要。永远不要在 reducer 里做这些操作：
+
+. 修改传入参数；
+. 执行有副作用的操作，如 API 请求和路由跳转；
+. 调用非纯函数，如 `Date.now()` 或 `Math.random()`。
+
+[WARNING]
+====
+reducer 一定要保持纯净。只要传入参数一样，返回必须一样。**没有特殊情况、没有副作用，没有 API 请求、没有修改参数，单纯执行计算**。
+====
+
+==== 统一管理实体及它们的关系
+在 state 中专门开辟一块空间存储实体及它们的关系，并尽可能的统一地管理它们，不仅仅是客户端，还包括服务端 API。
+
+在『基于领域实体及其关系的API设计』中提到，API 返回的风格最好也是范式化的，这样可以非常方便地与客户端进行对接。
+
+譬如：有两个 API，`/topics/<int:topic_id>/tweets/`，`/users/<int:user_id>/tweets/`，它们分别表示『某个话题下的微博』和『某个用户发布的微博』。如果我们将它们的返回风格设计为范式化的，相关的业务处理会非常的简单。
+
+.返回结果示例
+[source, json]
+----
+{
+    "entities": {    // 所有的 API 都将实体封装到 entities 下。
+        "users": {
+            "1": {
+                "name": "张三"
+                ......
+            }
+        },
+        "topics": {
+            "1": {
+                "name": "热点微博"
+                ......
+            }
+        },
+        "tweets": {
+            "1": {
+                "user_id": 1,
+                "topic_id": 1,
+                "content": "呵呵"
+            }
+        }
+    },
+    "relationships": {  // 根据实际业务需要，返回本节的内容。
+        "user_tweets": {
+            "1": [1]
+        },
+        "topic_tweets": {
+            "1": [1]
+        }
+    }
+}
+----
+
+.reducer 的代码
+[source, javascript]
+----
+// 统一处理范式化的 entity
+export function entities(state, action) {
+    switch(action.type) {
+        case RECEIVE_USER_TWEETS:
+        case RECEIVE_TOPIC_TWEETS:
+            return merge(state, action.result.entities)
+        default:
+            return state
+    }
+}
+
+// 各个业务 API 处理其业务相关的关系更新
+export function userTweets(state, action) {
+    switch(action.type) {
+        case RECEIVE_USER_TWEETS:
+            return merge(state, action.result.user_tweets)
+        default:
+            return state
+
+    }
+}
+
+export function topicTweets(state, action) {
+    switch(action.type) {
+        case RECEIVE_TOPIC_TWEETS:
+            return merge(state, action.result.topic_tweets)
+        default:
+            return state
+
+    }
+}
+----
+
+==== 使用 `combineReducers`
+
+随着应用变得复杂，需要对 reducer 函数进行拆分，拆分后的每一块独立负责管理 state 的一部分。
+`combineReducers` 是 Redux 的一个辅助函数，它的作用是把一个由多个不同 reducer 函数作为 value 的 object，合并成一个最终的 reducer 函数，然后就可以对这个 reducer 调用 `createStore`。
+
+____
+
+[source, javascript]
+----
+combineReducers(reducers)
+----
+
+.参数
+* reducers（Object）: 一个对象，它的值（value） 对应不同的 reducer 函数，这些 reducer 函数后面会被合并成一个。
++
+在 reducers/index.js 里收集所有的 reducer 函数并使用 combineReducers() 来对外输出一个 reducer。
+
+.返回值
+* (Function): 一个调用 reducers 对象里所有 reducer 的 reducer，并且构造一个与 reducers 对象结构相同的 state 对象。
+
+.示例：『使用 combineReducers』
+[source, javascript]
+----
+// reducers/index.js
+import users from './users';
+import comments from './comments';
+import products from './products';
+
+
+export default const rootReducer = combineReducers({
+  users,
+  comments,
+  products
+});
+
+// 创建 store
+// index.js
+import rootReducer from './reducers';
+
+const store = createStore(rootReducer);
+----
+____
+
+
+=== 使用 redux-thunk
+
+==== 什么是 redux-thunk？
+
+.来自官网的介绍 footnote:[https://github.com/gaearon/redux-thunk]
+____
+A thunk is a function that wraps an expression to delay its evaluation.
+
+Redux Thunk middleware allows you to write action creators that return a function instead of an action. The thunk can be used to delay the dispatch of an action, or to dispatch only if a certain condition is met. The inner function receives the store methods dispatch and getState() as parameters.
+____
+
+当 Redux 程序需要执行一些异步的 action 时，譬如：执行 API 请求获取数据等，就需要 redux-thunk middleware。
+
+==== 使用
+
+几乎所有的程序都需要执行异步的 action，所以这基本上是一个必备的组件。redux-thunk 是一个 middleware，启用它的方式就是在生成 store 的时候注册 middleware。
+
+.示例：『通过 redux-thunk middleware 生成 store』
+[source, javascript]
+----
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+const store = createStoreWithMiddleware(rootReducer);
+----
+
+当 createStore 的时候启用了 redux-thunk middleware 后，我们就可以 dispatch 异步的 action 了。
+
+.示例：『dispatch 异步的 action：删除商品的评论』
+[source, javascript]
+----
+// actions
+export function deleteComment(commentId, productId) {
+    if (productId) {
+        return {
+            type: DELETE_COMMENT,
+            commentId, productId
+        };
+    }
+
+    return (dispatch, getState) => {
+        const state = getState;
+        const comment = state.comments[commentId];
+        const productId = comment.productId;
+        return deleteComment(commentId, productId);
+    };
+}
+
+// reducers
+function comments(state=Map(), action) {
+    switch(action.type) {
+        case DELETE_COMMENT:
+            return state.delete(action.commentId);
+        default:
+            return state;
+    }
+}
+
+
+function productCommentRefs(state=Map(), action) {
+    switch(action.type) {
+        case DELETE_COMMENT:
+            const commentIds = state.get(action.productId); // instanceOf OrderedSet
+            return state.set(action.productId, commentIds.remove(action.commentId));
+        default:
+            return state;
+    }
+}
+----
+
+删除评论时，需要更新 state 的两处地方：`comments` 和 `productCommentRefs`。而更新 `productCommentRefs` 的时候需要指定商品的 `productId`。若没有指定，`dispatch()` action 的时候要有商品的 `productId`。若没有指定 `productId`，则尝试从 `state` 中取出 `productId`。
+
+=== Container
+『Container』只是一种称呼，事实上，代码中不会出现 container 这个后缀。React 项目与 Redux 结合时，需要将组件连接到 Redux 并且让它能够 dispatch actions 以及从 Redux store 读取到 state。这一部分逻辑通常放在一个叫『containers』的文件下，于是我们就称呼这些包装过的组件为 Container。
+
+我们是通过 react-redux 提供的 `connect()` 方法将组件连接到 Redux。尽量只做一个顶层的组件，或者 route 处理。从技术上来说你可以将应用中的任何一个组件 `connect()` 到 Redux store 中，但尽量避免这么做，因为这个数据流很难追踪。
+
+任何一个从 `connect()` 包装好的组件都可以得到一个 dispatch 方法作为组件的 props，以及得到全局 state 中所需的任何内容。 `connect()` 的唯一参数是 selector。此方法可以从 Redux store 接收到全局的 state，然后返回组件中需要的 props。最简单的情况下，可以返回一个初始的 state （例如，返回认证方法），但最好先将其进行转化。
+
+[source, javascript]
+----
+// 基于全局 state ，哪些是我们想注入的 props ?
+function select(state) {
+  return {
+    visibleTodos: selectTodos(state.todos, state.visibilityFilter),
+    visibilityFilter: state.visibilityFilter
+  };
+}
+
+// 包装 component ，注入 dispatch 和 state 到其默认的 connect(select)(App) 中；
+export default connect(select)(App);
+----
+
+=== 注入的 props 采用非范式化的内嵌式结构
+=== 注入的 props 采用 immutable-js 数据结构及容器
+=== 所有的 dispatch action 均由 container 注入 props 方式实现

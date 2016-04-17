@@ -1,6 +1,6 @@
 title: 基于 Webpack 的前端资源构建方案
 id: webpack
-date: 2015-12-20 10:00:00
+date: "2015-12-20 10:00:00"
 tags:
 - Webpack
 ---
@@ -85,6 +85,16 @@ Webpack 中，`output.filename` 等配置项可以指定一个模版，其中有
 ----
 output.filename = 'static/js/[name].[chunkhash:8].min.js';
 ----
+
+[WARNING]
+====
+Webpack 提供了多种 hash 方式，如：`[hash]`、`[chunkhash]`，每一种 hash 都有其独特的含义。根据需求，我们推荐使用 `chunkhash` 作为『long term cache』选择的 hash 方式。
+====
+
+[WARNING]
+====
+Webapck 提供的 hash 函数会将大量环境相关的因素也作为 hash 的内容，会导致不同时间不同机器上的 hash 结果都不一样。这儿我们推荐使用『webpack-md5-hash』提供的 hash 方法作为用到 hash 函数。
+====
 
 === 配置发布后的目录和网址
 
@@ -268,6 +278,57 @@ const plugins = [
 
 [NOTE]
 这样就会将大量的公共组件库的代码构建到一个独立的文件`libs.[hash:8].min.js`中。这个文件一般是体积最大的一个文件，另外一旦生成几乎不会更改，如果配合 HTTP 协议的缓存机制，调试起来会非常爽，在生产环境下对用户也非常友好。
+
+.文件名 hash 化 对 CommonsChunkPlugin 插件的影响
+[WARNING]
+====
+原生的 CommonsChunkPlugin 插件生成的代码会含有通过 `chunksMap` 异步加载 chunk 的代码，导致若启用了文件名 hash 化，生成的 libs.js 的内容也会改变。
+====
+
+.使用 chunk-manifest-webpack-plugin 解决 hash 化带来的问题
+[TIP]
+====
+解决这个问题的办法有几种，譬如官方文档上推荐使用 chunk-manifest-webpack-plugin 插件。footnote:[https://webpack.github.io/docs/list-of-plugins.html#2-explicit-vendor-chunk]
+
+.使用方法
+. 通过 npm 安装 chunk-manifest-webpack-plugin，执行命令：`npm install chunk-manifest-webpack-plugin`。
+. 在 Webpack 配置文件 `webpack.config.js` 的 `plugins` 小节中 `new` 一个 `ChunkManifestPlugin` 对象。
++
+----
+var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
+
+module.exports = {
+  // your config values here
+  plugins: [
+    new ChunkManifestPlugin({
+      filename: "manifest.json",
+      manifestVariable: "webpackManifest"
+    })
+  ]
+};
+----
+. 构建完毕后会生成一个 json 文件 `manifest.json`，里面含有 chunkId 与 构建目标路径的对应关系。
+
+====
+
+.chunk-manifest-webpack-plugin 插件并不完美
+[TIP]
+====
+虽然使用 chunk-manifest-webpack-plugin 插件后，构建后的公共库 libs.js 不再随着其他资源的变化而变化，但是由于没有合适的手段，需要手动将 `manifest.json` 引入到代码中。特别是当你使用了 HtmlWebpackPlugin 插件，你会发现它对 `manifest.json` 文件无效，它根本不会被注入到 HTML 文件中。
+
+link:https://github.com/vlkosinov[vlkosinov] 提供了一个解决这个问题的思路footnote:[https://github.com/webpack/webpack/issues/1315]，他利用 CommonsChunkPlugin 插件会将第一个 chunk 标记为 link:https://webpack.github.io/docs/code-splitting.html#entry-chunk[Entry-chunk] 的实现，通过向 `plugins` 中再次增加一个 CommonsChunkPlugin 对象，实现将 Entry-chunk 和其他代码分离。
+
+.示例代码
+[source, javascript]
+----
+plugins: [
+    new webpack.optimize.CommonsChunkPlugin({name: 'vendor'}),
+    new webpack.optimize.CommonsChunkPlugin({name: 'meta', chunks: ['vendor']})
+]
+----
+
+这个解决方案与 chunk-manifest-webpack-plugin 插件的思路是一样的，都是将 meta 和代码分离，但是一个将 meta 抽出来放到单独的 `manifest.json` 文件中，一个是放到单独的 js chunk 里，显然后者更贴合 Webapck 的机制，也可以被其他插件，如：HtmlWebpackPlugin 插件使用。
+====
 
 === 样式文件
 

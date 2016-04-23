@@ -44,7 +44,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <meta property="og:image" content="http://lifei.github.io/images/react-redux-best-practice/react-stars.png">
 <meta property="og:image" content="http://lifei.github.io/images/react-redux-best-practice/redux-stars.png">
 <meta property="og:image" content="http://lifei.github.io/images/react-redux-best-practice/redux-example.png">
-<meta property="og:updated_time" content="2016-02-04T14:49:35.576Z">
+<meta property="og:updated_time" content="2016-04-23T14:33:58.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React、Redux 项目工程架构实战">
 <meta name="twitter:description" content="React 和 Redux
@@ -135,7 +135,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_react_redux"><span class="toc-number">1.</span> <span class="toc-text">React 和 Redux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">2.</span> <span class="toc-text">通用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__es2015"><span class="toc-number">2.1.</span> <span class="toc-text">使用 ES2015</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__fetch_api"><span class="toc-number">2.2.</span> <span class="toc-text">使用 Fetch API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__webpack"><span class="toc-number">2.3.</span> <span class="toc-text">使用 Webpack 构建项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__redux"><span class="toc-number">3.</span> <span class="toc-text">使用 Redux</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">3.1.</span> <span class="toc-text">要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___3"><span class="toc-number">3.2.</span> <span class="toc-text">代码组织和工程结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_store_state"><span class="toc-number">3.3.</span> <span class="toc-text">Store 和 State</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__store"><span class="toc-number">3.3.1.</span> <span class="toc-text">创建 store</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__immutable_js_state"><span class="toc-number">3.3.2.</span> <span class="toc-text">使用 immutable-js 作为 state 的数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__state"><span class="toc-number">3.3.3.</span> <span class="toc-text">设计 State 结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_reducers"><span class="toc-number">3.4.</span> <span class="toc-text">reducers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#___4"><span class="toc-number">3.4.1.</span> <span class="toc-text">统一管理实体及它们的关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__code_combinereducers_code"><span class="toc-number">3.4.2.</span> <span class="toc-text">使用 combineReducers</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__redux_thunk"><span class="toc-number">3.5.</span> <span class="toc-text">使用 redux-thunk</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__redux_thunk_2"><span class="toc-number">3.5.1.</span> <span class="toc-text">什么是 redux-thunk？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___5"><span class="toc-number">3.5.2.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_container"><span class="toc-number">3.6.</span> <span class="toc-text">Container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props"><span class="toc-number">3.7.</span> <span class="toc-text">注入的 props 采用非范式化的内嵌式结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props_immutable_js"><span class="toc-number">3.8.</span> <span class="toc-text">注入的 props 采用 immutable-js 数据结构及容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__dispatch_action_container_props"><span class="toc-number">3.9.</span> <span class="toc-text">所有的 dispatch action 均由 container 注入 props 方式实现</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_react_redux"><span class="toc-number">1.</span> <span class="toc-text">React 和 Redux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">2.</span> <span class="toc-text">通用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__es2015"><span class="toc-number">2.1.</span> <span class="toc-text">使用 ES2015</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__fetch_api"><span class="toc-number">2.2.</span> <span class="toc-text">使用 Fetch API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__webpack"><span class="toc-number">2.3.</span> <span class="toc-text">使用 Webpack 构建项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__redux"><span class="toc-number">3.</span> <span class="toc-text">使用 Redux</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">3.1.</span> <span class="toc-text">代码组织和工程结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___3"><span class="toc-number">3.2.</span> <span class="toc-text">要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_store_state"><span class="toc-number">3.3.</span> <span class="toc-text">Store 和 State</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__store"><span class="toc-number">3.3.1.</span> <span class="toc-text">创建 store</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__immutable_js_state"><span class="toc-number">3.3.2.</span> <span class="toc-text">使用 immutable-js 作为 state 的数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__state"><span class="toc-number">3.3.3.</span> <span class="toc-text">设计 State 结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_reducers"><span class="toc-number">3.4.</span> <span class="toc-text">reducers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#___4"><span class="toc-number">3.4.1.</span> <span class="toc-text">统一管理实体及它们的关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__code_combinereducers_code"><span class="toc-number">3.4.2.</span> <span class="toc-text">使用 combineReducers</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__redux_thunk"><span class="toc-number">3.5.</span> <span class="toc-text">使用 redux-thunk</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__redux_thunk_2"><span class="toc-number">3.5.1.</span> <span class="toc-text">什么是 redux-thunk？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___5"><span class="toc-number">3.5.2.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_container"><span class="toc-number">3.6.</span> <span class="toc-text">Container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props"><span class="toc-number">3.7.</span> <span class="toc-text">注入的 props 采用非范式化的内嵌式结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props_immutable_js"><span class="toc-number">3.8.</span> <span class="toc-text">注入的 props 采用 immutable-js 数据结构及容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__dispatch_action_container_props"><span class="toc-number">3.9.</span> <span class="toc-text">所有的 dispatch action 均由 container 注入 props 方式实现</span></a></li></ol></li></ol>
 		
 		</div>
 		
@@ -223,7 +223,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <li>
 <p>新的异步模式</p>
 <div class="paragraph">
-<p>在过去，一般有两种方式来管理异步流：callback 回调和 streams 流；而现在请使用 <code>generator</code>、<code>promise</code>、`await/async`<sup class="footnote">[<a id="_footnoteref_4" class="footnote" href="#_footnote_4" title="View footnote.">4</a>]</sup>。</p>
+<p>在过去，一般有两种方式来管理异步流：callback 回调和 streams 流；而现在请使用 <code>generator</code>、<code>promise</code>、<code>await/async</code> <sup class="footnote">[<a id="_footnoteref_4" class="footnote" href="#_footnote_4" title="View footnote.">4</a>]</sup>。</p>
 </div>
 </li>
 </ol>
@@ -300,7 +300,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <p>Webpack带来的一种新的前端打包思路：不仅仅是 JavaScript，而是将 HTML、CSS 和其他静态资源统统作为『模块』来看待。因为在实际开发中，不仅仅是 JavaScript 的模块之间存在依赖关系，HTML、CSS 和其他静态文件之间也会有依赖关系。实际开发中，开发环境和生产环境中这些静态资源之间的相对路径关系经常是不一样的，这就导致我们以往在开发环境到生产环境的上线过程中有很多繁琐的步骤，比如改写静态资源引用的 URL（版本戳，静态资源域名/CDN），图片优化，根据文件大小做成内联、模块的切分和按需加载等等。</p>
 </div>
 <div class="paragraph">
-<p>Webpack 提供了更好的开发体验，『热重载』特性，在修改代码后不重载页面的情况下替换单一模块，对开发体验带来质的提升。举例来说，你在修改一个打开应用后需要 N 次操作才能看到的组件，如果你改一次就要重复这些操作，那样效率实在太低。</p>
+<p>Webpack 提供了更好的开发体验，『热重载』特性，在修改代码后不重载页面的情况下替换单一模块，对开发体验带来质的提升。举例来说，在修改一个打开应用后需要 N 次操作才能看到的组件，如果每改一次就要重复这些操作，那样效率实在太低。</p>
 </div>
 <div class="paragraph">
 <p>更详细的 Webpack 的构建方案请参考：《<a href="http://lifei.github.io/2015/12/20/webpack/">基于 Webpack 的前端资源构建方案</a>》。</p>
@@ -312,72 +312,7 @@ Redux 是 JavaScript 状态容器，提供可预测化的状态管理。Redux �
 <h2 id="__redux">使用 Redux</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="___2">要点</h3>
-<div class="paragraph">
-<p>Redux 框架的要点归纳为三点：<sup class="footnote">[<a id="_footnoteref_9" class="footnote" href="#_footnote_9" title="View footnote.">9</a>]</sup></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>应用中所有的 state 都以一个对象树的形式储存在一个单一的 store 中。</p>
-</li>
-<li>
-<p>惟一改变 state 的办法是触发 action，一个描述发生什么的对象。</p>
-</li>
-<li>
-<p>为了描述 action 如何改变 state 树，你需要编写 reducers。</p>
-</li>
-</ol>
-</div>
-<div class="listingblock">
-<div class="title">Redux 代码示例</div>
-<div class="content">
-<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;
-
-<span class="comment">/**
- * 这是一个 reducer，形式为 `(state, action) =&gt; state` 的纯函数。
- * 描述了 action 如何把 state 转变成下一个 state。
- *
- * state 的形式取决于你，可以是基本类型、数组、对象、
- * 甚至是 Immutable.js 生成的数据结构。惟一的要点是
- * 当 state 变化时需要返回全新的对象，而不是修改传入的参数。
- *
- * 下面例子使用 `switch` 语句和字符串来做判断，但你可以写帮助类（helper）
- * 根据不同的约定（如方法映射）来判断，只要适用你的项目即可。
- */</span>
-<span class="function"><span class="keyword">function</span> <span class="title">counter</span>(<span class="params">state = 0, action</span>) </span>&#123;
-  <span class="keyword">switch</span> (action.type) &#123;
-  <span class="keyword">case</span> <span class="string">'INCREMENT'</span>:
-    <span class="keyword">return</span> state + <span class="number">1</span>;
-  <span class="keyword">case</span> <span class="string">'DECREMENT'</span>:
-    <span class="keyword">return</span> state - <span class="number">1</span>;
-  <span class="keyword">default</span>:
-    <span class="keyword">return</span> state;
-  &#125;
-&#125;
-
-<span class="comment">// 创建 Redux store 来存放应用的状态。</span>
-<span class="comment">// API 是 &#123; subscribe, dispatch, getState &#125;。</span>
-<span class="keyword">let</span> store = createStore(counter);
-
-<span class="comment">// 可以手动订阅更新，也可以事件绑定到视图层。</span>
-store.subscribe(() =&gt;
-  <span class="built_in">console</span>.log(store.getState())
-);
-
-<span class="comment">// 改变内部 state 惟一方法是 dispatch 一个 action。</span>
-<span class="comment">// action 可以被序列化，用日记记录和储存下来，后期还可以以回放的方式执行</span>
-store.dispatch(&#123; type: <span class="string">'INCREMENT'</span> &#125;);
-<span class="comment">// 1</span>
-store.dispatch(&#123; type: <span class="string">'INCREMENT'</span> &#125;);
-<span class="comment">// 2</span>
-store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
-<span class="comment">// 1</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="___3">代码组织和工程结构</h3>
+<h3 id="___2">代码组织和工程结构</h3>
 <div class="paragraph">
 <p>Redux 官方库给了一些示例，从这些示例中我们可以总结出 Redux 的代码组织方式及工程目录结构。</p>
 </div>
@@ -483,6 +418,71 @@ store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
 </td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___3">要点</h3>
+<div class="paragraph">
+<p>Redux 框架的要点归纳为三点：<sup class="footnote">[<a id="_footnoteref_9" class="footnote" href="#_footnote_9" title="View footnote.">9</a>]</sup></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>应用中所有的 state 都以一个对象树的形式储存在一个单一的 store 中。</p>
+</li>
+<li>
+<p>惟一改变 state 的办法是触发 action，一个描述发生什么的对象。</p>
+</li>
+<li>
+<p>为了描述 action 如何改变 state 树，你需要编写 reducers。</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="title">Redux 代码示例</div>
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;
+
+<span class="comment">/**
+ * 这是一个 reducer，形式为 `(state, action) =&gt; state` 的纯函数。
+ * 描述了 action 如何把 state 转变成下一个 state。
+ *
+ * state 的形式取决于你，可以是基本类型、数组、对象、
+ * 甚至是 Immutable.js 生成的数据结构。惟一的要点是
+ * 当 state 变化时需要返回全新的对象，而不是修改传入的参数。
+ *
+ * 下面例子使用 `switch` 语句和字符串来做判断，但你可以写帮助类（helper）
+ * 根据不同的约定（如方法映射）来判断，只要适用你的项目即可。
+ */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">counter</span>(<span class="params">state = 0, action</span>) </span>&#123;
+  <span class="keyword">switch</span> (action.type) &#123;
+  <span class="keyword">case</span> <span class="string">'INCREMENT'</span>:
+    <span class="keyword">return</span> state + <span class="number">1</span>;
+  <span class="keyword">case</span> <span class="string">'DECREMENT'</span>:
+    <span class="keyword">return</span> state - <span class="number">1</span>;
+  <span class="keyword">default</span>:
+    <span class="keyword">return</span> state;
+  &#125;
+&#125;
+
+<span class="comment">// 创建 Redux store 来存放应用的状态。</span>
+<span class="comment">// API 是 &#123; subscribe, dispatch, getState &#125;。</span>
+<span class="keyword">let</span> store = createStore(counter);
+
+<span class="comment">// 可以手动订阅更新，也可以事件绑定到视图层。</span>
+store.subscribe(() =&gt;
+  <span class="built_in">console</span>.log(store.getState())
+);
+
+<span class="comment">// 改变内部 state 惟一方法是 dispatch 一个 action。</span>
+<span class="comment">// action 可以被序列化，用日记记录和储存下来，后期还可以以回放的方式执行</span>
+store.dispatch(&#123; type: <span class="string">'INCREMENT'</span> &#125;);
+<span class="comment">// 1</span>
+store.dispatch(&#123; type: <span class="string">'INCREMENT'</span> &#125;);
+<span class="comment">// 2</span>
+store.dispatch(&#123; type: <span class="string">'DECREMENT'</span> &#125;);
+<span class="comment">// 1</span></code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -981,9 +981,9 @@ store.dispatch(&#123;
  
 
 <div class="next">
-<a href="/2016/01/21/windows-10-dpi/"  title="Windows 10 下解决应用程序缩放后模糊的问题">
+<a href="/2015/12/20/webpack/"  title="基于 Webpack 的前端资源构建方案">
  <strong>下一篇：</strong><br/> 
- <span>Windows 10 下解决应用程序缩放后模糊的问题
+ <span>基于 Webpack 的前端资源构建方案
 </span>
 </a>
 </div>
@@ -1002,7 +1002,7 @@ store.dispatch(&#123;
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_react_redux"><span class="toc-number">1.</span> <span class="toc-text">React 和 Redux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">2.</span> <span class="toc-text">通用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__es2015"><span class="toc-number">2.1.</span> <span class="toc-text">使用 ES2015</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__fetch_api"><span class="toc-number">2.2.</span> <span class="toc-text">使用 Fetch API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__webpack"><span class="toc-number">2.3.</span> <span class="toc-text">使用 Webpack 构建项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__redux"><span class="toc-number">3.</span> <span class="toc-text">使用 Redux</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">3.1.</span> <span class="toc-text">要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___3"><span class="toc-number">3.2.</span> <span class="toc-text">代码组织和工程结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_store_state"><span class="toc-number">3.3.</span> <span class="toc-text">Store 和 State</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__store"><span class="toc-number">3.3.1.</span> <span class="toc-text">创建 store</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__immutable_js_state"><span class="toc-number">3.3.2.</span> <span class="toc-text">使用 immutable-js 作为 state 的数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__state"><span class="toc-number">3.3.3.</span> <span class="toc-text">设计 State 结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_reducers"><span class="toc-number">3.4.</span> <span class="toc-text">reducers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#___4"><span class="toc-number">3.4.1.</span> <span class="toc-text">统一管理实体及它们的关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__code_combinereducers_code"><span class="toc-number">3.4.2.</span> <span class="toc-text">使用 combineReducers</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__redux_thunk"><span class="toc-number">3.5.</span> <span class="toc-text">使用 redux-thunk</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__redux_thunk_2"><span class="toc-number">3.5.1.</span> <span class="toc-text">什么是 redux-thunk？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___5"><span class="toc-number">3.5.2.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_container"><span class="toc-number">3.6.</span> <span class="toc-text">Container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props"><span class="toc-number">3.7.</span> <span class="toc-text">注入的 props 采用非范式化的内嵌式结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props_immutable_js"><span class="toc-number">3.8.</span> <span class="toc-text">注入的 props 采用 immutable-js 数据结构及容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__dispatch_action_container_props"><span class="toc-number">3.9.</span> <span class="toc-text">所有的 dispatch action 均由 container 注入 props 方式实现</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#_react_redux"><span class="toc-number">1.</span> <span class="toc-text">React 和 Redux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">2.</span> <span class="toc-text">通用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__es2015"><span class="toc-number">2.1.</span> <span class="toc-text">使用 ES2015</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__fetch_api"><span class="toc-number">2.2.</span> <span class="toc-text">使用 Fetch API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__webpack"><span class="toc-number">2.3.</span> <span class="toc-text">使用 Webpack 构建项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__redux"><span class="toc-number">3.</span> <span class="toc-text">使用 Redux</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___2"><span class="toc-number">3.1.</span> <span class="toc-text">代码组织和工程结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___3"><span class="toc-number">3.2.</span> <span class="toc-text">要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_store_state"><span class="toc-number">3.3.</span> <span class="toc-text">Store 和 State</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__store"><span class="toc-number">3.3.1.</span> <span class="toc-text">创建 store</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__immutable_js_state"><span class="toc-number">3.3.2.</span> <span class="toc-text">使用 immutable-js 作为 state 的数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__state"><span class="toc-number">3.3.3.</span> <span class="toc-text">设计 State 结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_reducers"><span class="toc-number">3.4.</span> <span class="toc-text">reducers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#___4"><span class="toc-number">3.4.1.</span> <span class="toc-text">统一管理实体及它们的关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#__code_combinereducers_code"><span class="toc-number">3.4.2.</span> <span class="toc-text">使用 combineReducers</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__redux_thunk"><span class="toc-number">3.5.</span> <span class="toc-text">使用 redux-thunk</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#__redux_thunk_2"><span class="toc-number">3.5.1.</span> <span class="toc-text">什么是 redux-thunk？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#___5"><span class="toc-number">3.5.2.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#_container"><span class="toc-number">3.6.</span> <span class="toc-text">Container</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props"><span class="toc-number">3.7.</span> <span class="toc-text">注入的 props 采用非范式化的内嵌式结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__props_immutable_js"><span class="toc-number">3.8.</span> <span class="toc-text">注入的 props 采用 immutable-js 数据结构及容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__dispatch_action_container_props"><span class="toc-number">3.9.</span> <span class="toc-text">所有的 dispatch action 均由 container 注入 props 方式实现</span></a></li></ol></li></ol>
  
   </div>
 
@@ -1045,15 +1045,15 @@ store.dispatch(&#123;
 			
 		
 			
-				<li><a href="/tags/Git/" title="Git">Git<sup>1</sup></a></li>
+				<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Windows-10/" title="Windows 10">Windows 10<sup>1</sup></a></li>
+				<li><a href="/tags/thrift/" title="thrift">thrift<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/DPI/" title="DPI">DPI<sup>1</sup></a></li>
+				<li><a href="/tags/API/" title="API">API<sup>1</sup></a></li>
 			
 		
 			
@@ -1081,15 +1081,9 @@ store.dispatch(&#123;
 			
 		
 			
-				<li><a href="/tags/API/" title="API">API<sup>1</sup></a></li>
-			
 		
 			
-				<li><a href="/tags/http/" title="http">http<sup>1</sup></a></li>
-			
 		
-			
-				<li><a href="/tags/thrift/" title="thrift">thrift<sup>1</sup></a></li>
 			
 		
 			
@@ -1107,7 +1101,7 @@ store.dispatch(&#123;
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">归档</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li></ul>
   </div>
 
 
@@ -1115,7 +1109,7 @@ store.dispatch(&#123;
   <div class="tagcloudlist">
     <p class="asidetitle">标签云</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/DPI/" style="font-size: 10px;">DPI</a> <a href="/tags/ES2015/" style="font-size: 10px;">ES2015</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/ESLint/" style="font-size: 10px;">ESLint</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Webpack/" style="font-size: 20px;">Webpack</a> <a href="/tags/Windows-10/" style="font-size: 10px;">Windows 10</a> <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/immutable-js/" style="font-size: 10px;">immutable-js</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/wsgi/" style="font-size: 10px;">wsgi</a> <a href="/tags/范式/" style="font-size: 10px;">范式</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/ES2015/" style="font-size: 10px;">ES2015</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/ESLint/" style="font-size: 10px;">ESLint</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Webpack/" style="font-size: 20px;">Webpack</a> <a href="/tags/http/" style="font-size: 10px;">http</a> <a href="/tags/immutable-js/" style="font-size: 10px;">immutable-js</a> <a href="/tags/thrift/" style="font-size: 10px;">thrift</a> <a href="/tags/wsgi/" style="font-size: 10px;">wsgi</a> <a href="/tags/范式/" style="font-size: 10px;">范式</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
     </div>
   </div>
 

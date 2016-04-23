@@ -1,0 +1,1024 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>面向领域实体及关系的范式 API 设计风格 | 飛哥の技术博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="李飛">
+    
+
+    
+    <meta name="description" content="本文介绍一种 API 设计方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向领域实体及关系的范式 API 设计风格">
+<meta property="og:url" content="http://lifei.github.io/2015/06/16/entity-relationship-based-api-design/index.html">
+<meta property="og:site_name" content="飛哥の技术博客">
+<meta property="og:description" content="本文介绍一种 API 设计方法">
+<meta property="og:image" content="http://martinfowler.com/eaaCatalog/idMapperSketch.gif">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/JO_1YiCW48RlFiMGU_C02raGGXUXMsJ3xdsgSnW86dGQQCd3LvEKpStvly_V4Pt417gQHdOe70DW1gie2Ci3pXmyfHffTOltu34ze35-nzyuDHKQvL7mXfcWkKI78_JxlEB-WBKrC52QAQreK5q79h0mZlpS5kWwrSFf4mnym2MYLstRLksFCqkbjb9Tw1T9MKo_vMr49poZK3aQEEtcDGgSwmVKiYpRZQ74FoI9QQxky7R_ZThvEvNTQM_gIs0fPSv2mQtfLbzwxYcK5a-7vzSIUy0l">
+<meta property="og:updated_time" content="2016-04-23T13:56:32.357Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面向领域实体及关系的范式 API 设计风格">
+<meta name="twitter:description" content="本文介绍一种 API 设计方法">
+
+    
+    <link rel="alternative" href="/atom.xml" title="飛哥の技术博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.jpg" alt="飛哥の技术博客" title="飛哥の技术博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="飛哥の技术博客">飛哥の技术博客</a></h1>
+				<h2 class="blog-motto">关注业务开发</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:lifei.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/06/16/entity-relationship-based-api-design/" title="面向领域实体及关系的范式 API 设计风格" itemprop="url">面向领域实体及关系的范式 API 设计风格</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="李飛" target="_blank" itemprop="author">李飛</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-16T13:59:41.000Z" itemprop="datePublished"> 发表于 2015-06-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">嵌套外键关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">3.1.</span> <span class="toc-text">客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">3.2.</span> <span class="toc-text">服务端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__api"><span class="toc-number">4.</span> <span class="toc-text">范式 API 设计风格</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__models"><span class="toc-number">4.1.</span> <span class="toc-text">改造客户端 Models 层架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__api_code_identity_map_code"><span class="toc-number">4.2.</span> <span class="toc-text">难道 API 是为 Identity Map 服务的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___6"><span class="toc-number">4.3.</span> <span class="toc-text">优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___7"><span class="toc-number">5.</span> <span class="toc-text">深入讨论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#_api"><span class="toc-number">5.1.</span> <span class="toc-text">API 的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">5.2.</span> <span class="toc-text">实体的数据结构在服务端与客户端的差异</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___9"><span class="toc-number">6.</span> <span class="toc-text">领域实体其他关系的组织</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___10"><span class="toc-number">6.1.</span> <span class="toc-text">反范式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_flux_redux_immutable"><span class="toc-number">7.</span> <span class="toc-text">Flux/Redux && Immutable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_main_point"><span class="toc-number">8.</span> <span class="toc-text">Main Point</span></a></li></ol>
+		
+		</div>
+		
+		<div class="sect1">
+<h2 id="__">背景</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>很多年以前，大多数的 Web 开发是在开发网页应用，基本流程是解析参数、获取数据、渲染模版。市面上几乎每一款 Full Stack Web 框架都 MVC 架构，Controllers 将处理好的 Models 交给 Views 来渲染。进入移动时代后，随着网页应用转为 App，MVC 中的 V 不见了， 后端不再需要渲染模版了，UI 和交互全部都由 App 采用 Native 的方式来实现，而数据则通过 API 的方式从服务器传到客户端 App。Web 开发也慢慢地由网页应用开发转变为 API 开发。</p>
+</div>
+<div class="paragraph">
+<p>『罗马不是一天建成的』，API 的设计从一开始就受到了 MVC 架构的影响，很多 API 的设计都是参考了 MVC 中『Controllers 将处理好的 Models 交给 Views 处理成 Templates 需要的结构』的设计，只是不再是『将数据传给 Templates』而是通过 API 将数据传给 App。</p>
+</div>
+<div class="paragraph">
+<p>这种 API 设计非常常见，我们将之称为<strong>『套模板』式 API 设计</strong>。一般的场景是服务端和客户端的研发同事一起照着 PM 给的页面原型图在一个僻静的会议室里一起设计 API。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___2">嵌套外键关系</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>随着业务的复杂度不断增加，客户端程序也需要处理大量的业务逻辑，已经不再是一系列 Native 的 Templates 了。客户端程序也开始有了自己的 MVC 架构，引入了 Models 层，增加了领域实体对象的持久化。此时，客户端对 API 的要求不再是局限于『套模板』了，而是需要 API 返回领域实体的对象数据。API 设计风格不断地演化，逐渐形成了一些约定和要求。其中，最有名的要数『嵌套外键关系』了，譬如：<a href="https://github.com/interagent/http-api-design/blob/master/en/responses/nest-foreign-key-relations.md" target="_blank" rel="external">Nest foreign key relations</a>。</p>
+</div>
+<div class="paragraph">
+<p>NoSQL 数据库 mongodb 提出了文档型数据库的概念，在日常工作中，我们使用 mongodb 存储数据的方式与『嵌套外键关系』的 API 设计非常相似。它们都提倡所表现的数据在语义上自包含的，对人类而言更自然和简单，表现力更强大，易懂。</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/interagent/http-api-design" target="_blank" rel="external">HTTP API Design Guide</a> 中提到的一个好处是：</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>This approach makes it possible to inline more information about the related resource without having to change the structure of the response or introduce more top-level response fields.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在不引入新的顶级字段或不调整返回结构的情况下内敛更多的关联数据。</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. 一个『嵌套外键关系』设计风格的例子</div>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">&#123;
+  "<span class="attribute">tweets</span>": <span class="value">&#123;
+      "<span class="attribute">id</span>": <span class="value"><span class="number">20000000</span></span>,
+      "<span class="attribute">content</span>": <span class="value"><span class="string">"这是一条微博"</span></span>,
+      "<span class="attribute">create_time</span>": <span class="value"><span class="string">"2015-07-17 08:09:03"</span></span>,
+      "<span class="attribute">images</span>": <span class="value">[]</span>,
+      "<span class="attribute">user</span>": <span class="value">&#123;
+          "<span class="attribute">id</span>": <span class="value"><span class="number">100000001</span></span>,
+          "<span class="attribute">name</span>": <span class="value"><span class="string">"张三"</span></span>,
+          "<span class="attribute">avatar_url</span>": <span class="value"><span class="string">"http://touxiao/zhangsan"</span>
+      </span>&#125;</span>,
+      "<span class="attribute">comments</span>": <span class="value">[&#123;
+          "<span class="attribute">id</span>": <span class="value"><span class="number">30000001</span></span>,
+          "<span class="attribute">content</span>": <span class="value"><span class="string">"好微博"</span></span>,
+          "<span class="attribute">create_time</span>": <span class="value"><span class="string">"2015-07-17 08:09:03"</span></span>,
+          "<span class="attribute">user</span>": <span class="value">&#123;
+              "<span class="attribute">id</span>": <span class="value"><span class="number">100000001</span></span>,
+              "<span class="attribute">name</span>": <span class="value"><span class="string">"张三"</span></span>,
+              "<span class="attribute">avatar_url</span>": <span class="value"><span class="string">"http://touxiao/zhangsan"</span>
+          </span>&#125;
+      </span>&#125;]
+  </span>&#125;
+</span>&#125;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___3">遇到的问题</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>没有银弹的设计。</p>
+</div>
+<div class="paragraph">
+<p>『嵌套外键关系』的 API 设计也存在一些问题。我们分别从客户端和服务端的角度来分析这种 API 设计所带来的弊端。</p>
+</div>
+<div class="sect2">
+<h3 id="___4">客户端</h3>
+<div class="paragraph">
+<p>客户端想通过 API 从服务端获取什么数据？领域实体对象！马丁福勒在《企业应用架构模式》一书中提到了一种名为『<a href="http://martinfowler.com/eaaCatalog/identityMap.html" target="_blank" rel="external">Identity Map</a><sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnote_1" title="View footnote.">1</a>]</sup>』的模式，『Ensures that each object gets loaded only once by keeping every loaded object in a map. Looks up objects using the map when referring to them』。它解决的问题是：『a man with two watches never knows what time it is』。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://martinfowler.com/eaaCatalog/idMapperSketch.gif" alt="Identity Map">
+</div>
+<div class="title">Figure 1. Identity Map 模式</div>
+</div>
+<div class="paragraph">
+<p>事实上，我们的客户端程序面临着同样的问题。『嵌套外键关系』的 API 设计会导致同一条记录被加载到多个对象中。当其中一个对象被修改时，其他的对象不会得到应有的更改，这样可能会导致一些奇怪的错误和问题，譬如在 A 页面展示数字是 1，而 B 页面展示的数字是 0。</p>
+</div>
+<div class="paragraph">
+<p>不仅如此，解析 API 的工作也非常不容易。一种类型的对象可能需要从被嵌套的数据中解析出来，也可能不需要，还可能被从多种不同对象的嵌套数据中解析。为每一个 API 实现一个解析函数是一件很平常的事情。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___5">服务端</h3>
+<div class="paragraph">
+<p>在开发 API 的过程中，有很大一部分工作是处理输出结果的结构，也就是我们常说的对象序列化过程，俗称『打包』。『嵌套外键关系』的 API 设计风格使对象的序列化耦合在一起，例如，订单对象嵌套有用户对象，那么在序列化订单对象的时候，必须也要把对应的用户对象一起序列化。这会导致『打包』的逻辑非常复杂，甚至极端情况下，还会出现循环嵌套的情况（A 嵌套 B，B 又嵌套 A）。另外，还需要结合每个 API 输出结果的实际情况，返回不同的内容；若再考虑上版本的变化，这个过程将更加复杂。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__api">范式 API 设计风格</h2>
+<div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>范式是符合某一种级别的关系模式的集合。数据库的设计范式是数据库设计所需要满足的规范，满足这些规范的数据库是简洁的、结构明晰的，同时，不会发生插入（insert）、删除（delete）和更新（update）操作异常。<sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnote_2" title="View footnote.">2</a>]</sup></p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>『Identity Map』模式本身就是范式的一种表现，所有的领域实体对象按照特定的结构来组织，以『标识域』<sup class="footnote">[<a id="_footnoteref_3" class="footnote" href="#_footnote_3" title="View footnote.">3</a>]</sup>为 key 来存储到 Map 容器当中。它们和数据库范式的区别就是一个是用来管理和维护内存中的领域实体对象，一个是用来规范数据库的表结构关系。</p>
+</div>
+<div class="paragraph">
+<p>本文主要讨论的是内存中的领域实体对象的组织和管理，因此我们先回到『Identity Map』模式本身，一种常见的设计是采用多层 Map 来实现，下面的代码阐述了这种数据结构的设计。</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 2. 一种常见的『Identity Map』的组织结构</div>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">&#123;
+  "<span class="attribute">users</span>": <span class="value">&#123;
+    "<span class="attribute">1</span>": <span class="value">&#123;
+      "<span class="attribute">id</span>": <span class="value"><span class="number">1</span></span>,
+      "<span class="attribute">name</span>": <span class="value"><span class="string">"用户名"</span>
+    </span>&#125;
+  </span>&#125;</span>,
+  "<span class="attribute">orders</span>": <span class="value">&#123;
+    "<span class="attribute">1</span>": <span class="value">&#123;
+      "<span class="attribute">id</span>": <span class="value"><span class="number">1</span></span>,
+      "<span class="attribute">user_id</span>": <span class="value"><span class="number">1</span>
+    </span>&#125;
+  </span>&#125;
+</span>&#125;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>上述结构展示用户和订单。</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>第一层 Map 是领域实体的名称，采用小写复数形式表示。第二层则用来存储该类型的领域实体对象，以对象的『标识域』（上例为 <code>id</code>）的值为 key，对象本身为 value。</p>
+</div>
+<div class="paragraph">
+<p>我们会发现『Identity Map』的领域实体对象的关系组织方式与『嵌套外键关系』的设计风格是有显著区别的，这就是『范式』的设计风格。</p>
+</div>
+<div class="sect2">
+<h3 id="__models">改造客户端 Models 层架构</h3>
+<div class="paragraph">
+<p>如之前所述，引入『Identity Map』模式对客户端的 Models 层的架构有显著的帮助。下图展示了引入了『Identity Map』、『数据访问对象』等模式后，客户端访问一个领域实体对象的时序图。</p>
+</div>
+<div class="listingblock">
+<div class="title">客户端访问一个领域实体对象的时序图</div>
+<div class="content">
+<pre><img src="http://www.plantuml.com/plantuml/svg/JO_1YiCW48RlFiMGU_C02raGGXUXMsJ3xdsgSnW86dGQQCd3LvEKpStvly_V4Pt417gQHdOe70DW1gie2Ci3pXmyfHffTOltu34ze35-nzyuDHKQvL7mXfcWkKI78_JxlEB-WBKrC52QAQreK5q79h0mZlpS5kWwrSFf4mnym2MYLstRLksFCqkbjb9Tw1T9MKo_vMr49poZK3aQEEtcDGgSwmVKiYpRZQ74FoI9QQxky7R_ZThvEvNTQM_gIs0fPSv2mQtfLbzwxYcK5a-7vzSIUy0l"></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>改造后所有的领域实体记录只有一个实例对象，它们由 <code>Identity Map</code> 组织并管理，<code>Identity Map</code> 组件负责将数据持久化到本地的数据库（一般是 SQLite）中。对象从 API 获得之后，首先要更新到 <code>Identity Map</code>，在进行清洗合并之后，返回给应用程序使用。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__api_code_identity_map_code">难道 API 是为 <code>Identity Map</code> 服务的？</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>You&#8217;ve got the point!</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>API 肯定是要为 <code>Identity Map</code> 服务，它是 <code>Identity Map</code> 的数据来源，API 70% 的职责就是在这儿。由于 API 可能非常多，功能非常杂，因此，将 API 返回的对象清洗并合并到 <code>Identity Map</code> 这项工作是非常繁琐和复杂的。</p>
+</div>
+<div class="paragraph">
+<p>我们应该通过调整 API 的设计风格来降低这些工作的复杂度。于是，基于范式的 API 设计风格自然而然地出现在所有方案的第一条。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+当两个模块的数据结构趋于一致时，这两个模块的通信将会非常简单。
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___6">优缺点</h3>
+<div class="paragraph">
+<p>第一个优点可以显著地降低程序处理领域实体对象序列化（服务端）/反序列化（客户端）时的复杂度。当所有的 API 中领域实体对象的组织结构都一致了，不再随着返回内容的不同而有变化，那处理或解析这些对象的模块就可以统一。</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 3. 服务端处理领域实体对象序列化的例子</div>
+<div class="content">
+<div class="paragraph">
+<p>Python 语言 json 模块提供的 dumps 方法中，提供了一个参数：<code>default</code>，它接收一个 <code>function</code> 对象，输入为需要序列化的对象 <code>obj</code>，输出为一个可序列化的对象，通常是 <code>dict</code>。</p>
+</div>
+<div class="paragraph">
+<p>假设我们的领域实体对象都继承自 <code>Entity</code> 类，那我们可以提供一个如下的一个函数：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python"><span class="function"><span class="keyword">def</span> <span class="title">json_default</span><span class="params">(obj)</span>:</span>
+    <span class="keyword">if</span> isinstance(obj, Entity):
+        <span class="keyword">return</span> obj.to_dict()
+    <span class="keyword">return</span> obj</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>这样，打包任何实体对象的时候都不需要载入其他的对象，打包过程完成是自包含的，没有任何耦合的。事实上，在基于范式的 API 设计风格下，『打包』这个过程已经非常淡化了，实体自带『打包』黑科技。</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>客户端反序列化对象的过程和服务端类似，基本出发点都是在统一的模块中集中处理。</p>
+</div>
+<div class="paragraph">
+<p>第二个优点应该和『Identity Map』这种模式的优点类似，API 反映的实体记录明确且唯一，不会出现不一致甚至字段不统一的情况。性能高，重复的记录只会在 API 中出现一次。</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="title">缺点</div>
+与『嵌套外键关系』的设计风格相比，范式的 API 设计风格最大的缺点就是不自然、人类不方便阅读 API 的内容。这个问题对一些需要向第三方提供 API 服务的开发平台来说比较重要。普通的自用 API 这个问题会相对小一些。
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___7">深入讨论</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_api">API 的版本</h3>
+<div class="paragraph">
+<p>移动客户端的升级是移动时代 API 设计面临比较多的问题之一，Web 2.0 时代，渲染等工作都是浏览器完成的，版本的概念很淡，一旦新版本上线，旧版本就成为历史，不复存在了。</p>
+</div>
+<div class="paragraph">
+<p>但是客户端的升级与浏览器端的应用升级完全不一样，虽然各大手机厂商想尽办法提高用户升级的比例，但升级依然是一个漫长且痛苦的过程。反映到 API 的设计上，即：API 需要考虑版本的问题。</p>
+</div>
+<div class="paragraph">
+<p>关于 API 版本的讨论，可以参考我之前发表的另一篇博文《浅谈 API 版本》，我们这儿只讨论范式 API 设计风格如何简化服务端程序的复杂度。</p>
+</div>
+<div class="paragraph">
+<p>我们在上面提到的 Python <code>json.dumps</code> 的例子展示，当引入了 API 的版本的时候，不同版本的实体的序列化结果是不一样，因此，<code>to_dict</code> 需要加入 <code>version</code> 参数，例如：User 对象在 <code>version=1</code> 时不返回 <code>city_id</code> 字段，在 <code>version&gt;=2</code> 的时候才会返回 <code>city_id</code> 字段，因为 <code>version=1</code> 的时候还没有城市这个功能。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+大多数情况下，加字段对客户端程序不会造成任何影响。因此，单纯加字段不建议升级 API 的版本。
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python"><span class="keyword">from</span> flask <span class="keyword">import</span> request
+
+
+<span class="function"><span class="keyword">def</span> <span class="title">json_default</span><span class="params">(obj)</span>:</span>
+    <span class="comment"># Flask 的 request 是一个全局代理对象</span>
+    version = get_api_version(request)
+    <span class="keyword">if</span> isinstance(obj, Entity):
+        <span class="keyword">return</span> obj.to_dict(version)
+    <span class="keyword">return</span> obj</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>在『嵌套外键关系』设计风格下，这个事情就比较难办了，你可能需要先根据版本号来确定是否把用户所关联的 <code>city</code> 对象加载并一同传给打包模块。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___8">实体的数据结构在服务端与客户端的差异</h3>
+<div class="paragraph">
+<p>以用户头像为例，假设我们的用户头像是存储在 CDN 上，CDN 有多个域名，我们希望客户端按一定的规则从 CDN 获取用户头像，假设某个 CDN 获取头像失败了，客户端还可以从其他的 CDN 获取头像。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+CDN 的域名会随着供应商的变化而变化。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>此时，在服务端，用户对象的数据结构表示头像的字段为 <code>avatar_uri</code>，表示域名无关的地址。而客户端希望的数据结构是一个 list，依次返回目前正在使用的 CDN 地址列表，如：<code>avatar_urls: ["url1", "url2"]</code>。</p>
+</div>
+<div class="paragraph">
+<p>这个转换过程可以在对实体序列化中完成。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+这种转换只能是实体自包含或者配置依赖。
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___9">领域实体其他关系的组织</h2>
+<div class="sectionbody">
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>这就是全部么？</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>当然不是，上面提到，这只是 API 工作的 70%，还有 30% 呢！『Identity Map』模式解决的问题是实体自身的组织方式及外键关系的组织。但是，实体直接的关系不仅仅局限于『BelongsTo/HasOne』这一种关系。常见的有 OneToOne、OneToMany、ManyToMany等等。</p>
+</div>
+<div class="paragraph">
+<p>关于其他实体关系的组织，不禁让我想起了关系型数据库及其 SQL 语言强大的表现能力，譬如：要查询我的订单，只要 <code>SELECT * FROM orders WHERE user_id=1</code> 就可以了。而这种关系要体现在 API 中就不是那么简单了。</p>
+</div>
+<div class="paragraph">
+<p>一种常见的设计是 RESTful + 『嵌套外键关系』，如返回用户 1 的订单：</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 4. HasMany 关系的设计</div>
+<div class="content">
+<div class="paragraph">
+<div class="title">URL</div>
+<p>/users/1/orders/?count=2</p>
+</div>
+<div class="listingblock">
+<div class="title">返回结果</div>
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">[&#123;
+  <span class="string">"id"</span>: <span class="number">1</span>,
+  <span class="string">"user"</span>: &#123;
+    <span class="string">"id"</span>: <span class="number">1</span>,
+    <span class="string">"name"</span>: <span class="string">"用户"</span>
+  &#125;,
+  <span class="string">"product"</span>: &#123;
+    <span class="string">"id"</span>: <span class="number">1</span>,
+    <span class="string">"name"</span>: <span class="string">"产品1"</span>
+  &#125;,
+  <span class="string">"count"</span>: <span class="number">20</span>
+&#125;, &#123;
+  <span class="string">"id"</span>: <span class="number">1</span>,
+  <span class="string">"user"</span>: &#123;
+    <span class="string">"id"</span>: <span class="number">1</span>,
+    <span class="string">"name"</span>: <span class="string">"用户"</span>
+  &#125;,
+  <span class="string">"product"</span>: &#123;
+    <span class="string">"id"</span>: <span class="number">2</span>,
+    <span class="string">"name"</span>: <span class="string">"产品2"</span>
+  &#125;,
+  <span class="string">"count"</span>: <span class="number">20</span>
+&#125;]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="___10">反范式</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>对，反范式！</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>这儿我们借鉴一下缓存的设计，假设如果要你构建一个数据结构，来实现加速查询某个用户的订单的需求，通常的设计是：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">&#123;
+  <span class="string">"user_orders"</span>: &#123;  <span class="comment">// 用户 ID =&gt; [订单 ID 列表]</span>
+    <span class="string">"1"</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],
+    <span class="string">"2"</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]
+  &#125;
+&#125;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>结合上面范式 API 设计，那这个 API 的结构是：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">&#123;
+  <span class="string">"entities"</span>: &#123;
+    <span class="string">"users"</span>: &#123;
+      <span class="string">"1"</span>: &#123;...&#125;,
+      <span class="string">"2"</span>: &#123;...&#125;
+    &#125;,
+    <span class="string">"orders"</span>: &#123;
+      <span class="string">"1"</span>: &#123;...&#125;,
+      <span class="string">"2"</span>: &#123;...&#125;
+      ...
+    &#125;
+  &#125;
+  <span class="string">"user_orders"</span>: &#123;  <span class="comment">// 用户 ID =&gt; [订单 ID 列表]</span>
+    <span class="string">"1"</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],
+    <span class="string">"2"</span>: [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]
+  &#125;
+&#125;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_flux_redux_immutable">Flux/Redux &amp;&amp; Immutable</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>2014年，Facebook 提出了单向数据流的概念，开源了 Flux 框架。次年，Redux 框架诞生，这两个框架在 Github 上砍下了数万的 Stars。单向数据流的一个核心概念就是数据的变更驱动程序行为，所有的 Action 均有 Store 的变化发起。数据对象 Immutable 后会更方便发现变更行为。</p>
+</div>
+<div class="paragraph">
+<p>之所以提到 Flux/Redux 并不是要介绍它们，而是我在研究后会发现，Store（主要是 Redux 的 Store，我没用过 Flux）其实就是 <code>Identity Map</code> 组件以及存储其他实体对象关系的地方，而且 Redux 官方文档里也建议在 Store 采用范式来存储实体对象<sup class="footnote">[<a id="_footnoteref_4" class="footnote" href="#_footnote_4" title="View footnote.">4</a>]</sup>。</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+采用 Redux/Flux 框架的 WebApp 也应该采用面向领域实体及关系的范式 API 设计风格
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_main_point">Main Point</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>本文阐述了一种使用面向领域实体及关系的范式 API 设计风格；</p>
+</li>
+<li>
+<p>它是由『嵌套外键关系』的 API 设计风格发展而来的；</p>
+</li>
+<li>
+<p>其背后对应的模式是『Identity Map』；</p>
+</li>
+<li>
+<p>改造客户端程序的 Models 层，引入了 <code>Identity Map</code> 组件 ，采用范式 API 设计风格可以显著的降低程序的复杂度。范式 API 设计风格也可以使服务端程序序列化模块的复杂度显著降低，API 也更高效。但是它也有一些缺点；</p>
+</li>
+<li>
+<p>在某些领域实体关系的处理上，需要一些『反范式』的风格，可以借鉴缓存类数据结构的设计。</p>
+</li>
+<li>
+<p>所有 API 都需要这种设计。</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnote_1">
+<a href="#_footnoteref_1">1</a>. <a href="http://martinfowler.com/eaaCatalog/identityMap.html" class="bare" target="_blank" rel="external">http://martinfowler.com/eaaCatalog/identityMap.html</a>
+</div>
+<div class="footnote" id="_footnote_2">
+<a href="#_footnoteref_2">2</a>. <a href="http://baike.so.com/doc/6298095-7588792.html" class="bare" target="_blank" rel="external">http://baike.so.com/doc/6298095-7588792.html</a>
+</div>
+<div class="footnote" id="_footnote_3">
+<a href="#_footnoteref_3">3</a>. <a href="http://martinfowler.com/eaaCatalog/identityField.html" class="bare" target="_blank" rel="external">http://martinfowler.com/eaaCatalog/identityField.html</a>
+</div>
+<div class="footnote" id="_footnote_4">
+<a href="#_footnoteref_4">4</a>. <a href="http://redux.js.org/docs/basics/Reducers.html" class="bare" target="_blank" rel="external">http://redux.js.org/docs/basics/Reducers.html</a>
+</div>
+</div>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/API/">API</a><a href="/tags/范式/">范式</a><a href="/tags/领域实体/">领域实体</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://lifei.github.io/2015/06/16/entity-relationship-based-api-design/" data-title="面向领域实体及关系的范式 API 设计风格 | 飛哥の技术博客" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/07/26/jenkins-gerrit-verified/" title="使用 Jenkins 实现为 Gerrit 的 Patchset 自动 Verified 机制">
+  <strong>上一篇：</strong><br/>
+  <span>
+  使用 Jenkins 实现为 Gerrit 的 Patchset 自动 Verified 机制</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2015/06/16/entity-relationship-based-api-design/" data-title="面向领域实体及关系的范式 API 设计风格" data-url="http://lifei.github.io/2015/06/16/entity-relationship-based-api-design/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#__"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___2"><span class="toc-number">2.</span> <span class="toc-text">嵌套外键关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___3"><span class="toc-number">3.</span> <span class="toc-text">遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___4"><span class="toc-number">3.1.</span> <span class="toc-text">客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___5"><span class="toc-number">3.2.</span> <span class="toc-text">服务端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#__api"><span class="toc-number">4.</span> <span class="toc-text">范式 API 设计风格</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#__models"><span class="toc-number">4.1.</span> <span class="toc-text">改造客户端 Models 层架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#__api_code_identity_map_code"><span class="toc-number">4.2.</span> <span class="toc-text">难道 API 是为 Identity Map 服务的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___6"><span class="toc-number">4.3.</span> <span class="toc-text">优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___7"><span class="toc-number">5.</span> <span class="toc-text">深入讨论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#_api"><span class="toc-number">5.1.</span> <span class="toc-text">API 的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#___8"><span class="toc-number">5.2.</span> <span class="toc-text">实体的数据结构在服务端与客户端的差异</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#___9"><span class="toc-number">6.</span> <span class="toc-text">领域实体其他关系的组织</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#___10"><span class="toc-number">6.1.</span> <span class="toc-text">反范式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_flux_redux_immutable"><span class="toc-number">7.</span> <span class="toc-text">Flux/Redux && Immutable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#_main_point"><span class="toc-number">8.</span> <span class="toc-text">Main Point</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+		
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Webpack/" title="Webpack">Webpack<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ES6/" title="ES6">ES6<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/领域实体/" title="领域实体">领域实体<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Git/" title="Git">Git<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Windows-10/" title="Windows 10">Windows 10<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/DPI/" title="DPI">DPI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/范式/" title="范式">范式<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ES2015/" title="ES2015">ES2015<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ESLint/" title="ESLint">ESLint<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/React/" title="React">React<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Redux/" title="Redux">Redux<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/immutable-js/" title="immutable-js">immutable-js<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/API/" title="API">API<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li></ul>
+  </div>
+
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">标签云</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/API/" style="font-size: 10px;">API</a> <a href="/tags/DPI/" style="font-size: 10px;">DPI</a> <a href="/tags/ES2015/" style="font-size: 10px;">ES2015</a> <a href="/tags/ES6/" style="font-size: 10px;">ES6</a> <a href="/tags/ESLint/" style="font-size: 10px;">ESLint</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/Webpack/" style="font-size: 20px;">Webpack</a> <a href="/tags/Windows-10/" style="font-size: 10px;">Windows 10</a> <a href="/tags/immutable-js/" style="font-size: 10px;">immutable-js</a> <a href="/tags/范式/" style="font-size: 10px;">范式</a> <a href="/tags/领域实体/" style="font-size: 10px;">领域实体</a>
+    </div>
+  </div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> 大家好，我是李飛。 <br/>
+			这是我的博客。</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/lifei" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:lifei.vip@outlook.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc-nd/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by-nc-nd.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="李飛">李飛</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"lifei"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F418d4490462c5561efb0c541ad93c308' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

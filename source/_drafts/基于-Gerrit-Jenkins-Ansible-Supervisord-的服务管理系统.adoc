@@ -1,0 +1,19 @@
+id: deploy-system-based-gerrit-jenkins-ansible-supervisord
+title: 基于 Gerrit/Jenkins/Ansible/Supervisord 的服务管理系统
+date: 2016-04-18 02:41:46
+tags:
+---
+
+= 基于 Gerrit/Jenkins/Ansible/Supervisord 的服务管理系统
+
+== 设计原则
+
+. Delpoyment should be reviewed.
+. Online machines should not be global accessed.
+. History should be saved as well as services should be indexed.
+
+== About Review
+
+上线
+
+== GIT is database

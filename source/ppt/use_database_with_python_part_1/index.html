@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Use Database with Python</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="http://lab.hakim.se/reveal-js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="http://lab.hakim.se/reveal-js/css/theme/black.css" id="theme"><style>.listingblock .pygments .hll { background-color: #ffffcc }
+.listingblock .pygments  { background: #f8f8f8; }
+.listingblock .pygments .tok-c { color: #408080; font-style: italic } /* Comment */
+.listingblock .pygments .tok-err { border: 1px solid #FF0000 } /* Error */
+.listingblock .pygments .tok-k { color: #008000; font-weight: bold } /* Keyword */
+.listingblock .pygments .tok-o { color: #666666 } /* Operator */
+.listingblock .pygments .tok-cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.listingblock .pygments .tok-cp { color: #BC7A00 } /* Comment.Preproc */
+.listingblock .pygments .tok-c1 { color: #408080; font-style: italic } /* Comment.Single */
+.listingblock .pygments .tok-cs { color: #408080; font-style: italic } /* Comment.Special */
+.listingblock .pygments .tok-gd { color: #A00000 } /* Generic.Deleted */
+.listingblock .pygments .tok-ge { font-style: italic } /* Generic.Emph */
+.listingblock .pygments .tok-gr { color: #FF0000 } /* Generic.Error */
+.listingblock .pygments .tok-gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.listingblock .pygments .tok-gi { color: #00A000 } /* Generic.Inserted */
+.listingblock .pygments .tok-go { color: #888888 } /* Generic.Output */
+.listingblock .pygments .tok-gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.listingblock .pygments .tok-gs { font-weight: bold } /* Generic.Strong */
+.listingblock .pygments .tok-gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.listingblock .pygments .tok-gt { color: #0044DD } /* Generic.Traceback */
+.listingblock .pygments .tok-kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.listingblock .pygments .tok-kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.listingblock .pygments .tok-kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.listingblock .pygments .tok-kp { color: #008000 } /* Keyword.Pseudo */
+.listingblock .pygments .tok-kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.listingblock .pygments .tok-kt { color: #B00040 } /* Keyword.Type */
+.listingblock .pygments .tok-m { color: #666666 } /* Literal.Number */
+.listingblock .pygments .tok-s { color: #BA2121 } /* Literal.String */
+.listingblock .pygments .tok-na { color: #7D9029 } /* Name.Attribute */
+.listingblock .pygments .tok-nb { color: #008000 } /* Name.Builtin */
+.listingblock .pygments .tok-nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.listingblock .pygments .tok-no { color: #880000 } /* Name.Constant */
+.listingblock .pygments .tok-nd { color: #AA22FF } /* Name.Decorator */
+.listingblock .pygments .tok-ni { color: #999999; font-weight: bold } /* Name.Entity */
+.listingblock .pygments .tok-ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.listingblock .pygments .tok-nf { color: #0000FF } /* Name.Function */
+.listingblock .pygments .tok-nl { color: #A0A000 } /* Name.Label */
+.listingblock .pygments .tok-nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.listingblock .pygments .tok-nt { color: #008000; font-weight: bold } /* Name.Tag */
+.listingblock .pygments .tok-nv { color: #19177C } /* Name.Variable */
+.listingblock .pygments .tok-ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.listingblock .pygments .tok-w { color: #bbbbbb } /* Text.Whitespace */
+.listingblock .pygments .tok-mb { color: #666666 } /* Literal.Number.Bin */
+.listingblock .pygments .tok-mf { color: #666666 } /* Literal.Number.Float */
+.listingblock .pygments .tok-mh { color: #666666 } /* Literal.Number.Hex */
+.listingblock .pygments .tok-mi { color: #666666 } /* Literal.Number.Integer */
+.listingblock .pygments .tok-mo { color: #666666 } /* Literal.Number.Oct */
+.listingblock .pygments .tok-sb { color: #BA2121 } /* Literal.String.Backtick */
+.listingblock .pygments .tok-sc { color: #BA2121 } /* Literal.String.Char */
+.listingblock .pygments .tok-sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.listingblock .pygments .tok-s2 { color: #BA2121 } /* Literal.String.Double */
+.listingblock .pygments .tok-se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.listingblock .pygments .tok-sh { color: #BA2121 } /* Literal.String.Heredoc */
+.listingblock .pygments .tok-si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.listingblock .pygments .tok-sx { color: #008000 } /* Literal.String.Other */
+.listingblock .pygments .tok-sr { color: #BB6688 } /* Literal.String.Regex */
+.listingblock .pygments .tok-s1 { color: #BA2121 } /* Literal.String.Single */
+.listingblock .pygments .tok-ss { color: #19177C } /* Literal.String.Symbol */
+.listingblock .pygments .tok-bp { color: #008000 } /* Name.Builtin.Pseudo */
+.listingblock .pygments .tok-vc { color: #19177C } /* Name.Variable.Class */
+.listingblock .pygments .tok-vg { color: #19177C } /* Name.Variable.Global */
+.listingblock .pygments .tok-vi { color: #19177C } /* Name.Variable.Instance */
+.listingblock .pygments .tok-il { color: #666666 } /* Literal.Number.Integer.Long */</style><link href="http://lab.hakim.se/reveal-js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="http://lab.hakim.se/reveal-js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Use Database with Python</h1><p><small></small></p></section><section><section id="_sqlalchemy"><h2>SQLAlchemy</h2></section><section id="_2005"><h2>2005</h2><div class="paragraph"><p>by Mike Bayer</p></div></section><section id="_structure"><h2>Structure</h2><div class="imageblock" style=""><div class="content"><img src="doc.png" alt="doc"></div></div></section></section>
+<section><section id="_sqlalchemy_core"><h2>SQLAlchemy Core</h2><div class="ulist"><ul><li><p>Connections</p></li><li><p>SQL</p></li><li><p>Events</p></li><li><p>Other</p></li></ul></div></section><section id="_engines"><h2>Engines</h2><div class="imageblock" style=""><div class="content"><img src="http://docs.sqlalchemy.org/en/rel_1_0/_images/sqla_engine_arch.png" alt="sqla engine arch"></div></div></section><section id="_usage"><h2>Usage</h2><div class="listingblock"><div class="content"><pre class="pygments highlight"><code class="python language-python"><span class="tok-n">engine</span> <span class="tok-o">=</span> <span class="tok-n">create_engine</span><span class="tok-p">(</span><span class="tok-s">&#39;mysql://scott:tiger@localhost/test&#39;</span><span class="tok-p">)</span>
+<span class="tok-n">connection</span> <span class="tok-o">=</span> <span class="tok-n">engine</span><span class="tok-o">.</span><span class="tok-n">connect</span><span class="tok-p">()</span>
+<span class="tok-n">result</span> <span class="tok-o">=</span> <span class="tok-n">connection</span><span class="tok-o">.</span><span class="tok-n">execute</span><span class="tok-p">(</span><span class="tok-s">&quot;select username from users&quot;</span><span class="tok-p">)</span>
+<span class="tok-k">for</span> <span class="tok-n">row</span> <span class="tok-ow">in</span> <span class="tok-n">result</span><span class="tok-p">:</span>
+    <span class="tok-k">print</span> <span class="tok-s">&quot;username:&quot;</span><span class="tok-p">,</span> <span class="tok-n">row</span><span class="tok-p">[</span><span class="tok-s">&#39;username&#39;</span><span class="tok-p">]</span>
+<span class="tok-n">connection</span><span class="tok-o">.</span><span class="tok-n">close</span><span class="tok-p">()</span></code></pre></div></div></section><section id="__strong_strong"><h2><strong>　</strong></h2><div class="ulist"><ul><li><p>The typical usage of <code>create_engine()</code> is once per particular database URL, held globally for the lifetime of a single application process.</p></li><li><p>A single Engine manages many individual DBAPI connections on behalf of the process and is intended to be called upon in a concurrent fashion.</p></li><li><p>The Engine is most efficient when created just once at the module level of an application, not per-object or per-function call.</p></li></ul></div>
+<aside class="notes"><div class="olist arabic"><ol class="arabic"><li><p>create_engine() 典型用法是每个特定的数据库 URL 调用一次，在单个应用程序的整个生命周期过程全局持久。</p></li><li><p>每个 Engine 为进程管理着很多独立的 DBAPI 连接；他会被并发地调用。</p></li><li><p>Engine 每个应用程序被创建一次。</p></li></ol></div></aside></section><section id="__strong_strong_2"><h2><strong>　</strong></h2><div class="ulist"><ul><li><p>The connection is an instance of Connection, which is a proxy object for an actual DBAPI connection. The DBAPI connection is retrieved from the connection pool at the point at which Connection is created.</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>connection 是一个 DBAPI 连接的代理对象；它是从 pool 里获取的；</p></div></aside></section><section id="_discuss"><h2>Discuss</h2></section><section id="_split_read_write"><h2>Split Read/Write</h2><div class="paragraph"><p>We just need two engines</p></div></section><section id="_connection_pool"><h2>Connection Pool</h2><div class="olist arabic"><ol class="arabic"><li><p>A Engine represents a connection pool.</p></li><li><p><code>Engine.connect()</code> retrieves a DBAPI connection wrapped by <code>Connection</code>.</p></li><li><p><code>create_engine()</code> provides some parameters such as <code>pool_size</code>, <code>max_overflow</code>, <code>pool_recycle</code>, <code>pool_timeout</code>, <code>poolclass</code>, <code>creator</code> to tell engine how to create/manage the pool.</p></li><li><p>The default pool class is <code>QueuePool</code>.</p></li></ol></div>
+<aside class="notes"><div class="olist arabic"><div class="title">扩展提问：</div><ol class="arabic"><li><p>如果不想使用 pool 的话应该怎么做？</p></li><li><p>如何将一个连接返还回 pool 里。</p></li></ol></div></aside></section><section id="_disconnects"><h2>Disconnects</h2><div class="olist arabic"><ol class="arabic"><li><p>Optimistic way</p><div class="ulist"><ul><li><p><code>pool_recycle</code></p></li></ul></div></li><li><p>Pessimistic way</p><div class="ulist"><ul><li><p><code>exc.DisconnectionError()</code></p></li></ul></div></li></ol></div>
+<aside class="notes"><div class="olist arabic"><div class="title">扩展提问：</div><ol class="arabic"><li><p>比较一下两种方式的优缺点</p></li></ol></div></aside></section><section id="_multiprocessing"><h2>Multiprocessing</h2><div class="paragraph"><p>No share with children processes</p></div></section><section id="_more"><h2>More</h2><div class="ulist"><ul><li><p>Autocommit</p></li><li><p>Transactions</p></li><li><p>Disposal</p></li></ul></div>
+<aside class="notes"><div class="olist arabic"><div class="title">扩展提问：</div><ol class="arabic"><li><p>嵌套事务</p></li><li><p>两步提交</p></li></ol></div></aside></section><section id="_learn_from_engine"><h2>Learn from Engine</h2><div class="ulist"><ul><li><p>Use connections pool held as singleton.</p></li><li><p>Different pool for different resources.</p></li><li><p>Two ways to handle with disconnect.</p></li><li><p>Resources should not be shared with other processes.</p></li><li><p>Wrap connection with proxy object.</p></li></ul></div>
+<aside class="notes"><div class="olist arabic"><div class="title">扩展提问：</div><ol class="arabic"><li><p>redis/mc/mongodb 客户端</p></li></ol></div></aside></section></section>
+<section><section id="_sqlalchemy_orm"><h2>SQLAlchemy ORM</h2></section><section id="_begin_with_a_book"><h2>Begin With A Book</h2></section><section id="_patterns_of_enterprise_application_architecture"><h2>Patterns of Enterprise Application Architecture</h2><div class="paragraph"><p>By Martin Fowler</p></div>
+<div class="paragraph"><p>2002-11-15</p></div></section><section id="_overview"><h2>Overview</h2><div class="ulist"><ul><li><p>第1章 分层</p></li><li><p>第2章 组织领域逻辑</p></li><li><p>第3章 映射到关系数据库</p></li><li><p>第4章 Web表现层</p></li><li><p>第5章 并发</p></li><li><p>第6章 会话状态</p></li><li><p>第7章 分布策略</p></li><li><p>第8章 通盘考虑</p></li></ul></div>
+<aside class="notes"><div class="olist arabic"><div class="title">扩展提问：</div><ol class="arabic"><li><p>Web 应用开发必读教程</p></li></ol></div></aside></section><section id="_ruby_on_rails"><h2>Ruby On Rails</h2><div class="ulist"><ul><li><p>26 岁的丹麦人 David Heinemeier Hansson 于 2004 年 7 月提出了 Rails 框架</p></li><li><p>Rails ORM 采用 Active Record 模式，依托 Ruby 的元编程和约定优于配置的理念</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>终于不用再配 XML 了</p></div></aside></section><section id="_17_patterns_in_sqlalchemy"><h2>17 Patterns in SQLAlchemy</h2><div class="imageblock" style=""><div class="content"><img src="http://lifei.github.io/ppt/develop_distill/sqlalchemy2.png" alt="sqlalchemy2"></div></div>
+<div class="ulist"><ul><li><p><a href="http://techspot.zzzeek.org/2012/02/07/patterns-implemented-by-sqlalchemy/" class="bare">http://techspot.zzzeek.org/2012/02/07/patterns-implemented-by-sqlalchemy/</a></p></li></ul></div></section><section id="_session"><h2>Session</h2><div class="ulist"><ul><li><p>In the most general sense, the Session establishes all conversations with the database and represents a 『holding zone』 for all the objects which you’ve loaded or associated with it during its lifespan.</p></li><li><p>「Identity Map」 and 「Unit of Work」.</p></li><li><p>Connection &amp; Route</p></li><li><p>Other</p></li></ul></div></section><section id="_identity_map"><h2>Identity Map</h2><div class="paragraph"><p>Ensures that each object gets loaded only once by keeping every loaded object in a map. Looks up objects using the map when referring to them.</p></div>
+<div class="imageblock" style=""><div class="content"><img src="http://martinfowler.com/eaaCatalog/idMapperSketch.gif" alt="idMapperSketch"></div></div></section><section id="_unit_of_work"><h2>Unit of Work</h2><div class="paragraph"><p>Maintains a list of objects affected by a business transaction and coordinates the writing out of changes and the resolution of concurrency problems.</p></div>
+<div class="imageblock" style=""><div class="content"><img src="http://martinfowler.com/eaaCatalog/unitOfWorkInterface.gif" alt="unitOfWorkInterface"></div></div></section><section id="_lifecycle"><h2>Lifecycle</h2><div class="olist arabic"><ol class="arabic"><li><p>a business transaction refers a unit of work.</p></li><li><p>maintains objects</p></li><li><p>commit at the end of transaction</p></li><li><p>handle with concurrency problems</p></li><li><p>clear resources</p></li></ol></div></section><section id="_usage_2"><h2>Usage</h2><div class="listingblock"><div class="content"><pre class="pygments highlight"><code class="python language-python"><span class="tok-c"># an Engine, which the Session will use for connection</span>
+<span class="tok-c"># resources</span>
+<span class="tok-n">some_engine</span> <span class="tok-o">=</span> <span class="tok-n">create_engine</span><span class="tok-p">(</span><span class="tok-s">&#39;postgresql://scott:tiger@localhost/&#39;</span><span class="tok-p">)</span>
+
+<span class="tok-c"># create a configured &quot;Session&quot; class</span>
+<span class="tok-n">Session</span> <span class="tok-o">=</span> <span class="tok-n">sessionmaker</span><span class="tok-p">(</span><span class="tok-n">bind</span><span class="tok-o">=</span><span class="tok-n">some_engine</span><span class="tok-p">)</span>
+
+<span class="tok-c"># create a Session</span>
+<span class="tok-n">session</span> <span class="tok-o">=</span> <span class="tok-n">Session</span><span class="tok-p">()</span>
+
+<span class="tok-c"># work with sess</span>
+<span class="tok-n">myobject</span> <span class="tok-o">=</span> <span class="tok-n">MyObject</span><span class="tok-p">(</span><span class="tok-s">&#39;foo&#39;</span><span class="tok-p">,</span> <span class="tok-s">&#39;bar&#39;</span><span class="tok-p">)</span>
+<span class="tok-n">session</span><span class="tok-o">.</span><span class="tok-n">add</span><span class="tok-p">(</span><span class="tok-n">myobject</span><span class="tok-p">)</span>
+<span class="tok-n">session</span><span class="tok-o">.</span><span class="tok-n">commit</span><span class="tok-p">()</span>
+<span class="tok-n">session</span><span class="tok-o">.</span><span class="tok-n">close</span><span class="tok-p">()</span></code></pre></div></div></section><section id="_session_engine_connection_bind"><h2>Session &amp; Engine &amp; Connection &amp; Bind</h2><div class="olist arabic"><ol class="arabic"><li><p>Sessionmaker produce a session class which contains bind information between entities and engines.</p></li><li><p>A session instance use bind information to choose engines for entities.</p></li><li><p>It also create/retrieve connections from chosen engines.</p></li></ol></div></section><section id="_contextual_session_scoped_session"><h2>Contextual Session (scoped_session)</h2></section><section id="_registry"><h2>Registry</h2><div class="paragraph"><p>A well-known object that other objects can use to find common objects and services.</p></div>
+<div class="imageblock" style=""><div class="content"><img src="http://martinfowler.com/eaaCatalog/registrySketch.gif" alt="registrySketch"></div></div></section><section id="_usage_3"><h2>Usage</h2><div class="listingblock"><div class="content"><pre class="pygments highlight"><code class="python language-python"><span class="tok-n">session_factory</span> <span class="tok-o">=</span> <span class="tok-n">sessionmaker</span><span class="tok-p">(</span><span class="tok-n">bind</span><span class="tok-o">=</span><span class="tok-n">some_engine</span><span class="tok-p">)</span>
+<span class="tok-n">Session</span> <span class="tok-o">=</span> <span class="tok-n">scoped_session</span><span class="tok-p">(</span><span class="tok-n">session_factory</span><span class="tok-p">)</span></code></pre></div></div>
+<div class="olist arabic"><ol class="arabic"><li><p>Thread Local Storage</p></li><li><p>Share session in a thread context</p></li><li><p>Match with Request in Web Application</p></li></ol></div></section><section id="_issue"><h2>Issue</h2><div class="listingblock"><div class="content"><pre class="pygments highlight"><code class="python language-python"><span class="tok-n">session_factory</span> <span class="tok-o">=</span> <span class="tok-n">sessionmaker</span><span class="tok-p">(</span><span class="tok-n">bind</span><span class="tok-o">=</span><span class="tok-n">some_engine</span><span class="tok-p">)</span>
+<span class="tok-n">Session</span> <span class="tok-o">=</span> <span class="tok-n">scoped_session</span><span class="tok-p">(</span><span class="tok-n">session_factory</span><span class="tok-p">)</span>
+<span class="tok-k">def</span> <span class="tok-nf">index</span><span class="tok-p">():</span>
+    <span class="tok-k">try</span><span class="tok-p">:</span>
+      <span class="tok-n">user</span> <span class="tok-o">=</span> <span class="tok-n">Session</span><span class="tok-o">.</span><span class="tok-n">query</span><span class="tok-p">(</span><span class="tok-n">User</span><span class="tok-p">)</span><span class="tok-o">.</span><span class="tok-n">get</span><span class="tok-p">(</span><span class="tok-mi">1</span><span class="tok-p">)</span>
+      <span class="tok-n">user</span><span class="tok-o">.</span><span class="tok-n">name</span> <span class="tok-o">=</span> <span class="tok-s">&#39;呵呵&#39;</span>
+      <span class="tok-n">await</span> <span class="tok-n">redis</span><span class="tok-o">.</span><span class="tok-n">set</span><span class="tok-p">(</span><span class="tok-s">&#39;user-{}&#39;</span><span class="tok-o">.</span><span class="tok-n">format</span><span class="tok-p">(</span><span class="tok-n">user</span><span class="tok-o">.</span><span class="tok-n">id</span><span class="tok-p">),</span> <span class="tok-n">user</span><span class="tok-o">.</span><span class="tok-n">name</span><span class="tok-p">)</span>
+      <span class="tok-n">Session</span><span class="tok-o">.</span><span class="tok-n">commit</span><span class="tok-p">()</span>
+    <span class="tok-k">finally</span><span class="tok-p">:</span>
+      <span class="tok-n">Session</span><span class="tok-o">.</span><span class="tok-n">remove</span><span class="tok-p">()</span></code></pre></div></div></section><section id="_session_s_problem"><h2>Session&#8217;s Problem</h2><div class="listingblock"><div class="content"><pre class="pygments highlight"><code class="python language-python"><span class="tok-k">class</span> <span class="tok-nc">User</span><span class="tok-p">(</span><span class="tok-n">Model</span><span class="tok-p">):</span>
+    <span class="tok-nb">id</span> <span class="tok-o">=</span> <span class="tok-n">Column</span><span class="tok-p">(</span><span class="tok-n">Integer</span><span class="tok-p">,</span> <span class="tok-n">primary_key</span><span class="tok-o">=</span><span class="tok-bp">True</span><span class="tok-p">)</span>
+    <span class="tok-n">team_id</span> <span class="tok-o">=</span> <span class="tok-n">Column</span><span class="tok-p">(</span><span class="tok-n">Integer</span><span class="tok-p">,</span> <span class="tok-n">ForeignKey</span><span class="tok-p">(</span><span class="tok-s">&#39;team.id&#39;</span><span class="tok-p">))</span>
+
+
+<span class="tok-k">class</span> <span class="tok-nc">Team</span><span class="tok-p">(</span><span class="tok-n">Model</span><span class="tok-p">):</span>
+    <span class="tok-nb">id</span> <span class="tok-o">=</span> <span class="tok-n">Column</span><span class="tok-p">(</span><span class="tok-n">Integer</span><span class="tok-p">,</span> <span class="tok-n">primary_key</span><span class="tok-o">=</span><span class="tok-bp">True</span><span class="tok-p">)</span>
+    <span class="tok-n">leader_id</span> <span class="tok-o">=</span> <span class="tok-n">Column</span><span class="tok-p">(</span><span class="tok-n">Integer</span><span class="tok-p">,</span> <span class="tok-n">ForeignKey</span><span class="tok-p">(</span><span class="tok-n">User</span><span class="tok-o">.</span><span class="tok-n">id</span><span class="tok-p">))</span></code></pre></div></div></section><section id="_session_s_problem_2"><h2>Session&#8217;s Problem</h2><div class="listingblock"><div class="content"><pre class="pygments highlight"><code class="python language-python"><span class="tok-n">user</span> <span class="tok-o">=</span> <span class="tok-n">User</span><span class="tok-p">(</span><span class="tok-mi">1</span><span class="tok-p">,</span> <span class="tok-mi">1</span><span class="tok-p">)</span>
+<span class="tok-n">team</span> <span class="tok-o">=</span> <span class="tok-n">Team</span><span class="tok-p">(</span><span class="tok-mi">1</span><span class="tok-p">,</span> <span class="tok-mi">1</span><span class="tok-p">)</span>
+<span class="tok-n">session</span><span class="tok-o">.</span><span class="tok-n">add_all</span><span class="tok-p">([</span><span class="tok-n">user</span><span class="tok-p">,</span> <span class="tok-n">team</span><span class="tok-p">])</span>
+<span class="tok-n">session</span><span class="tok-o">.</span><span class="tok-n">commit</span><span class="tok-p">()</span></code></pre></div></div></section><section id="_flush"><h2>Flush()</h2><div class="listingblock"><div class="content"><pre class="pygments highlight"><code class="python language-python"><span class="tok-n">user</span> <span class="tok-o">=</span> <span class="tok-n">User</span><span class="tok-p">(</span><span class="tok-mi">1</span><span class="tok-p">,</span> <span class="tok-mi">1</span><span class="tok-p">)</span>
+<span class="tok-n">team</span> <span class="tok-o">=</span> <span class="tok-n">Team</span><span class="tok-p">(</span><span class="tok-mi">1</span><span class="tok-p">,</span> <span class="tok-mi">1</span><span class="tok-p">)</span>
+<span class="tok-n">session</span><span class="tok-o">.</span><span class="tok-n">add_all</span><span class="tok-p">([</span><span class="tok-n">user</span><span class="tok-p">,</span> <span class="tok-n">team</span><span class="tok-p">])</span>
+<span class="tok-n">user</span><span class="tok-o">.</span><span class="tok-n">team_id</span> <span class="tok-o">=</span> <span class="tok-bp">None</span>
+<span class="tok-n">session</span><span class="tok-o">.</span><span class="tok-n">flush</span><span class="tok-p">([</span><span class="tok-n">user</span><span class="tok-p">,</span> <span class="tok-n">team</span><span class="tok-p">])</span>
+<span class="tok-n">user</span><span class="tok-o">.</span><span class="tok-n">team_id</span> <span class="tok-o">=</span> <span class="tok-mi">1</span>
+<span class="tok-n">session</span><span class="tok-o">.</span><span class="tok-n">commit</span><span class="tok-p">()</span></code></pre></div></div></section><section id="_flush_2"><h2>Flush()</h2><div class="olist arabic"><ol class="arabic"><li><p>Sessions produce SQL at the end of business transaction.</p></li><li><p>Executed SQL does not mean written into database.</p></li><li><p>Commit is the key command.</p></li></ol></div></section></section>
+<section id="_to_be_continued"><h2>To Be Continued</h2></section></div></div><script src="http://lab.hakim.se/reveal-js/lib/js/head.min.js"></script><script src="http://lab.hakim.se/reveal-js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'black',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'convex',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/http://lab.hakim.se/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'http://lab.hakim.se/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'http://lab.hakim.se/reveal-js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'http://lab.hakim.se/reveal-js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: 'http://lab.hakim.se/reveal-js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'http://lab.hakim.se/reveal-js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

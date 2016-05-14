@@ -8,8 +8,8 @@ tags:
 id: openldap-kerberos
 description:
   LDAP 和 Kerberos 是分别是用户管理领域和认证授权领域的事实标准，大量的第三方软件支持 LDAP 和 Kerberos 协议，支持 LDAP 和 Kerberos 的系统将极大地方便与第三方系统集成。
-  
-  
+
+
   本文解决了 LDAP 和 Kerberos 数据和认证的打通问题，使 LDAP 和 Kerberos 以一个统一的完整的服务对外提供服务。
 ---
 
@@ -243,7 +243,7 @@ Jul 28 11:38:49 bbdb76488f37 kadmind[443](info): starting
 
 saslauthd 需要和 OpenLDAP 装在同一台机器上。
 
-=== 配置 saslauthd 
+=== 配置 saslauthd
 
 . 修改配置文件 `/etc/default/saslauthd`
 +
